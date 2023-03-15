@@ -36,10 +36,12 @@ router.put("/update-foodStock/:id", async (req, res, next) => {
       req.params.id,
       {
         $set: req.body,
-      }
+      },
+      { new: true }
     );
     res.json(data);
     console.log("Food stock updated successfully !", data);
+    console.log(data)
   } catch (error) {
     return next(error);
   }
