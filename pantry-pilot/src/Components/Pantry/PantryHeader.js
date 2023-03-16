@@ -1,13 +1,31 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
+import {FaPlus} from 'react-icons/fa'
+import Modal from 'react-bootstrap/Modal';
 
-function PantryHeader({pantry, setPantry}) {
+// GroceryBag Component imports
+import GroceryBag from '../GroceryBag/GroceryBag';
+
+function PantryHeader({ pantry, setPantry }) {
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+
   const today = new Date();
+
+
   return (
-    <div className="col-12">
+    <div className="col-12 d-flex">
+      <div className='col-6'>
         <h2>My Fridge</h2>
-        <p>Today's Date: {today.toISOString().substring(0, 10)}</p>
-        <p>Number of Food Items: {pantry?.fridge.length} </p>
+        <div>Today's Date: {today.toISOString().substring(0, 10)}</div>
+        <div>Number of Food Items: {pantry[0].fridge.length} </div>
       </div>
+      <div className='col-6 d-flex justify-content-end align-items-center'>
+        <button className='btn btn-primary' onClick={handleShow}><FaPlus /> Add Food</button>
+        <GroceryBag show={show} handleClose={handleClose} handleShow={handleShow} pantry={pantry} setPantry={setPantry}/>
+      </div>
+    </div>
   )
 }
 

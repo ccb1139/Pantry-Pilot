@@ -18,7 +18,11 @@ import PantryBody from '../Components/Pantry/PantryBody';
 
 function Pantry() {
   // This holds the foods in the users pantry
-  const [pantry, setPantry] = useState([{_id:"123", totalStock:[{_id:"ts"}], categories:[{_id:"ct"}], fridge:[{_id:"fr"}]}])
+  const [pantry, setPantry] = useState([{
+    _id: "123", totalStock: [{ _id: "ts" }],
+    //categories: [{ _id: "ct" }],
+    fridge: [{ _id: "fr" }]
+  }])
 
   // This gets the food from the api
   useEffect(() => {
@@ -40,14 +44,14 @@ function Pantry() {
 
   return (
     <div className='d-flex justify-content-center align-items-center'>
-      <div className='d-flex flex-column col-10'>
-        <PantryHeader pantry={null} setPantry={setPantry}/>
-        <PantryBody pantry={pantry} setPantry={setPantry}/>
+      <div className='d-flex flex-column col-10 border'>
+        <PantryHeader pantry={pantry} setPantry={setPantry} />
+        <PantryBody pantry={pantry} setPantry={setPantry} />
       </div>
       {/* <div className='d-flex flex-column'>
         <GroceryBag />
       </div> */}
-      <DebugMenu pantry={pantry} setPantry={setPantry}/>
+      <DebugMenu pantry={pantry} setPantry={setPantry} />
     </div>
   )
 }
