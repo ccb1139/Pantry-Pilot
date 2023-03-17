@@ -2,7 +2,17 @@ import React, { useState, useEffect } from 'react'
 
 import GroceryBagTile from './GroceryBagTile'
 
-function GroceryBagCategory({categoryName, foodNames, _id}) {
+function GroceryBagCategory({categoryName, foodNames, _id, selected, setSelected}) {
+
+    function addToSelected(foodName) {
+        setSelected([...selected, foodName])
+
+    }
+
+    useEffect(() => {
+        // console.log(selected)
+    }, [selected])
+
 
     return (
         <div className='d-flex flex-column border'>
@@ -17,6 +27,8 @@ function GroceryBagCategory({categoryName, foodNames, _id}) {
                             foodName={foodName}
                             categoryName={categoryName}
                             key={foodName}
+                            selected={selected}
+                            setSelected={addToSelected}
                         />
                     )
                 })

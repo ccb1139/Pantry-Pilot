@@ -2,13 +2,16 @@ import React, { useState, useEffect } from 'react'
 
 //Grocery Bag Imports
 import GroceryBagCategory from './GroceryBagCategory'
-
+import SelectedCategory from './SelectedCategory';
 
 // Bootstrap Imports
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 
 function GroceryBag({ pantry, setPantry, show, handleClose, handleShow }) {
+  const [selected, setSelected] = useState([])
+
+
   return (
     <>
       <Modal
@@ -28,8 +31,15 @@ function GroceryBag({ pantry, setPantry, show, handleClose, handleShow }) {
               foodNames={category.foodNames}
               _id={category._id}
               key={category._id}
+              selected={selected}
+              setSelected={setSelected}
             />
           ))}
+          <SelectedCategory
+           categoryName={"Selected"}
+           foodNames={selected}
+           setSelected={setSelected}
+           />        
         </Modal.Body>
 
         <Modal.Footer>

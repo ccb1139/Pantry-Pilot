@@ -6,10 +6,12 @@ import { GiBanana } from "react-icons/gi";
 import { GiChipsBag } from "react-icons/gi";
 
 
-function PantryTile({ category, foodName, expirationDate, _id }) {
-    var icon = null
+function PantryTile({ category, foodName, expirationDate, _id, }) {
     
-
+    
+    
+    
+    var icon = null
     switch (category) {
         case "Fruit":
             icon = <GiBanana size={40}/>
