@@ -7,7 +7,41 @@ import PantryVisHelp from './PantryVisHelp';
 import FoodTileDebug from './FoodTileDebug';
 
 // Helper imports
+// import {
+//     populateFoodStock,
+//     clearFoodStock,
+
+//     addCategory,
+//     removeCategory,
+//     updateCategory,
+//     addFoodToCategory,
+//     removeFoodFromCategory,
+//     getCategory,
+//     findInCategory,
+
+//     addTotalStock,
+//     removeTotalStock,
+//     updateTotalStock,
+//     increaseTotalStock,
+//     decreaseTotalStock,
+//     getTotalStock,
+//     findInTotalStock,
+
+//     addFridge,
+//     removeFridge,
+//     updateFridge,
+//     getFridge,
+//     findInFridge,
+
+//     addToPantry,
+//     removeFromPantry,
+//     getPantry,
+
+// } from '../FoodStockHelpers/foodStockHelper';
+
 import {
+    sendPantryToServer,
+
     populateFoodStock,
     clearFoodStock,
 
@@ -37,9 +71,7 @@ import {
     removeFromPantry,
     getPantry,
 
-} from '../FoodStockHelpers/foodStockHelper';
-
-
+} from '../FoodStockHelpers/pantryAPI';
 
 
 function DebugMenu({ pantry, setPantry, selected, setSelected }) {
@@ -78,6 +110,7 @@ function DebugMenu({ pantry, setPantry, selected, setSelected }) {
     const resetFridge = () => {
         clearFridge();
         populateFridge();
+        window.location.reload();
     }
 
     // ======================
@@ -85,39 +118,49 @@ function DebugMenu({ pantry, setPantry, selected, setSelected }) {
     // ======================
 
     // Add, Remove, Update Functions for Categories
-    const _addCategory = () => {
-        addCategory('Snack', ['Cheeto', 'GoldFish', 'Lays'], pantry, setPantry)
+    async function _addCategory() {
+        const newPt = await addCategory('Staple', ['Flour', 'GoldFish', 'Lays'], pantry, setPantry)
+        sendPantryToServer(newPt, pantry, setPantry)
     }
-    const _removeCategory = () => {
-        removeCategory(pantry[0]['categories'][0]._id, pantry, setPantry)
+    async function  _removeCategory() {
+        const newPT = removeCategory(pantry[0]['categories'][0]._id, pantry, setPantry)
+        sendPantryToServer(newPT, pantry, setPantry)
     }
-    const _updateCategory = () => {
-        updateCategory(pantry[0]['categories'][1]._id, ['Cheeto', 'GoldFish', 'Lays', 'Pringles'], pantry, setPantry)
+    async function  _updateCategory () {
+        const newPT = updateCategory(pantry[0]['categories'][1]._id, ['Cheeto', 'GoldFish', 'Lays', 'Pringles'], pantry, setPantry)
+        sendPantryToServer(newPT, pantry, setPantry)
     }
-    const _addFoodToCategory = () => {
-        addFoodToCategory(pantry[0]['categories'][0]._id, 'Kiwi', pantry, setPantry)
+    async function  _addFoodToCategory () {
+        const newPT = addFoodToCategory(pantry[0]['categories'][0]._id, 'Kiwi', pantry, setPantry)
+        sendPantryToServer(newPT, pantry, setPantry)
     }
-    const _removeFoodFromCategory = () => {
-        removeFoodFromCategory(pantry[0]['categories'][0]._id, 'Kiwi', pantry, setPantry)
+    async function  _removeFoodFromCategory () {
+        const newPT = removeFoodFromCategory(pantry[0]['categories'][0]._id, 'Kiwi', pantry, setPantry)
+        sendPantryToServer(newPT, pantry, setPantry)
     }
 
-    const _getCategory = () => {
+    async function  _getCategory () {
         const catRtn = getCategory(pantry[0]['categories'][0]._id, pantry, setPantry);
         console.log(catRtn);
     }
 
-    const _findFoodInCategory = () => {
+    async function  _findFoodInCategory () {
         const foodRtn = findInCategory('Kiwi', pantry, setPantry);
         console.log(foodRtn);
     }
 
+    async function _addMultipleCategories() {
+        const foodRtn = await addCategory('Staples', ['Flour', 'Sugar', 'Salt'], pantry, setPantry)
+        const foodRtn2 = await addCategory('Meats', ['Chicken', 'Beef', 'Duck'], [foodRtn], setPantry)
+        sendPantryToServer(foodRtn2, pantry, setPantry)
+    }
     
 
 
 
     // Add, Remove, Update Functions for TotalStock
     const _addTotalStock = () => {
-        addTotalStock( 'Fruit', 'Apple', 2, pantry, setPantry)
+        const foodRtn = addTotalStock( 'Fruit', 'Apple', 2, pantry, setPantry)
     }
     const _removeTotalStock = () => {
         removeTotalStock( pantry[0]['totalStock'][0]._id, pantry, setPantry)
@@ -226,6 +269,7 @@ function DebugMenu({ pantry, setPantry, selected, setSelected }) {
                     <Dropdown.Item as="button" onClick={_removeFoodFromCategory}>Remove Food from Category</Dropdown.Item>
                     <Dropdown.Item as="button" onClick={_getCategory}>get Categories</Dropdown.Item>
                     <Dropdown.Item as="button" onClick={_findFoodInCategory}>Find Food in Category</Dropdown.Item>
+                    <Dropdown.Item as="button" onClick={_addMultipleCategories}>Add _addMultipleCategories</Dropdown.Item>
                 </DropdownButton>
 
                 <DropdownButton id="dropdown-item-button2" title="CRUD TOTALSTOCK">
@@ -258,6 +302,7 @@ function DebugMenu({ pantry, setPantry, selected, setSelected }) {
                     <Dropdown.Item as="button" onClick={logCategories}>logCategories</Dropdown.Item>
                     <Dropdown.Item as="button" onClick={logFridge}>logFridge</Dropdown.Item>
                 </DropdownButton>
+
 
             </div>
 

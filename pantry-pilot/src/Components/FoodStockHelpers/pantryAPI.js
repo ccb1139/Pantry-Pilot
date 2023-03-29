@@ -7,13 +7,18 @@ import axios from 'axios';
     The totalStock object is an array of objects that contain the food name, category, and quantity
 */}
 
-function updateFoodStockHelper(_categories, _fridge, _totalStock, pantry, setPantry) {
+function updateFoodStockHelper(){
 
+}
+
+// This functions updates the pantry object in the database and sets the state
+export function sendPantryToServer(newPantry, pantry, setPantry) {
+    console.log(pantry);
     axios
         .put("http://localhost:4000/foodStock/update-foodStock/" + pantry[0]._id, {
-            categories: _categories,
-            fridge: _fridge,
-            totalStock: _totalStock,
+            categories: newPantry.categories,
+            fridge: newPantry.fridge,
+            totalStock: newPantry.totalStock,
         })
         .then((res) => {
             if (res.status === 200) {
@@ -83,6 +88,10 @@ export function clearFoodStock(pantry, setPantry) {
     - Remove Food from Fridge | DONE 
     - Update Food in Fridge | DONE
     - Get Food from Fridge | DONE
+
+    categories: _categories,
+            fridge: _fridge,
+            totalStock: _totalStock,
     
 */}
 
@@ -91,52 +100,89 @@ export function clearFoodStock(pantry, setPantry) {
 // CATEGORY FUNCTIONS
 // ======================
 
+
 // Takes CategoryName, foodNames, pantry, and setPantry
 // Adds a category to the foodStock
-export function addCategory(categoryName, foodNames, pantry, setPantry) {
-    updateFoodStockHelper([...pantry[0].categories, { categoryName, foodNames }], pantry[0].fridge, pantry[0].totalStock, pantry, setPantry);
+export async function addCategory(categoryName, foodNames, pantry, setPantry) {
+
+    var newPantry = {
+        categories: [...pantry[0].categories, { categoryName, foodNames }],
+        fridge: pantry[0].fridge,
+        totalStock: pantry[0].totalStock,
+    }
+    return newPantry;
 }
 
 // This function removes a foodStock category from the foodStock 
 // it takes in the category_id and the pantry and setPantry and removes the with that id category from the pantry
-export function removeCategory(category_id, pantry, setPantry) {
+export async function removeCategory(category_id, pantry, setPantry) {
     var newCategories = pantry[0].categories.filter((category) => category._id !== category_id);
-    updateFoodStockHelper(newCategories, pantry[0].fridge, pantry[0].totalStock, pantry, setPantry);
+
+    var newPantry = [{
+        categories: newCategories,
+        fridge: pantry[0].fridge,
+        totalStock: pantry[0].totalStock,
+    }]
+    return newPantry;
 }
 
 // Takes in the category Id, and list of foods and updates the category with that id
 // with the new list of foods
-export function updateCategory(category_id, foodNames, pantry, setPantry) {
+export async function updateCategory(category_id, categoryName, foodNames, pantry, setPantry) {
     // var newCategories = pantry[0].categories.filter((category) => category._id !== category_id);
     for (let i = 0; i < pantry[0].categories.length; i++) {
         if (pantry[0].categories[i]._id === category_id) {
+            pantry[0].categories[i].categoryName = categoryName;
             pantry[0].categories[i].foodNames = foodNames;
         }
     }
     // newCategories.push({ categoryName, foodNames });
-    updateFoodStockHelper(pantry[0].categories, pantry[0].fridge, pantry[0].totalStock, pantry, setPantry);
+
+    var newPantry = [{
+        categories: pantry[0].categories,
+        fridge: pantry[0].fridge,
+        totalStock: pantry[0].totalStock,
+    }]
+    return newPantry;
 
 }
 
 // Quality of life update Category functions
 
-export function addFoodToCategory(category_id, foodName, pantry, setPantry) {
+export async function addFoodToCategory(category_id, foodName, pantry, setPantry) {
     for (let i = 0; i < pantry[0].categories.length; i++) {
         if (pantry[0].categories[i]._id === category_id) {
             pantry[0].categories[i].foodNames.push(foodName);
         }
     }
-    updateFoodStockHelper(pantry[0].categories, pantry[0].fridge, pantry[0].totalStock, pantry, setPantry);
+    // updateFoodStockHelper(pantry[0].categories, pantry[0].fridge, pantry[0].totalStock, pantry, setPantry);
+
+    var newPantry = {
+        categories: pantry[0].categories,
+        fridge: pantry[0].fridge,
+        totalStock: pantry[0].totalStock,
+    }
+    return newPantry;
 }
 
-export function removeFoodFromCategory(category_id, foodName, pantry, setPantry) {
+export async function removeFoodFromCategory(category_id, foodName, pantry, setPantry) {
     for (let i = 0; i < pantry[0].categories.length; i++) {
+        console.log(category_id)
+        console.log(pantry[0].categories[i]._id)
         if (pantry[0].categories[i]._id === category_id) {
+            console.log(pantry[0].categories[i].foodNames);
+            
             pantry[0].categories[i].foodNames = pantry[0].categories[i].foodNames.filter((food) => food !== foodName);
         }
     }
-    updateFoodStockHelper(pantry[0].categories, pantry[0].fridge, pantry[0].totalStock, pantry, setPantry);
-
+    // updateFoodStockHelper(pantry[0].categories, pantry[0].fridge, pantry[0].totalStock, pantry, setPantry);
+    var newPantry = {
+        categories: pantry[0].categories,
+        fridge: pantry[0].fridge,
+        totalStock: pantry[0].totalStock,
+    }
+    
+    return newPantry;
 }
 
 
@@ -170,50 +216,82 @@ export function findInCategory(foodName, pantry, setPantry) {
 // ======================
 
 // Takes in the category, foodName, quantity, pantry, and setPantry and adds the food to the totalStock
-export function addTotalStock(category, foodName, quantity, pantry, setPantry) {
-    updateFoodStockHelper(pantry[0].categories, pantry[0].fridge, [...pantry[0].totalStock, { foodName, category, quantity }], pantry, setPantry);
+export async function addTotalStock(category, foodName, quantity, pantry, setPantry) {
+    // updateFoodStockHelper(pantry[0].categories, pantry[0].fridge, [...pantry[0].totalStock, { foodName, category, quantity }], pantry, setPantry);
+    var newPantry = {
+        categories: pantry[0].categories,
+        fridge: pantry[0].fridge,
+        totalStock: [...pantry[0].totalStock, { foodName, category, quantity }],
+    }
+    return newPantry;
 }
 
 // Takes in the id and removes the food from the totalStock
-export function removeTotalStock(id, pantry, setPantry) {
+export async function removeTotalStock(id, pantry, setPantry) {
     console.log(pantry[0]);
     var newTotalStock = pantry[0].totalStock.filter((food) => food._id !== id);
 
-    updateFoodStockHelper(pantry[0].categories, pantry[0].fridge, newTotalStock, pantry, setPantry);
+    // updateFoodStockHelper(pantry[0].categories, pantry[0].fridge, newTotalStock, pantry, setPantry);
+
+    var newPantry = {
+        categories: pantry[0].categories,
+        fridge: pantry[0].fridge,
+        totalStock: newTotalStock,
+    }
+    return newPantry;
 }
 
 // Takes in the foodName, category, and amount and updates the totalStock with the new amount
 // matches the foodName and category to find the food to update
-export function updateTotalStock(name, category, amount, pantry, setPantry) {
+export async function updateTotalStock(name, category, amount, pantry, setPantry) {
     var tmpTotalStock = pantry[0].totalStock;
     for (let i = 0; i < tmpTotalStock.length; i++) {
         if (tmpTotalStock[i].foodName === name && tmpTotalStock[i].category === category) {
             tmpTotalStock[i].quantity = amount;
         }
     }
-    updateFoodStockHelper(pantry[0].categories, pantry[0].fridge, tmpTotalStock, pantry, setPantry);
+    // updateFoodStockHelper(pantry[0].categories, pantry[0].fridge, tmpTotalStock, pantry, setPantry);
+    var newPantry = {
+        categories: pantry[0].categories,
+        fridge: pantry[0].fridge,
+        totalStock: tmpTotalStock,
+    }
+    return newPantry;
 }
 
 // Takes in the foodName, category, and amount and increments the totalStock with the new amount
-export function increaseTotalStock(name, category, amount, pantry, setPantry) {
+export async function increaseTotalStock(name, category, amount, pantry, setPantry) {
     var tmpTotalStock = pantry[0].totalStock;
     for (let i = 0; i < tmpTotalStock.length; i++) {
         if (tmpTotalStock[i].foodName === name && tmpTotalStock[i].category === category) {
             tmpTotalStock[i].quantity += amount;
         }
     }
-    updateFoodStockHelper(pantry[0].categories, pantry[0].fridge, tmpTotalStock, pantry, setPantry);
+    // updateFoodStockHelper(pantry[0].categories, pantry[0].fridge, tmpTotalStock, pantry, setPantry);
+
+    var newPantry = {
+        categories: pantry[0].categories,
+        fridge: pantry[0].fridge,
+        totalStock: tmpTotalStock,
+    }
+    return newPantry;
 }
 
 // Takes in the foodName, category, and amount and decrements the totalStock with the new amount
-export function decreaseTotalStock(name, category, amount, pantry, setPantry) {
+export async function decreaseTotalStock(name, category, amount, pantry, setPantry) {
     var tmpTotalStock = pantry[0].totalStock;
     for (let i = 0; i < tmpTotalStock.length; i++) {
         if (tmpTotalStock[i].foodName === name && tmpTotalStock[i].category === category) {
             tmpTotalStock[i].quantity -= amount;
         }
     }
-    updateFoodStockHelper(pantry[0].categories, pantry[0].fridge, tmpTotalStock, pantry, setPantry);
+    // updateFoodStockHelper(pantry[0].categories, pantry[0].fridge, tmpTotalStock, pantry, setPantry);
+    var newPantry = {
+        categories: pantry[0].categories,
+        fridge: pantry[0].fridge,
+        totalStock: tmpTotalStock,
+    }
+    return newPantry;
 }
 
 // Takes in the foodName and category and returns the food with that name and category
@@ -227,7 +305,8 @@ export function getTotalStock(name, category, pantry, setPantry) {
     return -1;
 }
 
-export function findInTotalStock(foodName, pantry, setPantry) {
+export async function findInTotalStock(foodName, pantry, setPantry) {
+    // console.log(totalStock)
     for (let i = 0; i < pantry[0].totalStock.length; i++) {
         if (pantry[0].totalStock[i].foodName === foodName) {
             return pantry[0].totalStock[i];
@@ -241,18 +320,30 @@ export function findInTotalStock(foodName, pantry, setPantry) {
 // ======================
 
 // Takes in the foodName, category, expirationDate, pantry, and setPantry and adds the food to the fridge
-export function addFridge(foodName, category, expirationDate, pantry, setPantry) {
-    updateFoodStockHelper(pantry[0].categories, [...pantry[0].fridge, { foodName, category, expirationDate }], pantry[0].totalStock, pantry, setPantry);
+export async function addFridge(foodName, category, expirationDate, pantry, setPantry) {
+    // updateFoodStockHelper(pantry[0].categories, [...pantry[0].fridge, { foodName, category, expirationDate }], pantry[0].totalStock, pantry, setPantry);
+    var newPantry = {
+        categories: pantry[0].categories,
+        fridge: [...pantry[0].fridge, { foodName, category, expirationDate }],
+        totalStock: pantry[0].totalStock,
+    }
+    return newPantry;
 }
 
 // Takes in the foodName and category and removes the food from the fridge
-export function removeFridge(id, pantry, setPantry) {
+export async function removeFridge(id, pantry, setPantry) {
     var newFridge = pantry[0].fridge.filter((food) => food._id !== id);
-    updateFoodStockHelper(pantry[0].categories, newFridge, pantry[0].totalStock, pantry, setPantry);
+    // updateFoodStockHelper(pantry[0].categories, newFridge, pantry[0].totalStock, pantry, setPantry);
+    var newPantry = {
+        categories: pantry[0].categories,
+        fridge: newFridge,
+        totalStock: pantry[0].totalStock,
+    }
+    return newPantry;
 }
 
 // Takes in the foodName, category, and expirationDate and updates the fridge with the new expirationDate
-export function updateFridge(id, expirationDate, pantry, setPantry) {
+export async function updateFridge(id, expirationDate, pantry, setPantry) {
     var tmpFridge = pantry[0].fridge;
     for (let i = 0; i < tmpFridge.length; i++) {
         if (tmpFridge[i]._id === id) {
@@ -260,7 +351,13 @@ export function updateFridge(id, expirationDate, pantry, setPantry) {
             tmpFridge[i].expirationDate = _date;
         }
     }
-    updateFoodStockHelper(pantry[0].categories, tmpFridge, pantry[0].totalStock, pantry, setPantry);
+    // updateFoodStockHelper(pantry[0].categories, tmpFridge, pantry[0].totalStock, pantry, setPantry);
+    var newPantry = {
+        categories: pantry[0].categories,
+        fridge: tmpFridge,
+        totalStock: pantry[0].totalStock,
+    }
+    return newPantry;
 }
 
 export function getFridge(pantry, setPantry) {
@@ -294,24 +391,28 @@ export function findInFridge(foodName, category, expirationDate, pantry, setPant
 */}
 // Fuction adds a 1 food to the pantry and updates all necessary variables
 // Takes in the foodName, category, quantity, pantry, and setPantry
-export function addToPantry(foodName, category, expirationDate, pantry, setPantry) {
+export async function addToPantry(foodName, category, expirationDate, pantry, setPantry) {
     // Add to totalStock
-    if (findInTotalStock(foodName, pantry, setPantry) === -1) {
-        addTotalStock(foodName, category, 1, pantry, setPantry);
+    let newPantry = pantry;
+    // console.log(pantry)
+    // console.log(pantry[0].totalStock)
+    let inFS = await findInTotalStock(foodName, pantry, setPantry);
+    if (inFS === -1) {
+        newPantry = await addTotalStock(foodName, category, 1, pantry, setPantry);
     } else {
-        increaseTotalStock(foodName, category, 1, pantry, setPantry);
+        newPantry = await increaseTotalStock(foodName, category, 1, pantry, setPantry);
     }
 
     // Add to Fridge
-    addFridge(foodName, category, expirationDate, pantry, setPantry);
+    newPantry = await addFridge(foodName, category, expirationDate, [newPantry], setPantry);
 
-
+    return newPantry;
     // updateFoodStockHelper(pantry[0].categories, pantry[0].fridge, pantry[0].totalStock, pantry, setPantry);
 }
 
 
 // Fuction removes a 1 food to the pantry and updates all necessary variables
-export function removeFromPantry(foodName, category, expirationDate, pantry, setPantry) {
+export async function removeFromPantry(foodName, category, expirationDate, pantry, setPantry) {
     // Remove from Fridge and FoodStock
     const tmpDate = new Date(expirationDate);
     const fridgeOBJ = findInFridge(foodName, category, (tmpDate.toISOString()), pantry, setPantry);

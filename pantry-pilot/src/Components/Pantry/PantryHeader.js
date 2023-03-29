@@ -7,9 +7,9 @@ import GroceryBag from '../GroceryBag/GroceryBag';
 
 function PantryHeader({ pantry, setPantry }) {
   const [show, setShow] = useState(false);
+  const [length, setLength] = useState(-1);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-
 
   const today = new Date();
 

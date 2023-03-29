@@ -1,6 +1,11 @@
-@media (min-width: 992px) {
+/* @media (min-width: 992px) {
     .modal-90w {
       width: 90vw;
       max-width: 90vw !important;
     }
-  }
+  } */
+
+.react-responsive-modal-modal {
+  width: 90vw;
+  max-width: 90vw !important;
+}

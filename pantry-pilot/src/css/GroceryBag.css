@@ -1,0 +1,40 @@
+/* GroceryBag.js */
+.add-cat{
+    height: 31px;
+    max-height: 31px;
+    margin: 5px 0px;
+}
+
+/* GroceryBagCategory.js */
+.add-food{
+    height: 25px;
+    max-height: 25px;
+    margin: 5px 0px;
+}
+.category-title{
+    border: none;
+    font-size: 1.5em;
+    font-weight: 450;
+    cursor: default;
+}
+.category-title:focus{
+    border: none;
+    outline: none;
+    cursor: default;
+}
+
+.category-title-edit{
+    border: none;
+    border-bottom: 1px solid #000;
+    font-size: 1.5em;
+    font-weight: 450;
+    cursor: text;
+    font-style: italic;
+
+}
+.category-title-edit:focus{
+    border: none;
+    border-bottom: 1px solid #000;
+    outline: none;
+    cursor: default;
+}

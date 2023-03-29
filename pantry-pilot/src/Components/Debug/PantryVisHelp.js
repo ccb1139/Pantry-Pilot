@@ -21,7 +21,7 @@ function PantryVisHelp({ pantry, setPantry }) {
                     <ul>
                         {pantry[0]?.categories.map((category) => (
                             <li key={category._id}>
-                                {category.categoryName}: {category.foodNames.join(", ")}
+                                {category.categoryName}: {category.foodNames?.join(", ")}
                             </li>
                         ))}
                     </ul>

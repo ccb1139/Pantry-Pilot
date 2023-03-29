@@ -20,7 +20,7 @@ function Pantry() {
   // This holds the foods in the users pantry
   const [pantry, setPantry] = useState([{
     _id: "123", totalStock: [{ _id: "ts" }],
-    //categories: [{ _id: "ct" }],
+    categories: [{ _id: "ct" }, { foodNames: ["fn"] }],
     fridge: [{ _id: "fr" }]
   }])
 

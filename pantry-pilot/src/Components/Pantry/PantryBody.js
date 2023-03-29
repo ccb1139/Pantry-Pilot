@@ -3,7 +3,7 @@ import PantryTile from './PantryTile'
 
 function PantryBody({pantry, setPantry}) {
   return (
-    <div className='d-flex justify-content-center '>
+    <div className='d-flex flex-wrap justify-content-center '>
       {pantry[0].fridge.map((food) => {
         return (
           <PantryTile

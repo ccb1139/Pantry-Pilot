@@ -2,23 +2,22 @@ import React, { useState, useEffect } from 'react'
 
 import GroceryBagTile from './GroceryBagTile'
 
-function SelectedCategory({categoryName, foodNames, _id, selected, setSelected}) {
+function SelectedCategory({categoryName, foodNames, _id, setSelected}) {
 
-    function editSelected(foodName, index, remove) {
+    function editSelected(foodName, categoryName, startDate, index, type) {
         // setSelected([...selected, foodN ame])
-        console.log(foodName, index)
-        if (remove) {
+        // console.log(foodName, categoryName, startDate, index, type)
+        if (type === "remove") {
             let temp = [...foodNames]
             temp.splice(index, 1)
+            setSelected(temp)
+        } else if (type === "update") {
+            let temp = [...foodNames]
+            temp[index].expirationDate = startDate
             setSelected(temp)
         }
 
     }
-
-    useEffect(() => {
-        console.log(selected)
-    }, [selected])
-
 
     return (
         <div className='d-flex flex-column border'>
@@ -27,15 +26,15 @@ function SelectedCategory({categoryName, foodNames, _id, selected, setSelected})
             </div>
             <div className='col-12 '>
 
-                {foodNames?.map((foodName, index) => {
+                {foodNames?.map((fItm, index) => {
                     return (
                         <GroceryBagTile
-                            foodName={foodName}
-                            categoryName={categoryName}
+                            foodName={fItm.foodName}
+                            categoryName={fItm.categoryName}
                             key={index}
-                            selected={true}
-                            setSelected={editSelected}
-                            showDatePicker
+                            handleClickFunc={editSelected}
+                            inSelected
+                            expDate={fItm.expirationDate}
                             ind={index}
                         />
                     )
