@@ -44,6 +44,10 @@ function GroceryBag({ pantry, setPantry, show, handleClose, handleShow }) {
   const [alertMsg, setAlertMsg] = useState([]);
   const newCatInputRef = useRef(null);
 
+  useEffect(() => {
+    console.log(pantry)
+  }, [pantry])
+
   //Function adds a new category to the pantry
   async function handleAddNewCategory() {
     console.log(newCatInputRef.current.value);
@@ -95,6 +99,16 @@ function GroceryBag({ pantry, setPantry, show, handleClose, handleShow }) {
     console.log(newPantry);
     sendPantryToServer(newPantry, pantry, setPantry);
     
+  }
+
+  async function handleEditTileName(_id, categoryName, foodNames){
+    console.log(_id, categoryName, foodNames);
+    let newPantry;
+    await updateCategory(_id, categoryName, foodNames, pantry, setPantry).then((res) => {
+      newPantry = res;
+    }).catch((err) => {console.log(err)})
+    console.log(newPantry);
+    sendPantryToServer(newPantry, pantry, setPantry);
   }
 
   // Function edits a category name
@@ -183,6 +197,7 @@ function GroceryBag({ pantry, setPantry, show, handleClose, handleShow }) {
               addNewFoodFunc={handleNewFoodToCategory}
               removeFoodFunc={handleRemoveFoodFromCategory}
               // editCatNameFunc={handleEditCategoryName}
+              editTileNameFunc={handleEditTileName}
             />
           ))}
           <SelectedCategory

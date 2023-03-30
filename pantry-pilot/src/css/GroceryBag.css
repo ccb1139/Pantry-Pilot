@@ -38,3 +38,8 @@
     outline: none;
     cursor: default;
 }
+
+.grocery-bag-tile{
+    border: none;
+    cursor: pointer;
+}

@@ -167,10 +167,10 @@ export async function addFoodToCategory(category_id, foodName, pantry, setPantry
 
 export async function removeFoodFromCategory(category_id, foodName, pantry, setPantry) {
     for (let i = 0; i < pantry[0].categories.length; i++) {
-        console.log(category_id)
-        console.log(pantry[0].categories[i]._id)
+        // console.log(category_id)
+        // console.log(pantry[0].categories[i]._id)
         if (pantry[0].categories[i]._id === category_id) {
-            console.log(pantry[0].categories[i].foodNames);
+            // console.log(pantry[0].categories[i].foodNames);
             
             pantry[0].categories[i].foodNames = pantry[0].categories[i].foodNames.filter((food) => food !== foodName);
         }

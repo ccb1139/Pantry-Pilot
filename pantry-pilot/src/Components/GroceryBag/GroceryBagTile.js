@@ -1,7 +1,16 @@
 import React, { useState, useEffect, useRef, forwardRef } from 'react';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { AiOutlineClose } from 'react-icons/ai'
+import { AiOutlineClose, AiOutlineEdit } from 'react-icons/ai'
+
+// Misc Imports
+import DynamicInput from '../Structural/DynamicInput';
+
+
+//Bootstrap Imports
+import Button from 'react-bootstrap/Button';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Popover from 'react-bootstrap/Popover';
 
 /*Props:
     foodName: The name of the food item
@@ -15,7 +24,7 @@ import { AiOutlineClose } from 'react-icons/ai'
 */
 function GroceryBagTile({ foodName, categoryName, handleClickFunc, inSelected, expDate, ind, canEditFoods }) {
     const [startDate, setStartDate] = useState(new Date());
-
+    const foodNameRef = useRef(null);
 
     // Function used to handle the click event on a particular tile
     const _handleClick = () => {
@@ -31,6 +40,17 @@ function GroceryBagTile({ foodName, categoryName, handleClickFunc, inSelected, e
         //     handleClickFunc(foodName, categoryName, startDate, ind, "remove")
         // }
         handleClickFunc(foodName, categoryName, startDate, ind, "remove")
+    }
+
+    const handleNameEdit = (event) => {
+        event.preventDefault();
+        // console.log(foodNameRef.current.value);
+        if(foodNameRef.current.value === foodName || foodNameRef.current.value.trim() === "") {
+            return;
+        }
+
+        handleClickFunc(foodNameRef.current.value, categoryName, startDate, ind, "edit");
+        
     }
 
 
@@ -49,8 +69,15 @@ function GroceryBagTile({ foodName, categoryName, handleClickFunc, inSelected, e
     });
     return (
         <div className='d-inline-flex my-2 mx-1 border'>
-            <div onClick={_handleClick}>
+            <div onClick={_handleClick} className="d-inline-flex" style={{ width: "auto" }}>
                 {foodName}
+                {/* <input
+                    className='grocery-bag-tile d-inline-flex'
+                    type="text"
+                    defaultValue={foodName}
+                    // onChange={(e) => setValue(e.target.value)}
+                    style={{ width: "auto" }} /> */}
+                {/* <DynamicInput initialValue={foodName}/> */}
             </div>
             {inSelected ? <div className='d-inline-flex'>
                 <DatePicker
@@ -63,18 +90,56 @@ function GroceryBagTile({ foodName, categoryName, handleClickFunc, inSelected, e
                 />
 
             </div> : null}
-
-            
-            {(inSelected || canEditFoods) ? 
-            <div onClick={handleRemove}>
-                <AiOutlineClose />
-            </div> : null}
-            {/* <div onClick={handleRemove}>
+            <div className='d-flex align-items-center'>
+                <OverlayTrigger
+                    trigger="click"
+                    key={"bottom"}
+                    placement={"bottom"}
+                    overlay={
+                        <Popover id={`popover-positioned-bottom`}>
+                            <Popover.Body>
+                            <form onSubmit={handleNameEdit}>
+                                <div className='d-inline-flex mx-2'>
+                                    <input type="text" defaultValue={foodName} ref={foodNameRef} />
+                                    <Button type="submit" variant="primary" size="sm">Done</Button>
+                                </div>
+                            </form>
+                            </Popover.Body>
+                        </Popover>}
+                >
+                    {canEditFoods ?
+                        <div>
+                            <AiOutlineEdit />
+                        </div>
+                        : <div></div>}
+                </OverlayTrigger>
+                {(inSelected || canEditFoods) ?
+                    <div onClick={handleRemove}>
+                        <AiOutlineClose />
+                    </div> : null}
+                {/* <div onClick={handleRemove}>
                 <AiOutlineClose />
             </div> */}
-
+            </div>
         </div>
     )
 }
 
 export default GroceryBagTile
+
+
+{/* <OverlayTrigger
+          trigger="click"
+          key={placement}
+          placement={placement}
+          overlay={
+            <Popover id={`popover-positioned-${placement}`}>
+              <Popover.Header as="h3">{`Popover ${placement}`}</Popover.Header>
+              <Popover.Body>
+                <strong>Holy guacamole!</strong> Check this info.
+              </Popover.Body>
+            </Popover>
+          }
+        >
+          <Button variant="secondary">Popover on {placement}</Button>
+        </OverlayTrigger> */}

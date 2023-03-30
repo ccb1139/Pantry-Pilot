@@ -7,6 +7,9 @@ import '../css/Fridge.css'
 import '../css/Pantry.css'
 import { Button } from 'react-bootstrap';
 
+//Debug Imports
+// import DebugMenu from '../Components/DebugMenu';
+
 function Home() {
   const textInp = useRef(null);
   // This holds the foods in the users pantry
@@ -61,6 +64,8 @@ function Home() {
     <div>
       <input className='spoontacular' type='text' placeholder='Search for a recipe...' ref={textInp}></input>
       <button className='spoontacular' onClick={handleClick}>Search</button>
+
+      {/* <DebugMenu /> */}
     </div>
   )
 }

@@ -8,4 +8,13 @@
 .react-responsive-modal-modal {
   width: 90vw;
   max-width: 90vw !important;
+} 
+
+.pantry-tile{
+  text-align: right;
+}
+
+.pantry-tile-foodName{
+  font-size: 1.2em;
+  font-weight: 400;
 }

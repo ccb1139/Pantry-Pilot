@@ -18,7 +18,7 @@ import { updateCategory, sendPantryToServer } from '../FoodStockHelpers/pantryAP
 import { AiOutlinePlusCircle, AiOutlineMinusCircle, AiOutlineEllipsis, AiOutlineClose } from 'react-icons/ai'
 
 
-function GroceryBagCategory({ categoryName, foodNames, _id, selected, setSelected, addNewFoodFunc, removeFoodFunc, editCatNameFunc }) {
+function GroceryBagCategory({ categoryName, foodNames, _id, selected, setSelected, addNewFoodFunc, removeFoodFunc, editCatNameFunc, editTileNameFunc }) {
     const [openAddNewFood, setOpenAddNewFood] = useState(false);
     const [canEditCategoryName, setCanEditCategoryName] = useState(false);
     const [canEditFoods, setCanEditFoods] = useState(false);
@@ -37,6 +37,15 @@ function GroceryBagCategory({ categoryName, foodNames, _id, selected, setSelecte
         // removing food from selected array is handled in selectedCateogry.js
         else if (type === "remove") {
             removeFoodFunc(_id, foodName);
+        }
+        else if (type === "edit") {
+            // In this case foodName is an array of all the foodNames, with the 
+            // appropriate changes made
+
+            foodNames.splice(ind, 1, foodName);
+            // editTileNameFunc(_id, categoryName, foodName)
+            // console.log(_id, categoryName, foodNames, ind);
+            editTileNameFunc(_id, categoryName, foodNames);
         }
     }
 
@@ -152,7 +161,7 @@ function GroceryBagCategory({ categoryName, foodNames, _id, selected, setSelecte
                             categoryName={categoryName}
                             key={foodName + _id}
                             handleClickFunc={handleTileClick}
-                            index={index}
+                            ind={index}
                             canEditFoods={canEditFoods}
                         />
                     )
