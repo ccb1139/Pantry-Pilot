@@ -24,3 +24,16 @@
     opacity: 1;
     cursor: pointer;
 }
+
+.epr-category-nav{
+    display: none !important;;
+}
+
+.selected-title{
+    font-size: 1.5em;
+    font-weight: 450;
+}
+
+.selected-body{
+    min-height: 48px;
+}

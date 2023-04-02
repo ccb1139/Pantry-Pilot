@@ -69,7 +69,7 @@ function GroceryBagTile({ foodName, categoryName, handleClickFunc, inSelected, e
         );
     });
     return (
-        <div className='d-inline-flex my-2 mx-1 border'>
+        <div className='d-inline-flex mx-1 border'>
             <div onClick={_handleClick} className="d-inline-flex" style={{ width: "auto" }}>
                 {foodName}
                 {/* <input

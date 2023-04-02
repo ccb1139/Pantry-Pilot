@@ -1,38 +1,44 @@
 import React, { useState, useEffect, useRef } from 'react'
+
+//Emoji Picker Imports
+import EmojiPicker, { Categories, Emoji } from 'emoji-picker-react';
+
+//Bootstrap Imports
 import Button from 'react-bootstrap/Button';
-import Overlay from 'react-bootstrap/OverlayTrigger';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Popover from 'react-bootstrap/Popover';
 
 
-function IconSelectMenu({ ButtonText }) {
-    const [show, setShow] = useState(false);
-    const [target, setTarget] = useState(null);
-    const ref = useRef(null);
+function IconSelectMenu({ Icon }) {
+    const [defaultEmoji, setDefaultEmoji] = useState("🍎");
 
-    const handleClick = (event) => {
-        setShow(!show);
-        setTarget(event.target);
-    };
+    function onEmojiClick(emojiObject) {
+        console.log(emojiObject);
+        
+        setDefaultEmoji(emojiObject.emoji);
+    }
+
+    const popover = (
+        <Popover id="popover-basic">
+            {/* <Popover.Body className='d-flex'>
+                
+            </Popover.Body> */}
+            <EmojiPicker onEmojiClick={onEmojiClick}
+                categories={[
+                    {
+                        name: "Food & Drink",
+                        category: Categories.FOOD_DRINK
+                    }
+                ]}
+            />
+        </Popover>
+    );
 
     return (
-        <div ref={ref}>
-            <Button onClick={handleClick}>Holy guacamole!</Button>
-
-            <Overlay
-                show={show}
-                target={target}
-                placement="bottom"
-                container={ref}
-                containerPadding={20}
-            >
-                <Popover id="popover-contained">
-                    <Popover.Header as="h3">Popover bottom</Popover.Header>
-                    <Popover.Body>
-                        <strong>Holy guacamole!</strong> Check this info.
-                    </Popover.Body>
-                </Popover>
-            </Overlay>
-        </div>
+        <OverlayTrigger trigger="click" placement="right" overlay={popover} rootClose>
+            <Button variant=""><Emoji unified={Icon}/></Button>
+            
+        </OverlayTrigger>
     );
 }
 

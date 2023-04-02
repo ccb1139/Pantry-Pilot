@@ -87,8 +87,8 @@ function DebugMenu({ pantry, setPantry, selected, setSelected }) {
                 { foodName: 'Cheeto', category: 'Snack', quantity: 1 },
             ],
             categories: [
-                { categoryName: 'Fruit', foodNames: ['Apple', 'Banana', 'Orange'] },
-                { categoryName: 'Snack', foodNames: ['Cheeto', 'GoldFish', 'Lays'] }
+                { categoryName: 'Fruit', foodNames: ['Apple', 'Banana', 'Orange'], unifiedEmoji:"1f353" },
+                { categoryName: 'Snack', foodNames: ['Cheeto', 'GoldFish', 'Lays'], unifiedEmoji:"1f37f" },
             ],
             fridge: [
                 { foodName: 'Apple', category: 'Fruit', expirationDate: '2023-07-11' },

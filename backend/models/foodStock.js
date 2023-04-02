@@ -18,6 +18,7 @@ totalStock:{
 categories: {
 	type: [{
 		categoryName: String,
+		unifiedEmoji: String,
 		foodNames: [String]
 	}]
 },

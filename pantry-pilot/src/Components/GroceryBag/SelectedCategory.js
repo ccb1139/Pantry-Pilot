@@ -21,10 +21,10 @@ function SelectedCategory({categoryName, foodNames, _id, setSelected}) {
 
     return (
         <div className='d-flex flex-column border'>
-            <div className='col-12'>
-                {categoryName}
+            <div className='col-12 selected-title'>
+                {categoryName}:
             </div>
-            <div className='col-12 '>
+            <div className='col-12 selected-body'>
 
                 {foodNames?.map((fItm, index) => {
                     return (

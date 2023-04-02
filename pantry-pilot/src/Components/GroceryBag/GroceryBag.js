@@ -57,10 +57,13 @@ function GroceryBag({ pantry, setPantry, show, handleClose, handleShow }) {
     let tmpArr = []
 
     for (let foodItm of searchResults) {
-      console.log(foodItm)
+      // console.log(foodItm)
       let showInSearchTmp = false;
-      if ((foodItm.foodName).toLowerCase().trim().includes(search)) {
+      // console.log(search)
+      if ((foodItm.foodName).toLowerCase().trim().includes(search)
+        || (foodItm.foodName).includes(search)) {
         // console.log(foodItm)
+
         showInSearchTmp = true;
       }
       tmpArr.push(
@@ -220,7 +223,7 @@ function GroceryBag({ pantry, setPantry, show, handleClose, handleShow }) {
         closeOnOverlayClick={false}>
         <div className='Grocery-Bag-Header'>
           <h2>Add foods to your pantry</h2>
-          <div className='col-12 d-flex'>
+          <div className='Grocery-Bag-SubHeader col-12 d-flex my-2'>
             <div className="col-auto d-inline-flex align-items-center">
               {/* <Dropdown title="ViewSelection" variant="primary" id="dropdown-split-basic" className="mx-2">
                 <Dropdown.Toggle variant="primary" size="sm" id="dropdown-basic">
@@ -231,6 +234,9 @@ function GroceryBag({ pantry, setPantry, show, handleClose, handleShow }) {
                   <Dropdown.Item as="button" onClick={() => setSelectedView(2)}>All</Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown> */}
+              {(search !== "") ?
+                <GroceryBagSearchResults SearchArray={searchResults} search={search} selected={selected} setSelected={setSelected} />
+                : null}
             </div>
             <div className='col-auto ms-auto'>
               <SearchBar search={search} setSearch={setSearch} />
@@ -244,15 +250,14 @@ function GroceryBag({ pantry, setPantry, show, handleClose, handleShow }) {
             (searchResults.length > 0 && search !== "") &&
 
           } */}
-          {(search !== "") ? 
-          <GroceryBagSearchResults SearchArray={searchResults} search={search} selected={selected} setSelected={setSelected} />
-          :null}
+
           {pantry[0].categories?.map((category) => (
             <GroceryBagCategory
               categoryName={category.categoryName}
               foodNames={category.foodNames}
               _id={category._id}
               key={category._id + category.categoryName}
+              emoji={category.unifiedEmoji}
               selected={selected}
               setSelected={setSelected}
               addNewFoodFunc={handleNewFoodToCategory}
@@ -269,48 +274,49 @@ function GroceryBag({ pantry, setPantry, show, handleClose, handleShow }) {
             foodNames={selected}
             setSelected={setSelected}
           />
+          <div className='d-flex border'>
+            <Button variant="primary" className='d-block' style={{ width: "100% " }} onClick={addSelectedFoodsToPantry}>
+              Add Foods
+            </Button>
+          </div>
+
         </div>
 
 
         <div className='Grocery-Bag-Footer'>
-          <Button variant="primary" onClick={addSelectedFoodsToPantry}>
-            Add Foods
-          </Button>
-          <Button variant="secondary" onClick={() => { console.log(searchResults) }}>
-            Log Search array
-          </Button>
+
           <div className='add-cat col-auto d-inline-flex align-items-center'>
-              {openNewCatInput ?
-                <AiOutlineMinusCircle onClick={() => setOpenNewCatInput(!openNewCatInput)} size={20} />
-                : <AiOutlinePlusCircle onClick={() => setOpenNewCatInput(!openNewCatInput)} size={20} />}
-              <div>
-                <Collapse in={openNewCatInput} dimension="width">
-                  <div>
-                    <div className='d-inline-flex mx-2'>
-                      <form onSubmit={handleAddNewCategory} className="d-inline-flex">
-                        <input type="text" placeholder="Category Name" ref={newCatInputRef} />
-                        <Button type="submit" variant="primary" size="sm">+</Button>
-                      </form>
-                      {/* <input type="text" placeholder="Category Name" ref={newCatInputRef} /> */}
-                      <Overlay show={showAlert} target={newCatInputRef.current} placement="bottom">
-                        <Popover id="add-category-alert" >
-                          <Popover.Body className='d-flex align-items-center'>
-                            {alertMsg.map((msg) => (
-                              <div>{msg}</div>
-                            ))}
-                            <div className="ms-2">
-                              <AiOutlineClose onClick={() => setShowAlert(false)} size={15} />
-                            </div>
+            {openNewCatInput ?
+              <AiOutlineMinusCircle onClick={() => setOpenNewCatInput(!openNewCatInput)} size={20} />
+              : <AiOutlinePlusCircle onClick={() => setOpenNewCatInput(!openNewCatInput)} size={20} />}
+            <div>
+              <Collapse in={openNewCatInput} dimension="width">
+                <div>
+                  <div className='d-inline-flex mx-2'>
+                    <form onSubmit={handleAddNewCategory} className="d-inline-flex">
+                      <input type="text" placeholder="Category Name" ref={newCatInputRef} />
+                      <Button type="submit" variant="primary" size="sm">+</Button>
+                    </form>
+                    {/* <input type="text" placeholder="Category Name" ref={newCatInputRef} /> */}
+                    <Overlay show={showAlert} target={newCatInputRef.current} placement="bottom">
+                      <Popover id="add-category-alert" >
+                        <Popover.Body className='d-flex align-items-center'>
+                          {alertMsg.map((msg) => (
+                            <div>{msg}</div>
+                          ))}
+                          <div className="ms-2">
+                            <AiOutlineClose onClick={() => setShowAlert(false)} size={15} />
+                          </div>
 
-                          </Popover.Body>
-                        </Popover>
-                      </Overlay>
+                        </Popover.Body>
+                      </Popover>
+                    </Overlay>
 
-                    </div>
                   </div>
-                </Collapse>
-              </div>
+                </div>
+              </Collapse>
             </div>
+          </div>
         </div>
       </Modal>
     </>

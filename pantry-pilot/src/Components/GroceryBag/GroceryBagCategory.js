@@ -3,6 +3,12 @@ import React, { useState, useEffect, useRef, forwardRef } from 'react'
 //Grocery Bag Imports
 import GroceryBagTile from './GroceryBagTile'
 
+//Structural Imports
+import IconSelectMenu from '../Structural/IconSelectMenu';
+
+//Emoji Picker Imports
+import { Emoji } from 'emoji-picker-react';
+
 //Bootstrap Imports
 import Button from 'react-bootstrap/Button';
 import Collapse from 'react-bootstrap/Collapse';
@@ -19,7 +25,7 @@ import { updateCategory, sendPantryToServer } from '../FoodStockHelpers/pantryAP
 import { AiOutlinePlusCircle, AiOutlineMinusCircle, AiOutlineEllipsis, AiOutlineClose, AiOutlineCheckCircle } from 'react-icons/ai'
 
 
-function GroceryBagCategory({ categoryName, foodNames, _id, selected, setSelected, addNewFoodFunc, removeFoodFunc, editCatNameFunc, editTileNameFunc, removeCatFunc }) {
+function GroceryBagCategory({ categoryName, foodNames, _id, emoji, selected, setSelected, addNewFoodFunc, removeFoodFunc, editCatNameFunc, editTileNameFunc, removeCatFunc }) {
     const [openAddNewFood, setOpenAddNewFood] = useState(false);
     const [canEditCategoryName, setCanEditCategoryName] = useState(false);
     const [canEditFoods, setCanEditFoods] = useState(false);
@@ -110,8 +116,8 @@ function GroceryBagCategory({ categoryName, foodNames, _id, selected, setSelecte
         <div className='d-flex flex-column border'>
             <div className='col-12 d-flex'>
                 <div className='col-12 d-inline-flex'>
-                    <div className='col-auto ' >
-                        
+                    <div className='col-auto d-inline-flex ' >
+                        <IconSelectMenu Icon={emoji} />
                         <input
                             // className={"d-inline-block " + (canEditCategoryName ? "category-title-edit" : "category-title")}
                             className={"d-inline-block category-title"}
@@ -196,7 +202,7 @@ function GroceryBagCategory({ categoryName, foodNames, _id, selected, setSelecte
                             <div>
                                 <form onSubmit={_handleNewCatFoodSubmit}>
                                     <div className='d-inline-flex mx-2'>
-                                        <input type="text" placeholder="Category Name" ref={newFoodInputRef} />
+                                        <input type="text" placeholder="Food Name" ref={newFoodInputRef} />
                                         <Button type="submit" variant="primary" size="sm">+</Button>
                                     </div>
                                 </form>
