@@ -24,6 +24,7 @@ import Popover from 'react-bootstrap/Popover';
 */
 function GroceryBagTile({ foodName, categoryName, handleClickFunc, inSelected, expDate, ind, canEditFoods }) {
     const [startDate, setStartDate] = useState(new Date());
+    const [showEditPopover, setShowEditPopover] = useState(false);
     const foodNameRef = useRef(null);
 
     // Function used to handle the click event on a particular tile
@@ -95,6 +96,10 @@ function GroceryBagTile({ foodName, categoryName, handleClickFunc, inSelected, e
                     trigger="click"
                     key={"bottom"}
                     placement={"bottom"}
+                    defaultShow={showEditPopover}
+                    show={showEditPopover}
+                    onToggle={(show) => setShowEditPopover(!showEditPopover)}
+                    rootClose
                     overlay={
                         <Popover id={`popover-positioned-bottom`}>
                             <Popover.Body>

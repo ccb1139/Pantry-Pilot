@@ -25,7 +25,7 @@ function PantryHeader({ pantry, setPantry }) {
       <div className='col-6'>
         <h2>My Fridge</h2>
         <div>Today's Date: {today.toISOString().substring(0, 10)}</div>
-        <div>Number of Food Items: {pantry[0].fridge.length} </div>
+        <div>Number of Food Items: {pantry[0]?.fridge?.length ?? 0} </div>
       </div>
       <div className='col-6 d-flex justify-content-end align-items-center'>
         <button className='btn btn-primary' onClick={handleShow}><FaPlus /> Add Food</button>

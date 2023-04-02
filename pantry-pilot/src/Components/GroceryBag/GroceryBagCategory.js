@@ -10,20 +10,22 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import Popover from 'react-bootstrap/Popover';
 import Overlay from 'react-bootstrap/esm/Overlay';
+import { Modal } from 'react-responsive-modal';
 
 //Api Imports
 import { updateCategory, sendPantryToServer } from '../FoodStockHelpers/pantryAPI';
 
 //Icon Imports 
-import { AiOutlinePlusCircle, AiOutlineMinusCircle, AiOutlineEllipsis, AiOutlineClose } from 'react-icons/ai'
+import { AiOutlinePlusCircle, AiOutlineMinusCircle, AiOutlineEllipsis, AiOutlineClose, AiOutlineCheckCircle } from 'react-icons/ai'
 
 
-function GroceryBagCategory({ categoryName, foodNames, _id, selected, setSelected, addNewFoodFunc, removeFoodFunc, editCatNameFunc, editTileNameFunc }) {
+function GroceryBagCategory({ categoryName, foodNames, _id, selected, setSelected, addNewFoodFunc, removeFoodFunc, editCatNameFunc, editTileNameFunc, removeCatFunc }) {
     const [openAddNewFood, setOpenAddNewFood] = useState(false);
     const [canEditCategoryName, setCanEditCategoryName] = useState(false);
     const [canEditFoods, setCanEditFoods] = useState(false);
     const [showAlert, setShowAlert] = useState(false);
     const [alertMsg, setAlertMsg] = useState([]);
+    const [showConfirmDelete, setShowConfirmDelete] = useState(false);
     const newFoodInputRef = useRef(null);
     const categoryNameRef = useRef(null);
 
@@ -72,9 +74,8 @@ function GroceryBagCategory({ categoryName, foodNames, _id, selected, setSelecte
         }
         setAlertMsg(tmpAlrtMSG);
         addNewFoodFunc(newFoodInputRef.current.value, _id);
-
+        newFoodInputRef.current.value = "";
     }
-
 
 
     // Edit Category Name
@@ -83,6 +84,11 @@ function GroceryBagCategory({ categoryName, foodNames, _id, selected, setSelecte
     //     setCanEditCategoryName(!canEditCategoryName);
 
     // }
+
+    const doneWithChanges = () => {
+        setCanEditCategoryName(false);
+        setCanEditFoods(false);
+    }
 
     // Custom Edit Category Dropdown Toggle
     const EditCategoryDropDownToggle = forwardRef(({ children, onClick }, ref) => (
@@ -105,7 +111,7 @@ function GroceryBagCategory({ categoryName, foodNames, _id, selected, setSelecte
             <div className='col-12 d-flex'>
                 <div className='col-12 d-inline-flex'>
                     <div className='col-auto ' >
-                        {/* {categoryName} */}
+                        
                         <input
                             // className={"d-inline-block " + (canEditCategoryName ? "category-title-edit" : "category-title")}
                             className={"d-inline-block category-title"}
@@ -141,12 +147,23 @@ function GroceryBagCategory({ categoryName, foodNames, _id, selected, setSelecte
                                     Edit Foods
                                 </Dropdown.Item>
                                 <Dropdown.Item
-                                    as="button">
+                                    as="button"
+                                    onClick={() => setShowConfirmDelete(!showConfirmDelete)}>
                                     Remove Category
                                 </Dropdown.Item>
                             </Dropdown.Menu>
                         </Dropdown>
-
+                        <Modal open={showConfirmDelete} onClose={() => setShowConfirmDelete(!showConfirmDelete)} center>
+                            <div className='d-flex flex-column'>
+                                <div className='col-12 text-center'>
+                                    <h3>Are you sure you want to delete the {categoryName} category?</h3>
+                                </div>
+                                <div className='col-12 d-flex justify-content-center'>
+                                    <Button variant="danger" onClick={() => removeCatFunc(_id)}>Delete</Button>
+                                    <Button variant="secondary" onClick={() => setShowConfirmDelete(!showConfirmDelete)}>Cancel</Button>
+                                </div>
+                            </div>
+                        </Modal>
                     </div>
                 </div>
 
@@ -170,34 +187,39 @@ function GroceryBagCategory({ categoryName, foodNames, _id, selected, setSelecte
             </div>
 
             <div className='add-food d-inline-flex align-items-center'>
-                {openAddNewFood ?
-                    <AiOutlineMinusCircle onClick={() => setOpenAddNewFood(!openAddNewFood)} size={20} />
-                    : <AiOutlinePlusCircle onClick={() => setOpenAddNewFood(!openAddNewFood)} size={20} />}
-                <div>
-                    <Collapse in={openAddNewFood} dimension="width">
-                        <div>
-                            <form onSubmit={_handleNewCatFoodSubmit}>
-                                <div className='d-inline-flex mx-2'>
-                                    <input type="text" placeholder="Category Name" ref={newFoodInputRef} />
-                                    <Button type="submit" variant="primary" size="sm">+</Button>
-                                </div>
-                            </form>
-                            <Overlay show={showAlert} target={newFoodInputRef.current} placement="bottom">
-                                <Popover id="add-category-alert" >
-                                    <Popover.Body className='d-flex align-items-center'>
-                                        {alertMsg.map((msg) => (
-                                            <div>{msg}</div>
-                                        ))}
-                                        <div className="ms-2">
-                                            <AiOutlineClose onClick={() => setShowAlert(false)} size={15} />
-                                        </div>
+                <div className='col-auto d-inline-flex align-items-center'>
+                    {openAddNewFood ?
+                        <AiOutlineMinusCircle onClick={() => setOpenAddNewFood(!openAddNewFood)} size={20} />
+                        : <AiOutlinePlusCircle onClick={() => setOpenAddNewFood(!openAddNewFood)} size={20} />}
+                    <div>
+                        <Collapse in={openAddNewFood} dimension="width">
+                            <div>
+                                <form onSubmit={_handleNewCatFoodSubmit}>
+                                    <div className='d-inline-flex mx-2'>
+                                        <input type="text" placeholder="Category Name" ref={newFoodInputRef} />
+                                        <Button type="submit" variant="primary" size="sm">+</Button>
+                                    </div>
+                                </form>
+                                <Overlay show={showAlert} target={newFoodInputRef.current} placement="bottom">
+                                    <Popover id="add-category-alert" >
+                                        <Popover.Body className='d-flex align-items-center'>
+                                            {alertMsg.map((msg) => (
+                                                <div>{msg}</div>
+                                            ))}
+                                            <div className="ms-2">
+                                                <AiOutlineClose onClick={() => setShowAlert(false)} size={15} />
+                                            </div>
 
-                                    </Popover.Body>
-                                </Popover>
-                            </Overlay>
-                        </div>
+                                        </Popover.Body>
+                                    </Popover>
+                                </Overlay>
+                            </div>
 
-                    </Collapse>
+                        </Collapse>
+                    </div>
+                </div>
+                <div className='col-auto ms-auto d-inline-flex align-items-center'>
+                    {(canEditCategoryName || canEditFoods) ? (<Button onClick={doneWithChanges} >Done <AiOutlineCheckCircle size={20} /></Button>) : null}
                 </div>
             </div>
         </div>

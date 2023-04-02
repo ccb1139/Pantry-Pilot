@@ -7,13 +7,9 @@ import axios from 'axios';
     The totalStock object is an array of objects that contain the food name, category, and quantity
 */}
 
-function updateFoodStockHelper(){
-
-}
-
 // This functions updates the pantry object in the database and sets the state
 export function sendPantryToServer(newPantry, pantry, setPantry) {
-    console.log(pantry);
+    console.log(newPantry);
     axios
         .put("http://localhost:4000/foodStock/update-foodStock/" + pantry[0]._id, {
             categories: newPantry.categories,
@@ -23,7 +19,6 @@ export function sendPantryToServer(newPantry, pantry, setPantry) {
         .then((res) => {
             if (res.status === 200) {
                 // console.log("Food successfully updated");
-                // console.log(res.data);
                 setPantry([res.data]);
             } else Promise.reject();
         })
@@ -118,34 +113,35 @@ export async function addCategory(categoryName, foodNames, pantry, setPantry) {
 export async function removeCategory(category_id, pantry, setPantry) {
     var newCategories = pantry[0].categories.filter((category) => category._id !== category_id);
 
-    var newPantry = [{
+    var newPantry = {
         categories: newCategories,
         fridge: pantry[0].fridge,
         totalStock: pantry[0].totalStock,
-    }]
+    }
     return newPantry;
 }
 
 // Takes in the category Id, and list of foods and updates the category with that id
 // with the new list of foods
 export async function updateCategory(category_id, categoryName, foodNames, pantry, setPantry) {
+    let newP = pantry;
     // var newCategories = pantry[0].categories.filter((category) => category._id !== category_id);
-    for (let i = 0; i < pantry[0].categories.length; i++) {
-        if (pantry[0].categories[i]._id === category_id) {
-            pantry[0].categories[i].categoryName = categoryName;
-            pantry[0].categories[i].foodNames = foodNames;
+    for (let i = 0; i < newP[0].categories.length; i++) {
+        if (newP[0].categories[i]._id === category_id) {
+            newP[0].categories[i].categoryName = categoryName;
+            newP[0].categories[i].foodNames = foodNames;
         }
     }
     // newCategories.push({ categoryName, foodNames });
-
-    var newPantry = [{
-        categories: pantry[0].categories,
-        fridge: pantry[0].fridge,
-        totalStock: pantry[0].totalStock,
-    }]
+    var newPantry = {
+        categories: newP[0].categories,
+        fridge: newP[0].fridge,
+        totalStock: newP[0].totalStock,
+    }
     return newPantry;
 
 }
+
 
 // Quality of life update Category functions
 

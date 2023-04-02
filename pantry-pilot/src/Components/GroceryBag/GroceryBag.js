@@ -3,6 +3,10 @@ import React, { useState, useEffect, useRef } from 'react'
 //Grocery Bag Imports
 import GroceryBagCategory from './GroceryBagCategory'
 import SelectedCategory from './SelectedCategory';
+import GroceryBagSearchResults from './GroceryBagFullView';
+
+//Structural Imports
+import SearchBar from '../Structural/SearchBar';
 
 // Bootstrap Imports
 // import Modal from 'react-bootstrap/Modal';
@@ -10,12 +14,13 @@ import Button from 'react-bootstrap/Button';
 import Collapse from 'react-bootstrap/Collapse';
 import { Modal } from 'react-responsive-modal';
 import 'react-responsive-modal/styles.css';
-import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Popover from 'react-bootstrap/Popover';
 import Overlay from 'react-bootstrap/esm/Overlay';
+import Dropdown from 'react-bootstrap/Dropdown';
+import SplitButton from 'react-bootstrap/SplitButton';
 
 //Api Imports
-import { addToPantry, addCategory, addFoodToCategory, updateCategory, removeFoodFromCategory, sendPantryToServer } from '../FoodStockHelpers/pantryAPI';
+import { addToPantry, addCategory, addFoodToCategory, removeCategory, updateCategory, removeFoodFromCategory, sendPantryToServer } from '../FoodStockHelpers/pantryAPI';
 
 //Icon imports 
 import { AiOutlinePlusCircle, AiOutlineMinusCircle, AiOutlineClose } from 'react-icons/ai'
@@ -42,15 +47,54 @@ function GroceryBag({ pantry, setPantry, show, handleClose, handleShow }) {
   const [openNewCatInput, setOpenNewCatInput] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [alertMsg, setAlertMsg] = useState([]);
+  const [search, setSearch] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const [selectedView, setSelectedView] = useState(1); //1 For categories, 2 for all
   const newCatInputRef = useRef(null);
 
+
   useEffect(() => {
-    console.log(pantry)
+    let tmpArr = []
+
+    for (let foodItm of searchResults) {
+      console.log(foodItm)
+      let showInSearchTmp = false;
+      if ((foodItm.foodName).toLowerCase().trim().includes(search)) {
+        // console.log(foodItm)
+        showInSearchTmp = true;
+      }
+      tmpArr.push(
+        {
+          showInSearch: showInSearchTmp,
+          foodName: foodItm.foodName,
+          categoryName: foodItm.categoryName,
+          expirationDate: foodItm.expirationDate,
+        }
+      )
+    }
+
+    setSearchResults(tmpArr);
+  }, [search])
+
+  // Set up an array of all the food names in the pantry for the search results
+  useEffect(() => {
+    if (pantry[0].categories[0]._id === "ct") { return; }
+
+    let tmpSearchResults = [];
+    for (let pantryCat of pantry[0].categories) {
+      for (let food of pantryCat.foodNames) {
+        tmpSearchResults.push({ showInSearch: false, foodName: food, categoryName: pantryCat.categoryName, expirationDate: (new Date()) });
+      }
+    }
+
+    setSearchResults(tmpSearchResults);
   }, [pantry])
 
+
   //Function adds a new category to the pantry
-  async function handleAddNewCategory() {
-    console.log(newCatInputRef.current.value);
+  async function handleAddNewCategory(event) {
+    event.preventDefault();
+    // console.log(newCatInputRef.current.value);
     // Gaurd Conditions for adding category
     var tmpAlrtMSG = [];
     if (newCatInputRef.current.value === "") {
@@ -98,16 +142,26 @@ function GroceryBag({ pantry, setPantry, show, handleClose, handleShow }) {
     ).catch((err) => { console.log(err) })
     console.log(newPantry);
     sendPantryToServer(newPantry, pantry, setPantry);
-    
+
   }
 
-  async function handleEditTileName(_id, categoryName, foodNames){
-    console.log(_id, categoryName, foodNames);
+  // Function handles the edit of a food name
+  async function handleEditTileName(_id, categoryName, foodNames) {
+    // console.log(_id, categoryName, foodNames);
     let newPantry;
     await updateCategory(_id, categoryName, foodNames, pantry, setPantry).then((res) => {
       newPantry = res;
-    }).catch((err) => {console.log(err)})
-    console.log(newPantry);
+    }).catch((err) => { console.log(err) })
+    sendPantryToServer(newPantry, pantry, setPantry);
+  }
+
+  // Function removes a category
+  async function handleRemoveCategory(_id) {
+    console.log(_id);
+    let newPantry;
+    await removeCategory(_id, pantry, setPantry).then((res) => {
+      newPantry = res;
+    }).catch((err) => { console.log(err) })
     sendPantryToServer(newPantry, pantry, setPantry);
   }
 
@@ -124,6 +178,8 @@ function GroceryBag({ pantry, setPantry, show, handleClose, handleShow }) {
   //   console.log(newPantry);
   //   sendPantryToServer(newPantry, pantry, setPantry);
   // }
+
+
 
   //Function adds the selected foods to the pantry
   async function addSelectedFoodsToPantry() {
@@ -144,6 +200,16 @@ function GroceryBag({ pantry, setPantry, show, handleClose, handleShow }) {
     handleClose();
   }
 
+  //SORTING & VIEW STUFF
+  //For dropdown Label
+  const dropDownLabel = () => {
+    if (selectedView === 1) {
+      return "Categories"
+    } else if (selectedView === 2) {
+      return "All"
+    }
+  }
+
   return (
     <>
       <Modal
@@ -154,52 +220,50 @@ function GroceryBag({ pantry, setPantry, show, handleClose, handleShow }) {
         closeOnOverlayClick={false}>
         <div className='Grocery-Bag-Header'>
           <h2>Add foods to your pantry</h2>
-          <div className='add-cat d-inline-flex align-items-center'>
-            {openNewCatInput ?
-              <AiOutlineMinusCircle onClick={() => setOpenNewCatInput(!openNewCatInput)} size={20} />
-              : <AiOutlinePlusCircle onClick={() => setOpenNewCatInput(!openNewCatInput)} size={20} />}
-            <div>
-              <Collapse in={openNewCatInput} dimension="width">
-                <div>
-                  <div className='d-inline-flex mx-2'>
-                    <input type="text" placeholder="Category Name" ref={newCatInputRef} />
-                    <Overlay show={showAlert} target={newCatInputRef.current} placement="bottom">
-                      <Popover id="add-category-alert" >
-                        <Popover.Body className='d-flex align-items-center'>
-                          {alertMsg.map((msg) => (
-                            <div>{msg}</div>
-                          ))}
-                          <div className="ms-2">
-                            <AiOutlineClose onClick={() => setShowAlert(false)} size={15} />
-                          </div>
-
-                        </Popover.Body>
-                      </Popover>
-                    </Overlay>
-                    <Button variant="primary" onClick={handleAddNewCategory} size="sm">+</Button>
-                  </div>
-                </div>
-              </Collapse>
+          <div className='col-12 d-flex'>
+            <div className="col-auto d-inline-flex align-items-center">
+              {/* <Dropdown title="ViewSelection" variant="primary" id="dropdown-split-basic" className="mx-2">
+                <Dropdown.Toggle variant="primary" size="sm" id="dropdown-basic">
+                  {dropDownLabel()}
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  <Dropdown.Item as="button" onClick={() => setSelectedView(1)}>Categories</Dropdown.Item>
+                  <Dropdown.Item as="button" onClick={() => setSelectedView(2)}>All</Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown> */}
+            </div>
+            <div className='col-auto ms-auto'>
+              <SearchBar search={search} setSearch={setSearch} />
             </div>
           </div>
         </div>
 
 
         <div className='Grocery-Bag-Body'>
+          {/* {
+            (searchResults.length > 0 && search !== "") &&
+
+          } */}
+          {(search !== "") ? 
+          <GroceryBagSearchResults SearchArray={searchResults} search={search} selected={selected} setSelected={setSelected} />
+          :null}
           {pantry[0].categories?.map((category) => (
             <GroceryBagCategory
               categoryName={category.categoryName}
               foodNames={category.foodNames}
               _id={category._id}
-              key={category._id}
+              key={category._id + category.categoryName}
               selected={selected}
               setSelected={setSelected}
               addNewFoodFunc={handleNewFoodToCategory}
               removeFoodFunc={handleRemoveFoodFromCategory}
               // editCatNameFunc={handleEditCategoryName}
               editTileNameFunc={handleEditTileName}
+              removeCatFunc={handleRemoveCategory}
             />
           ))}
+
+
           <SelectedCategory
             categoryName={"Selected"}
             foodNames={selected}
@@ -212,9 +276,41 @@ function GroceryBag({ pantry, setPantry, show, handleClose, handleShow }) {
           <Button variant="primary" onClick={addSelectedFoodsToPantry}>
             Add Foods
           </Button>
-          <Button variant="primary" onClick={() => console.log(selected)}>
-            Log Selected
+          <Button variant="secondary" onClick={() => { console.log(searchResults) }}>
+            Log Search array
           </Button>
+          <div className='add-cat col-auto d-inline-flex align-items-center'>
+              {openNewCatInput ?
+                <AiOutlineMinusCircle onClick={() => setOpenNewCatInput(!openNewCatInput)} size={20} />
+                : <AiOutlinePlusCircle onClick={() => setOpenNewCatInput(!openNewCatInput)} size={20} />}
+              <div>
+                <Collapse in={openNewCatInput} dimension="width">
+                  <div>
+                    <div className='d-inline-flex mx-2'>
+                      <form onSubmit={handleAddNewCategory} className="d-inline-flex">
+                        <input type="text" placeholder="Category Name" ref={newCatInputRef} />
+                        <Button type="submit" variant="primary" size="sm">+</Button>
+                      </form>
+                      {/* <input type="text" placeholder="Category Name" ref={newCatInputRef} /> */}
+                      <Overlay show={showAlert} target={newCatInputRef.current} placement="bottom">
+                        <Popover id="add-category-alert" >
+                          <Popover.Body className='d-flex align-items-center'>
+                            {alertMsg.map((msg) => (
+                              <div>{msg}</div>
+                            ))}
+                            <div className="ms-2">
+                              <AiOutlineClose onClick={() => setShowAlert(false)} size={15} />
+                            </div>
+
+                          </Popover.Body>
+                        </Popover>
+                      </Overlay>
+
+                    </div>
+                  </div>
+                </Collapse>
+              </div>
+            </div>
         </div>
       </Modal>
     </>

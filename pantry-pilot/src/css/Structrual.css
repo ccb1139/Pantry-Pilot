@@ -1,26 +1,26 @@
-.Dyn-Inp-Input {
-    padding: 0;
-    margin: 0;
-    border: none;
-    border: 1px solid black;
-    /* added styles */
-    font-family: inherit;
-    font-size: inherit;
-    position: absolute;
-    vertical-align: top;
-    top: 0;
-    left: 0;
+/* SearchBar.js */
+.Search-Bar{
+    display: inline-flex;
+    align-items: center;
+
+    border: 1px solid #000000;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.Search-Input{
     width: 100%;
-    background: white;
+    height: 100%;
+    border: none;
+    outline: none;
 }
 
-.Dyn-Inp-Label {
-    display: inline-block;
-    position: relative;
-    min-width: 2em;
-    min-height: 1.4em;
+.Search-Clear-Inactive{
+    opacity: 0;
+    cursor: default;
 }
 
-.Dyn-Inp-Span{
-    white-space: pre;
+.Search-Clear-Active{
+    opacity: 1;
+    cursor: pointer;
 }
