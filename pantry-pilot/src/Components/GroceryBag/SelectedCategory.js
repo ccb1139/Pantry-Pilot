@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react'
 
 import GroceryBagTile from './GroceryBagTile'
 
+//Bootstrap Imports
+import Button from 'react-bootstrap/Button';
+
 function SelectedCategory({categoryName, foodNames, _id, setSelected}) {
 
     function editSelected(foodName, categoryName, startDate, index, type) {
@@ -20,9 +23,14 @@ function SelectedCategory({categoryName, foodNames, _id, setSelected}) {
     }
 
     return (
-        <div className='d-flex flex-column border'>
-            <div className='col-12 selected-title'>
+        <div className='d-flex flex-column category' >
+            <div className='col-12 selected-title d-inline-flex'>
                 {categoryName}:
+                { (foodNames.length > 0) ?
+                <div className='ms-auto'>
+                    <Button variant="outline-danger" size='sm' onClick={() => { setSelected([]) }}>Clear</Button>
+                </div>
+                :null}
             </div>
             <div className='col-12 selected-body'>
 

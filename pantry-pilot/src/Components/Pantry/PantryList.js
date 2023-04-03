@@ -12,8 +12,6 @@ import EditFieldOverlayTrigger from '../Structural/EditFieldOverlayTrigger';
 //Icon Imports 
 import { AiOutlineCheckCircle } from 'react-icons/ai'
 
-
-
 function PantryTile({ category, foodName, expirationDate, emoji, _id, handleTileClick }) {
     const [daysTillExp, setDaysTillExp] = useState(0);
     const [tileEmoji, setTileEmoji] = useState(emoji);
@@ -61,29 +59,22 @@ function PantryTile({ category, foodName, expirationDate, emoji, _id, handleTile
         setCanEditFoods(false);
     }
 
+
     return (
-        <div className='pantry-tile d-inline-flex '>
-            <div className='col-12 pantry-tile-header'>
-                <div className='d-flex align-items-center party-title-text'>
-                    {foodName}
-                    <EditFieldOverlayTrigger
+        <div className='pantry-list'>
+            <div className='pantry-list-element col-2 '>
+                {foodName}
+                <EditFieldOverlayTrigger
                         enabled={canEditFoods}
                         defaultField={foodName}
                         handleNameEdit={handleNameEdit}
                         show={showNameEditPopover}
                         setShow={setShowNameEditPopover}
                     />
-                </div>
-                <div className='d-inline-flex'>
-                    { canEditFoods ? <div className='done-edit-check'><AiOutlineCheckCircle size={25} onClick={() => { setCanEditFoods(false) }} /></div> : null}
-                    <PantryItemOptionsMenu foodName={foodName} handleRemove={handleRemove} handleEdit={handleEdit} />
-                </div>
             </div>
-            <div className='pantry-tile-body'>
-                <div className='d-flex align-items-center'>
-
-                    {daysTillExp}
-                    <EditFieldOverlayTrigger
+            <div className='pantry-list-element col-4 justify-content-center'>
+                {daysTillExp}
+                <EditFieldOverlayTrigger
                         enabled={canEditFoods}
                         defaultField={new Date(expirationDate)}
                         handleNameEdit={handleDateEdit}
@@ -91,14 +82,18 @@ function PantryTile({ category, foodName, expirationDate, emoji, _id, handleTile
                         setShow={setShowExpDateEditPopover}
                         isDatePicker
                     />
-                </div>
-
-                <div className='d-flex align-items-center ms-auto'>
-                    {category}
-                    <Emoji unified={tileEmoji} />
-
-                </div>
             </div>
+            <div className='pantry-list-element col-4 justify-content-center'>
+                <Emoji unified={tileEmoji} />
+                {category}
+            </div>
+            <div className='pantry-list-element col-2 justify-content-end'>
+                    { canEditFoods ? <div className='done-edit-check'><AiOutlineCheckCircle size={25} onClick={() => { setCanEditFoods(false) }} /></div> : null}
+                    <PantryItemOptionsMenu foodName={foodName} handleRemove={handleRemove} handleEdit={handleEdit} />
+                </div>
+            
+
+
 
 
         </div>

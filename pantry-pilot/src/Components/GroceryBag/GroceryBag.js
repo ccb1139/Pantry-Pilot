@@ -20,7 +20,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import SplitButton from 'react-bootstrap/SplitButton';
 
 //Api Imports
-import { addToPantry, addCategory, addFoodToCategory, removeCategory, updateCategory, removeFoodFromCategory, sendPantryToServer } from '../FoodStockHelpers/pantryAPI';
+import { addToPantry, addCategory, addFoodToCategory, removeCategory, updateCategoryEmoji, updateCategory, removeFoodFromCategory, sendPantryToServer } from '../FoodStockHelpers/pantryAPI';
 
 //Icon imports 
 import { AiOutlinePlusCircle, AiOutlineMinusCircle, AiOutlineClose } from 'react-icons/ai'
@@ -168,6 +168,14 @@ function GroceryBag({ pantry, setPantry, show, handleClose, handleShow }) {
     sendPantryToServer(newPantry, pantry, setPantry);
   }
 
+  async function handleUpdateEmoji(_id, emoji) {
+    let newPantry;
+    await updateCategoryEmoji(_id, emoji, pantry, setPantry).then((res) => {
+      newPantry = res;
+    }).catch((err) => { console.log(err) })
+    sendPantryToServer(newPantry, pantry, setPantry);
+  }
+
   // Function edits a category name
   // STRETCH GOAL, HAVE TO REFACTOR BACKEND TO IMPLEMENT THIS
 
@@ -197,7 +205,7 @@ function GroceryBag({ pantry, setPantry, show, handleClose, handleShow }) {
           console.log(err)
         })
     }
-    console.log(newPantry);
+    // console.log(newPantry);
     sendPantryToServer(newPantry, pantry, setPantry);
     setSelected([]);
     handleClose();
@@ -265,6 +273,7 @@ function GroceryBag({ pantry, setPantry, show, handleClose, handleShow }) {
               // editCatNameFunc={handleEditCategoryName}
               editTileNameFunc={handleEditTileName}
               removeCatFunc={handleRemoveCategory}
+              updateEmojiFunc={handleUpdateEmoji}
             />
           ))}
 
@@ -286,6 +295,7 @@ function GroceryBag({ pantry, setPantry, show, handleClose, handleShow }) {
         <div className='Grocery-Bag-Footer'>
 
           <div className='add-cat col-auto d-inline-flex align-items-center'>
+            <span className='me-2'>Add a category </span>
             {openNewCatInput ?
               <AiOutlineMinusCircle onClick={() => setOpenNewCatInput(!openNewCatInput)} size={20} />
               : <AiOutlinePlusCircle onClick={() => setOpenNewCatInput(!openNewCatInput)} size={20} />}

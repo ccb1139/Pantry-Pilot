@@ -1,20 +1,106 @@
-/* @media (min-width: 992px) {
-    .modal-90w {
-      width: 90vw;
-      max-width: 90vw !important;
-    }
-  } */
-
+/* PantryHeader.js */
 .react-responsive-modal-modal {
   width: 90vw;
-  max-width: 90vw !important;
-} 
-
-.pantry-tile{
-  text-align: right;
+  /* max-width: 90vw !important; */
 }
 
-.pantry-tile-foodName{
+.pantry-container {
+  margin: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  height: 100%;
+}
+
+.pantry-header {
+  position: relative;
+  width: 100%;
+  margin: 10px;
+  padding: 10px;
+}
+
+.pantry-subheader {
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+}
+
+.pantry-header-body {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.pantry-body-container{
+  overflow-y: scroll;
+  max-height: 80vh;
+}
+/* PantryBody.js */
+.dropdown-toggle::after {
+  display: none!important;
+}
+.pantry-tile {
+  display: inline-flex;
+  flex-direction: column;
+
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 10px;
+  
+  min-width: 250px;
+
+}
+
+.pantry-tile-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  font-size: 1.5em;
+  font-weight: 400;
+
+  margin-bottom: 10px;
+}
+
+.pantry-tile-body {
+  display: flex;
+  flex-direction: row;
+  /* align-items: end; */
+
+}
+.pantry-tile-header-dropdown{
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
+  cursor: pointer;
+}
+
+.pantry-list {
+  display: flex;
+  flex-direction: row;
+
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 10px;
+  width: 100%;
+
   font-size: 1.2em;
   font-weight: 400;
+
+
+}
+.pantry-list-element{
+  display: inline-flex;
+}
+.pantry-list-body {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: 1.2em;
+  font-weight: 400;
+}
+.done-edit-check{
+  cursor: pointer;
+  height: fit-content;
+  margin-right: 5px;
 }

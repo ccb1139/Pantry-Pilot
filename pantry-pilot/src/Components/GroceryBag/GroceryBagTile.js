@@ -23,7 +23,7 @@ import Popover from 'react-bootstrap/Popover';
     canEdit: Boolean value saying if the food item can be edited
 */
 function GroceryBagTile({ foodName, categoryName, handleClickFunc, inSelected, expDate, ind, canEditFoods }) {
-    const [startDate, setStartDate] = useState(new Date());
+    const [startDate, setStartDate] = useState(new Date(Date.now() + 12096e5));
     const [showEditPopover, setShowEditPopover] = useState(false);
     const foodNameRef = useRef(null);
 
@@ -63,22 +63,15 @@ function GroceryBagTile({ foodName, categoryName, handleClickFunc, inSelected, e
         };
 
         return (
-            <button className="example-custom-input" onClick={handleClick} ref={ref}>
-                {value}
+            <button className="tile-custom-input" onClick={handleClick} ref={ref}>
+                exp: {value}
             </button>
         );
     });
     return (
-        <div className='d-inline-flex mx-1 border'>
+        <div className='grocery-bag-tile'>
             <div onClick={_handleClick} className="d-inline-flex" style={{ width: "auto" }}>
                 {foodName}
-                {/* <input
-                    className='grocery-bag-tile d-inline-flex'
-                    type="text"
-                    defaultValue={foodName}
-                    // onChange={(e) => setValue(e.target.value)}
-                    style={{ width: "auto" }} /> */}
-                {/* <DynamicInput initialValue={foodName}/> */}
             </div>
             {inSelected ? <div className='d-inline-flex'>
                 <DatePicker

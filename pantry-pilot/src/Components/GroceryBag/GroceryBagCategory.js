@@ -25,15 +25,22 @@ import { updateCategory, sendPantryToServer } from '../FoodStockHelpers/pantryAP
 import { AiOutlinePlusCircle, AiOutlineMinusCircle, AiOutlineEllipsis, AiOutlineClose, AiOutlineCheckCircle } from 'react-icons/ai'
 
 
-function GroceryBagCategory({ categoryName, foodNames, _id, emoji, selected, setSelected, addNewFoodFunc, removeFoodFunc, editCatNameFunc, editTileNameFunc, removeCatFunc }) {
+function GroceryBagCategory({ categoryName, foodNames, _id, emoji, selected, setSelected, addNewFoodFunc, removeFoodFunc, editCatNameFunc, editTileNameFunc, removeCatFunc, updateEmojiFunc }) {
     const [openAddNewFood, setOpenAddNewFood] = useState(false);
     const [canEditCategoryName, setCanEditCategoryName] = useState(false);
     const [canEditFoods, setCanEditFoods] = useState(false);
     const [showAlert, setShowAlert] = useState(false);
     const [alertMsg, setAlertMsg] = useState([]);
     const [showConfirmDelete, setShowConfirmDelete] = useState(false);
+    const [categoryEmoji, setCategoryEmoji] = useState(emoji);
     const newFoodInputRef = useRef(null);
     const categoryNameRef = useRef(null);
+
+    useEffect(() => {
+        // console.log(categoryEmoji);
+        updateEmojiFunc(_id, categoryEmoji);
+    }, [categoryEmoji])
+
 
     // Functions handles a tile click, based off a type
     function handleTileClick(foodName, categoryName, expirationDate, ind, type) {
@@ -113,11 +120,11 @@ function GroceryBagCategory({ categoryName, foodNames, _id, emoji, selected, set
 
 
     return (
-        <div className='d-flex flex-column border'>
-            <div className='col-12 d-flex'>
+        <div className='category d-flex flex-column'>
+            <div className='category-header col-12 d-flex'>
                 <div className='col-12 d-inline-flex'>
                     <div className='col-auto d-inline-flex ' >
-                        <IconSelectMenu Icon={emoji} />
+                        <IconSelectMenu Icon={categoryEmoji} SetIcon={setCategoryEmoji} />
                         <input
                             // className={"d-inline-block " + (canEditCategoryName ? "category-title-edit" : "category-title")}
                             className={"d-inline-block category-title"}
@@ -129,11 +136,13 @@ function GroceryBagCategory({ categoryName, foodNames, _id, emoji, selected, set
                             <AiOutlineCheckCircle size={20} onClick={handleEditCategoryName}/> 
                             : null } */}
                     </div>
-                    <div className='col-auto ms-auto'>
+                    <div className='col-auto ms-auto d-inline-flex'>
                         {/* <AiOutlineEllipsis size={20} /> */}
+                        {(canEditCategoryName || canEditFoods) ? ( <div className='done-edit-check'><AiOutlineCheckCircle size={25} onClick={doneWithChanges}/></div>) : null}
                         <Dropdown>
                             <Dropdown.Toggle as={EditCategoryDropDownToggle} id="dropdown-custom-components">
-                                <AiOutlineEllipsis size={20} />
+                                <AiOutlineEllipsis size={25} />
+                                
                             </Dropdown.Toggle>
 
                             <Dropdown.Menu >
@@ -224,9 +233,9 @@ function GroceryBagCategory({ categoryName, foodNames, _id, emoji, selected, set
                         </Collapse>
                     </div>
                 </div>
-                <div className='col-auto ms-auto d-inline-flex align-items-center'>
+                {/* <div className='col-auto ms-auto d-inline-flex align-items-center'>
                     {(canEditCategoryName || canEditFoods) ? (<Button onClick={doneWithChanges} >Done <AiOutlineCheckCircle size={20} /></Button>) : null}
-                </div>
+                </div> */}
             </div>
         </div>
     )

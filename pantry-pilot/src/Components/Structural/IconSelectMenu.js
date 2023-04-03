@@ -9,13 +9,18 @@ import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Popover from 'react-bootstrap/Popover';
 
 
-function IconSelectMenu({ Icon }) {
+function IconSelectMenu({ Icon, SetIcon }) {
     const [defaultEmoji, setDefaultEmoji] = useState("🍎");
+    const [show, setShow] = useState(false);
 
     function onEmojiClick(emojiObject) {
         console.log(emojiObject);
-        
+
         setDefaultEmoji(emojiObject.emoji);
+        SetIcon(emojiObject.unified);
+
+        setShow(false);
+
     }
 
     const popover = (
@@ -35,9 +40,9 @@ function IconSelectMenu({ Icon }) {
     );
 
     return (
-        <OverlayTrigger trigger="click" placement="right" overlay={popover} rootClose>
-            <Button variant=""><Emoji unified={Icon}/></Button>
-            
+        <OverlayTrigger trigger="click" placement="right" overlay={popover} show={show} onToggle={() => {setShow(!show)}} rootClose>
+            <Button variant=""><Emoji unified={Icon} /></Button>
+
         </OverlayTrigger>
     );
 }
