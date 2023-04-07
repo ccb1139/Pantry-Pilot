@@ -8,12 +8,22 @@ import { Modal } from 'react-responsive-modal';
 //Icon Imports 
 import { AiOutlineEllipsis } from 'react-icons/ai'
 
-function PantryItemOptionsMenu({foodName, handleEdit, handleRemove }) {
+type PantryItemMenuProps = {
+    foodName: string,
+    handleEdit: () => void,
+    handleRemove: () => void,
+}
+
+function PantryItemOptionsMenu({foodName, handleEdit, handleRemove }: PantryItemMenuProps) {
     const [showConfirmDelete, setShowConfirmDelete] = useState(false);
 
-    const EditFoodDropDownToggle = forwardRef(({ children, onClick }, ref) => (
+    type EditFoodDropDownToggleProps = {
+        children: React.ReactNode,
+        onClick: (event: React.MouseEvent<HTMLDivElement>) => void
+    }
+
+    const EditFoodDropDownToggle = forwardRef<HTMLDivElement, EditFoodDropDownToggleProps>(({ children, onClick }, ref) => (
         <div
-            href=""
             ref={ref}
             onClick={(e) => {
                 e.preventDefault();
@@ -32,7 +42,7 @@ function PantryItemOptionsMenu({foodName, handleEdit, handleRemove }) {
                 <Dropdown.Toggle
                     as={EditFoodDropDownToggle}
                     id="dropdown-custom-components"
-                    align="start"
+                    // align="start"
 
                 >
                     <AiOutlineEllipsis size={20} />

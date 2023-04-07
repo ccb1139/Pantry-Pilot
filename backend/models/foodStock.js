@@ -12,7 +12,8 @@ totalStock:{
 	type: [{
 		foodName: String,
 		category: String,
-		quantity: Number
+		quantity: Number,
+		lastAdded: Date
 	}]
 },
 categories: {

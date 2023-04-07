@@ -8,12 +8,16 @@ import Button from 'react-bootstrap/Button';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Popover from 'react-bootstrap/Popover';
 
+type Props = {
+    Icon: string,
+    SetIcon: React.Dispatch<React.SetStateAction<string>>
+}
 
-function IconSelectMenu({ Icon, SetIcon }) {
+function IconSelectMenu({ Icon, SetIcon }: Props ) {
     const [defaultEmoji, setDefaultEmoji] = useState("🍎");
     const [show, setShow] = useState(false);
 
-    function onEmojiClick(emojiObject) {
+    function onEmojiClick(emojiObject : any) {
         console.log(emojiObject);
 
         setDefaultEmoji(emojiObject.emoji);

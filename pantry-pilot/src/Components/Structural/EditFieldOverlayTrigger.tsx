@@ -1,4 +1,4 @@
-import React, { useState, forwardRef } from 'react'
+import React, { useState, forwardRef, ForwardedRef } from 'react'
 
 //Icon Imports
 import { AiOutlineEdit } from 'react-icons/ai'
@@ -12,18 +12,30 @@ import Popover from 'react-bootstrap/Popover';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-function EditFieldOverlayTrigger({ enabled, defaultField, handleNameEdit, show, setShow, isDatePicker }) {
-    const [fieldValue, setFieldValue] = useState(defaultField);
 
-    const _handleNameEdit = (event) => {
+type FieldValue = string | Date;
+type Props = {
+    enabled: boolean,
+    defaultField: string|Date,
+    handleNameEdit: (newValue: FieldValue) => void,
+    show: boolean,
+    setShow: React.Dispatch<React.SetStateAction<boolean>>,
+    isDatePicker: boolean,
+}
+
+function EditFieldOverlayTrigger({ enabled, defaultField, handleNameEdit, show, setShow, isDatePicker }: Props) {
+    
+    const [fieldValue, setFieldValue] = useState<FieldValue>(defaultField);
+
+    const _handleNameEdit = (event: React.FormEvent<HTMLFormElement> ) => {
         event.preventDefault();
         // console.log(fieldValue); 
         handleNameEdit(fieldValue);
         setShow(false);
     };
 
-    const handleDateChange = (date) => {
-        
+    const handleDateChange = (date: Date) => {
+        console.log(date);  
         setFieldValue(date);
         // setShow(false);
     }
@@ -33,11 +45,11 @@ function EditFieldOverlayTrigger({ enabled, defaultField, handleNameEdit, show, 
         setShow(false);
     }
 
-    const handleChange = (event) => {
+    const handleChange = (event: any ) => {
         setFieldValue(event.target.value);
     };
 
-    const ExampleCustomInput = forwardRef(({ value, onClick }, ref) => {
+    const ExampleCustomInput = forwardRef<string, any>(({ value, onClick }, ref: any) => {
         const handleClick = () => {
             // setStartDate(new Date(value));
             onClick();
@@ -72,7 +84,7 @@ function EditFieldOverlayTrigger({ enabled, defaultField, handleNameEdit, show, 
                             :
                             <div className='d-inline-flex align-items-center'>
                                 <DatePicker
-                                    selected={fieldValue}
+                                    selected={new Date(fieldValue)}
                                     onChange={(date) => {
                                         handleDateChange(date);
                                     }}

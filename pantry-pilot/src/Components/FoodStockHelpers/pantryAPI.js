@@ -199,6 +199,10 @@ export async function updateCategoryEmoji(category_id, emoji, pantry, setPantry)
     return newPantry;
 }
 
+export function getCategories(pantry, setPantry) {
+    return pantry[0].categories;
+}
+
 
 // Takes in the category id and returns the category with that id
 export function getCategory(category_id, pantry, setPantry) {

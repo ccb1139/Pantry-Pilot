@@ -8,6 +8,7 @@ import '../css/Pantry.css'
 
 //Pantry Component imports
 import PantryHeader from '../Components/Pantry/PantryHeader';
+import PantryTotalStockStats from '../Components/Pantry/PantryTotalStockStats';
 
 // GroceryBag Component imports
 import GroceryBag from '../Components/GroceryBag/GroceryBag';
@@ -23,29 +24,34 @@ Layout:
   - Add sidebar with filter and view options | IN PROGRESS
 
 Filter Features:
-  - Add a search bar
-  - Add a sort by expiration date
-  - Add a sort by quantity
-  - add a sort by alphabetically
+  - Add a search bar | DONE
+    - Made categories with no results hide
+  - Add a sort by expiration date | DONE
+  - Add a sort by quantity | IN PROGRESS
+  - add a sort by alphabetically | DONE
   - Add a sort by purchase date
 
 View Features:
   - Add a list view | DONE
-  - Add a category toggle
+  - Add a category toggle | DONE
   - Add a way to view the total stock stats
 
 Edit Features:
-  - Add a way to edit the food name | DONE (NEED GUARD CONDITIONS)
-  - Add a way to edit the expiration date | DONE (NEED GUARD CONDITIONS)
+  - Add a way to edit the food name | DONE 
+  - Add a way to edit the expiration date | DONE 
   - Add a way to edit the Category
   - Add a way to remove food from the pantry | DONE
   - Add a way to clear all expired items
 
 Visual Features:
-  - Add color coding for time till expiration date
+  - Add color coding for time till expiration date | DONE
 
 Fixes:
   - Fix the Icons not refreshing when a new one is selected in the modal
+  - remeber user settings for view and filter
+
+Refactor:
+  - Change the filtering system to use eventEmitter
 
 STRETCH GOALS:
   - Tag System
@@ -84,7 +90,7 @@ function Pantry() {
 
   return (
     <div className='pantry-container'>
-      <div className='pantry-header-container col-3 border'>
+      <div className='pantry-header-container col-3 '>
         <PantryHeader
           pantry={pantry}
           setPantry={setPantry}
@@ -93,13 +99,19 @@ function Pantry() {
           categorySort={categorySort}
           setCategorySort={setCategorySort}
         />
+        <PantryTotalStockStats
+          pantry={pantry}
+          setPantry={setPantry}
+        />
       </div>
 
-      <div className='pantry-body-container d-flex flex-column col-9 border '>
+      <div className='pantry-body-container d-flex flex-column col-7  '>
         <PantryBody
           pantry={pantry}
           setPantry={setPantry}
           viewType={viewType}
+          categorySort={categorySort}
+          setCategorySort={setCategorySort}
         />
       </div>
       {/* <div className='d-flex flex-column'>

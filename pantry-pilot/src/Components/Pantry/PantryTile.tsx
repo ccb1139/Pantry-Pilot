@@ -10,21 +10,33 @@ import { Emoji } from 'emoji-picker-react';
 import EditFieldOverlayTrigger from '../Structural/EditFieldOverlayTrigger';
 
 //Icon Imports 
+import { IconContext } from "react-icons";
 import { AiOutlineCheckCircle } from 'react-icons/ai'
+import { GiPlainCircle } from 'react-icons/gi'
+
+type FieldValue = string | Date;
+type PantryTileProps = {
+    category: string,
+    foodName: string,
+    expirationDate: string | Date,
+    emoji: string,
+    _id: string,
+    handleTileClick: (action: string, field: string, category: string, foodName: FieldValue, expirationDate: string | Date, emoji: string, _id: string) => void
+}
 
 
+function PantryTile({ category, foodName, expirationDate, emoji, _id, handleTileClick }: PantryTileProps) {
+    const [daysTillExp, setDaysTillExp] = useState<string>("");
+    const [indicatorColor, setIndicatorColor] = useState<string>("");
+    const [tileEmoji, setTileEmoji] = useState<string>(emoji);
+    const [canEditFoods, setCanEditFoods] = useState<boolean>(false);
 
-function PantryTile({ category, foodName, expirationDate, emoji, _id, handleTileClick }) {
-    const [daysTillExp, setDaysTillExp] = useState(0);
-    const [tileEmoji, setTileEmoji] = useState(emoji);
-    const [canEditFoods, setCanEditFoods] = useState(false);
-
-    const [showNameEditPopover, setShowNameEditPopover] = useState(false);
-    const [showExpDateEditPopover, setShowExpDateEditPopover] = useState(false);
-    const foodNameRef = useRef(null);
+    const [showNameEditPopover, setShowNameEditPopover] = useState<boolean>(false);
+    const [showExpDateEditPopover, setShowExpDateEditPopover] = useState<boolean>(false);
+;
 
     useEffect(() => {
-        if (emoji === -1) {
+        if (emoji === "-1") {
             setTileEmoji("1f353");
         }
     }, [emoji])
@@ -34,29 +46,46 @@ function PantryTile({ category, foodName, expirationDate, emoji, _id, handleTile
         const today = new Date();
         const diffInMs = targetDate.getTime() - today.getTime();
         const daysUntilTarget = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
-        setDaysTillExp((daysUntilTarget < 0) ? "Expired!" : (daysUntilTarget + " days left"));
+        if (daysUntilTarget > 3) {
+            setIndicatorColor("green");
+        } else if (daysUntilTarget >= 1) {
+            setIndicatorColor("#fcba03");
+        } else {
+            setIndicatorColor("red");
+        }
+        setDaysTillExp((daysUntilTarget <= 0) ? "Expired!" : (daysUntilTarget + " days left"));
     }, [expirationDate])
 
 
 
     // Handles delete food from pantry
-    function handleRemove() {
+    function handleRemove(): void {
         // console.log("Delete Clicked");
         // console.log("remove", category, foodName, expirationDate, emoji, _id);
         handleTileClick("remove", "none", category, foodName, expirationDate, emoji, _id);
     }
 
-    function handleEdit() {
+    function handleEdit(): void {
         setCanEditFoods(!canEditFoods);
     }
 
-    function handleNameEdit(newValue) {
-        console.log(newValue);
+    function handleNameEdit(newValue: FieldValue): void {
+        if (newValue === foodName) {
+            setCanEditFoods(false);
+            return;
+        }
+        if (newValue === "") {
+            setCanEditFoods(false);
+            return;
+        }
         handleTileClick("edit", "name", category, newValue, expirationDate, emoji, _id)
         setCanEditFoods(false);
     }
-    function handleDateEdit(newValue) {
-        console.log("date", newValue);
+    function handleDateEdit(newValue: FieldValue): void {
+        if (newValue === expirationDate) {
+            setCanEditFoods(false);
+            return;
+        }
         handleTileClick("edit", "date", category, foodName, newValue, emoji, _id)
         setCanEditFoods(false);
     }
@@ -72,16 +101,19 @@ function PantryTile({ category, foodName, expirationDate, emoji, _id, handleTile
                         handleNameEdit={handleNameEdit}
                         show={showNameEditPopover}
                         setShow={setShowNameEditPopover}
+                        isDatePicker={false}
                     />
                 </div>
                 <div className='d-inline-flex'>
-                    { canEditFoods ? <div className='done-edit-check'><AiOutlineCheckCircle size={25} onClick={() => { setCanEditFoods(false) }} /></div> : null}
+                    {canEditFoods ? <div className='done-edit-check'><AiOutlineCheckCircle size={25} onClick={() => { setCanEditFoods(false) }} /></div> : null}
                     <PantryItemOptionsMenu foodName={foodName} handleRemove={handleRemove} handleEdit={handleEdit} />
                 </div>
             </div>
             <div className='pantry-tile-body'>
                 <div className='d-flex align-items-center'>
-
+                    <IconContext.Provider value={{ color: indicatorColor, className: "exp-color-ind me-1" }}>
+                        <GiPlainCircle size={10} />
+                    </IconContext.Provider>
                     {daysTillExp}
                     <EditFieldOverlayTrigger
                         enabled={canEditFoods}
@@ -94,7 +126,10 @@ function PantryTile({ category, foodName, expirationDate, emoji, _id, handleTile
                 </div>
 
                 <div className='d-flex align-items-center ms-auto'>
-                    {category}
+                    <div className='me-1'>
+                        {category}
+                    </div>
+                    
                     <Emoji unified={tileEmoji} />
 
                 </div>
