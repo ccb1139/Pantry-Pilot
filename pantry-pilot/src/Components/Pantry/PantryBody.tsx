@@ -22,10 +22,10 @@ type PantryBodyProps = {
   setPantry: React.Dispatch<React.SetStateAction<any>>,
   viewType: string,
   categorySort: boolean,
-  setCategorySort: React.Dispatch<React.SetStateAction<boolean>>
+  sortType: string,
 }
 
-function PantryBody({ pantry, setPantry, viewType, categorySort, setCategorySort }: PantryBodyProps) {
+function PantryBody({ pantry, setPantry, viewType, categorySort, sortType }: PantryBodyProps) {
   // const [_viewType, setViewType] = useState<string>(viewType);
 
 
@@ -64,7 +64,8 @@ function PantryBody({ pantry, setPantry, viewType, categorySort, setCategorySort
     setPantry={setPantry} 
     viewType={viewType} 
     handleTileClick={handleTileClick}
-    categorySort={categorySort}/>
+    categorySort={categorySort}
+    sortType={sortType}/>
   )
 }
 

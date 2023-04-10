@@ -13,7 +13,7 @@ totalStock:{
 		foodName: String,
 		category: String,
 		quantity: Number,
-		lastAdded: Date
+		datesAdded: [Date],
 	}]
 },
 categories: {

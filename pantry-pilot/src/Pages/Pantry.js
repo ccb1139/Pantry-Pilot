@@ -68,7 +68,8 @@ function Pantry() {
   // 2 Views grid and list
   const [viewType, setViewType] = useState("grid");
   const [categorySort, setCategorySort] = useState(false);
-
+  const [sortType, setSortType] = useState("NONE");
+  const [statsInfoObject, setStatsInfoObject] = useState({});
 
   // This gets the food from the api
   useEffect(() => {
@@ -86,10 +87,70 @@ function Pantry() {
 
   }, []);
 
+  // Calculate the stats for the users foodstock
+  useEffect(() => {
+    
+    // console.log(catgoriesQuantity)
+    // console.log(categories)
+
+    let tmpOverallStatsInfoObject = {
+      numFoodItms: 0,
+      numCloseToExp: 0,
+      numExp: 0,
+    };
+
+    let tmpCatInfoObject = {
+      categoryID: "",
+      numFoodItms: 0,
+      numCloseToExp: 0,
+      numExp: 0,
+    };
+
+    let tmpFoodItmInfoObject = {
+      foodItmIDs: [],
+      foodItmName: "",
+      numFoodItm: 0,
+      numTimesAdded: 0,
+    };
+
+    let tmpFoodItmInfoObjectArray = [];
+
+    for (let foodItm of pantry[0]?.fridge) {
+      // Set Overall Stats
+      tmpOverallStatsInfoObject.numFoodItms += 1; // Total Food Items
+      if(new Date(foodItm.expirationDate) < new Date()){
+        tmpOverallStatsInfoObject.numExp += 1; // Total Expired Food Items
+      } else if(new Date(foodItm.expirationDate) < new Date().setDate(new Date().getDate() + 3)){
+        tmpOverallStatsInfoObject.numCloseToExp += 1; // Total Food Items Close to Expiration
+      }
+
+      // Set Individual Food Item Stats
+      tmpFoodItmInfoObject.foodItmIDs = foodItm._id;
+      let itemInStatsArr = tmpFoodItmInfoObjectArray.findIndex((foodItmInfo) => foodItmInfo.foodItmName === foodItm.name);
+
+      
+
+
+      console.log(foodItm)
+
+      // tmpOverallStatsInfoObject.numFoodItms += foodItm.quantity;
+      // tmpFoodItmInfoObject.foodItmID = foodItm._id;
+      // tmpFoodItmInfoObject.numFoodItm = foodItm.quantity;
+      // tmpFoodItmInfoObject.numTimesAdded = foodItm.datesAdded.length;
+    }
+
+    let tmpstatsInfoObject = {};
+    tmpstatsInfoObject["overall"] = tmpOverallStatsInfoObject;
+    tmpstatsInfoObject["categories"] = tmpCatInfoObject;
+    tmpstatsInfoObject["foodItms"] = tmpFoodItmInfoObjectArray;
+    console.log(tmpstatsInfoObject)
+
+  }, [pantry])
+
   // console.log(pantry);
 
   return (
-    <div className='pantry-container'>
+    <div className='pantry-container app-font'>
       <div className='pantry-header-container col-3 '>
         <PantryHeader
           pantry={pantry}
@@ -98,10 +159,14 @@ function Pantry() {
           setViewType={setViewType}
           categorySort={categorySort}
           setCategorySort={setCategorySort}
+          sortType={sortType}
+          setSortType={setSortType}
+          stats={statsInfoObject}
         />
         <PantryTotalStockStats
           pantry={pantry}
           setPantry={setPantry}
+          stats={statsInfoObject}
         />
       </div>
 
@@ -112,6 +177,7 @@ function Pantry() {
           viewType={viewType}
           categorySort={categorySort}
           setCategorySort={setCategorySort}
+          sortType={sortType}
         />
       </div>
       {/* <div className='d-flex flex-column'>

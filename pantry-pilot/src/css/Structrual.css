@@ -37,3 +37,6 @@
 .selected-body{
     min-height: 48px;
 }
+.customModal{
+    font-family: 'Slabo 27px', serif;
+}

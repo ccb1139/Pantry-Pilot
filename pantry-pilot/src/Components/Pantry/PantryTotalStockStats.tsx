@@ -33,20 +33,15 @@ STATS TO SHOW:
 
 type PantryTotalStockStatsProps = {
     pantry: any,
-    setPantry: React.Dispatch<React.SetStateAction<any>>
+    setPantry: React.Dispatch<React.SetStateAction<any>>,
+    stats: any
 }
 
-function PantryTotalStockStats({ pantry, setPantry }: PantryTotalStockStatsProps) {
+function PantryTotalStockStats({ pantry, setPantry, stats }: PantryTotalStockStatsProps) {
     const [open, setOpen] = useState(false);
     const [categories, setCategories] = useState<object[]>(getCategories(pantry, setPantry));
     const [catgoriesQuantity, setCategoriesQuantity] = useState<number[]>([0]);
 
-    useEffect(() => {
-        setCategories(getCategories(pantry, setPantry));
-        setCategoriesQuantity(Array(getCategories(pantry, setPantry).length).fill(0).map((_, index) => 0));
-        console.log(catgoriesQuantity)
-        console.log(categories)
-    }, [pantry])
 
 
     return (
@@ -58,38 +53,6 @@ function PantryTotalStockStats({ pantry, setPantry }: PantryTotalStockStatsProps
                     </div>
                     <div className='total-stock-stats-body'>
 
-                        {categories.map((category: any, index: number) => {
-                            return (
-                                <div key={index} className='total-stock-stats-item'>
-                                    <div className='total-stock-stats-item-name'>
-                                        <div className='total-stock-stats-item-amount'>
-                                            {category.categoryName}:
-
-
-                                            {pantry[0]?.totalStock?.map((item: any, index: number) => {
-                                                if (item.category === category.categoryName && item.quantity > 0) {
-                                                    return (
-                                                        <>
-
-                                                            <div key={index} className='total-stock-stats-item'>
-                                                                <div className='total-stock-stats-item-name'>
-                                                                    - {item.foodName} {item.quantity}
-                                                                </div>
-                                                                <div className='total-stock-stats-item-amount'>
-
-                                                                </div>
-                                                            </div>
-                                                        </>
-                                                    )
-                                                }
-                                            })}
-                                        </div>
-                                    </div>
-                                </div>
-                            )
-
-                        })
-                        }
                     </div>
                 </div>
             </Collapse >

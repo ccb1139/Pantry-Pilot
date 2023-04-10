@@ -18,6 +18,8 @@ import SearchBar from '../Structural/SearchBar';
 
 //Bootstrap Imports
 import Form from 'react-bootstrap/Form';
+import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
 
 //Icon Imports
 import { FaPlus } from 'react-icons/fa'
@@ -29,10 +31,13 @@ type PantyHeaderProps = {
   setViewType: React.Dispatch<React.SetStateAction<string>>,
   categorySort: boolean,
   setCategorySort: React.Dispatch<React.SetStateAction<boolean>>
+  sortType: string,
+  setSortType: React.Dispatch<React.SetStateAction<string>>,
+  tsStats: any;
 }
 
 
-function PantryHeader({ pantry, setPantry, viewType, setViewType, categorySort, setCategorySort }: PantyHeaderProps) {
+function PantryHeader({ pantry, setPantry, viewType, setViewType, categorySort, setCategorySort, sortType, setSortType, tsStats }: PantyHeaderProps) {
   const [show, setShow] = useState(false);
   const [length, setLength] = useState(-1);
   const handleClose = () => setShow(false);
@@ -40,7 +45,7 @@ function PantryHeader({ pantry, setPantry, viewType, setViewType, categorySort, 
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    console.log("search:", search)
+    // console.log("search:", search)
     eventEmitter.dispatch("search", search);
   }, [search]);
 
@@ -82,35 +87,19 @@ function PantryHeader({ pantry, setPantry, viewType, setViewType, categorySort, 
             onChange={() => { setCategorySort(!categorySort) }}
           />
         </Form>
-        <Form>
-          <Form.Label>Sort By:</Form.Label>
-          <Form.Check
-            type="switch"
-            id="expDate-sort-switch-"
-            label={"Expiration Date"}
-            className='pantry-header-body-item'
-            onChange={(change) => { eventEmitter.dispatch("EXP-DATE-SORT", change.target.checked); }}
-          />
-          <Form.Check
-            type="switch"
-            id="name-sort-switch-"
-            label={"Name"}
-            className='pantry-header-body-item'
-            onChange={(change) => { eventEmitter.dispatch("NAME-SORT", change.target.checked); }}
-          />
-          <Form.Check
-            type="switch"
-            id="name-sort-switch-"
-            label={"Quantity"}
-            className='pantry-header-body-item'
-            onChange={(change) => { eventEmitter.dispatch("QUANTITY-SORT", change.target.checked); }}
-          />
-          <Form.Select aria-label="Default select example" onChange={(change) => { console.log(change.target.value) }}>
-            <option>Open this select menu</option>
-            <option value="1" onChange={(change) => { console.log("Heynopw") }}>Expiration Date</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
-          </Form.Select>
+        <Form className=''>
+          <Form.Group as={Row}>
+            <Form.Label column sm="4" >Sort By:</Form.Label>
+            <div className='col-8'>
+              <Form.Select aria-label="Default select example" onChange={(change) => { setSortType(change.target.value); }}>
+                <option value="NONE">None</option>
+                <option value="EXP-DATE-SORT" >Expiration Date</option>
+                <option value="NAME-SORT">Name</option>
+                <option value="QUANTITY-SORT">Quantity</option>
+              </Form.Select>
+            </div>
+          </Form.Group>
+
         </Form>
 
       </div>

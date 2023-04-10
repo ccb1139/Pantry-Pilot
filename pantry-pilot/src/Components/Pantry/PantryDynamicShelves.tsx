@@ -25,22 +25,21 @@ type PantryBodyProps = {
     viewType: string,
     handleTileClick: (type: string, subType: string, category: string, foodName: string | Date, expirationDate: string | Date, emoji: string, _id: string) => void,
     categorySort: boolean,
-    setCategorySort: React.Dispatch<React.SetStateAction<boolean>>
+    sortType: string,
 }
 type Category = {
     categoryName: string,
     foods: any[]
 }
-function PantryDynamicShelves({ pantry, setPantry, viewType, handleTileClick, categorySort }: PantryBodyProps) {
+function PantryDynamicShelves({ pantry, setPantry, viewType, handleTileClick, categorySort, sortType }: PantryBodyProps) {
     const [categories, setCategories] = useState<object[]>(getCategories(pantry, setPantry));
     const [fridge, setFridge] = useState<any[]>(pantry[0]?.fridge);
     const [activeKeyIndexs, setActiveKeyIndexs] = useState<string[]>(["0"]);
     const [search, setSearch] = useState<string>("");
 
     //Sort States
-    const [sortByEXPDATE, setSortByEXPDATE] = useState<boolean>(false);
-    const [sortByNAME, setSortByName] = useState<boolean>(false);
-    const [sortByQUANTITY, setSortByQUANTITY] = useState<boolean>(false);
+    const [currentSort, setCurrentSort] = useState<string>("NONE");
+
 
     useEffect(() => {
         setCategories([{ "categoryName": "All", "unifiedEmoji": "1f37d-fe0f", "foodNames": [] }]);
@@ -64,27 +63,70 @@ function PantryDynamicShelves({ pantry, setPantry, viewType, handleTileClick, ca
 
     }, [categorySort])
 
+    // Change Sort
     useEffect(() => {
-        if (sortByEXPDATE || sortByNAME || sortByQUANTITY) {
-            if (sortByEXPDATE) {
-                setFridge([...fridge].sort((a: any, b: any) => {
-                    return new Date(a.expirationDate).getTime() - new Date(b.expirationDate).getTime()
-                }))
-            } else if (sortByNAME) {
-                setFridge([...fridge].sort((a: any, b: any) => {
-                    return a.foodName.localeCompare(b.foodName)
-                }))
-            } else if (sortByQUANTITY) {
-                // setFridge([...fridge].sort((a: any, b: any) => {
-                //     return b.quantity - a.quantity
-                // }))
-
-            }
-        }
-        else {
+        if(sortType === currentSort) return;
+        setCurrentSort(sortType);
+        console.log(sortType);
+        if (sortType === "EXP-DATE-SORT") {
+            setFridge([...fridge].sort((a: any, b: any) => {
+                return new Date(a.expirationDate).getTime() - new Date(b.expirationDate).getTime()
+            }))
+        } else if (sortType === "NAME-SORT" ) {
+            setFridge([...fridge].sort((a: any, b: any) => {
+                return a.foodName.localeCompare(b.foodName)
+            }))
+        } else if (sortType === "QUANTITY-SORT") {
+            // setFridge([...fridge].sort((a: any, b: any) => {
+            //     return b.quantity - a.quantity
+            // }))
+        } else {
             setFridge(pantry[0]?.fridge);
         }
-    }, [sortByEXPDATE, sortByNAME, sortByQUANTITY])
+    }, [sortType])
+
+    // eventEmitter.subscribe('SORT-TYPE', (sortType: string) => {
+    //     if(sortType === currentSort) return;
+    //     setCurrentSort(sortType);
+    //     console.log(sortType);
+    //     if (sortType === "EXP-DATE-SORT") {
+    //         setFridge([...fridge].sort((a: any, b: any) => {
+    //             return new Date(a.expirationDate).getTime() - new Date(b.expirationDate).getTime()
+    //         }))
+    //     } else if (sortType === "NAME-SORT" ) {
+    //         setFridge([...fridge].sort((a: any, b: any) => {
+    //             return a.foodName.localeCompare(b.foodName)
+    //         }))
+    //     } else if (sortType === "QUANTITY-SORT") {
+    //         // setFridge([...fridge].sort((a: any, b: any) => {
+    //         //     return b.quantity - a.quantity
+    //         // }))
+    //     } else {
+    //         setFridge(pantry[0]?.fridge);
+    //     }
+    // })
+
+    // useEffect(() => {
+    //     if (sortByEXPDATE || sortByNAME || sortByQUANTITY) {
+    //         if (sortByEXPDATE) {
+    //             setFridge([...fridge].sort((a: any, b: any) => {
+    //                 return new Date(a.expirationDate).getTime() - new Date(b.expirationDate).getTime()
+    //             }))
+    //         } else if (sortByNAME) {
+    //             setFridge([...fridge].sort((a: any, b: any) => {
+    //                 return a.foodName.localeCompare(b.foodName)
+    //             }))
+    //         } else if (sortByQUANTITY) {
+    //             // setFridge([...fridge].sort((a: any, b: any) => {
+    //             //     return b.quantity - a.quantity
+    //             // }))
+
+    //         }
+    //     }
+    //     else {
+    //         setFridge(pantry[0]?.fridge);
+    //     }
+    // }, [sortByEXPDATE, sortByNAME, sortByQUANTITY])
 
     function handleAccordianHeaderClick(index: string): void {
         if (activeKeyIndexs.includes(index)) {
@@ -99,16 +141,16 @@ function PantryDynamicShelves({ pantry, setPantry, viewType, handleTileClick, ca
     eventEmitter.subscribe('search', (search: string) => {
         setSearch(search);
     })
-    eventEmitter.subscribe('EXP-DATE-SORT', (sortByEXPDATE: boolean) => {
-        setSortByEXPDATE(sortByEXPDATE);
-    })
-    eventEmitter.subscribe('NAME-SORT', (sortByNAME: boolean) => {
-        setSortByName(sortByNAME);
-    })
-    eventEmitter.subscribe('QUANTITY-SORT', (sortByQUANTITY: boolean) => {
-        setSortByQUANTITY(sortByQUANTITY);
-    })
-
+    // eventEmitter.subscribe('EXP-DATE-SORT', (sortByEXPDATE: boolean) => {
+    //     setSortByEXPDATE(sortByEXPDATE);
+    // })
+    // eventEmitter.subscribe('NAME-SORT', (sortByNAME: boolean) => {
+    //     setSortByName(sortByNAME);
+    // })
+    // eventEmitter.subscribe('QUANTITY-SORT', (sortByQUANTITY: boolean) => {
+    //     setSortByQUANTITY(sortByQUANTITY);
+    // })
+    
     return (
         <div className='d-flex flex-wrap justify-content-center '>
 

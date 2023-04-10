@@ -224,12 +224,12 @@ function GroceryBag({ pantry, setPantry, show, handleClose, handleShow }) {
   return (
     <>
       <Modal
-        className={"modal-90w"}
+        className={"modal-90w app-font "}
         open={show}
         onClose={handleClose}
         center
         closeOnOverlayClick={false}>
-        <div className='Grocery-Bag-Header'>
+        <div className='Grocery-Bag-Header app-font '>
           <h2>Add foods to your pantry</h2>
           <div className='Grocery-Bag-SubHeader col-12 d-flex my-2'>
             <div className="col-auto d-inline-flex align-items-center">

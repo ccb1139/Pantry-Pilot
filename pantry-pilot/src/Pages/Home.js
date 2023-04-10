@@ -61,7 +61,7 @@ function Home() {
   }
 
   return (
-    <div>
+    <div className='app-font'>
       <input className='spoontacular' type='text' placeholder='Search for a recipe...' ref={textInp}></input>
       <button className='spoontacular' onClick={handleClick}>Search</button>
 
