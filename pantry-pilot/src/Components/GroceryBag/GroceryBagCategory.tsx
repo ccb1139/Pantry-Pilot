@@ -24,17 +24,31 @@ import { updateCategory, sendPantryToServer } from '../FoodStockHelpers/pantryAP
 //Icon Imports 
 import { AiOutlinePlusCircle, AiOutlineMinusCircle, AiOutlineEllipsis, AiOutlineClose, AiOutlineCheckCircle } from 'react-icons/ai'
 
+type GroceryBagCategoryProps = {
+    categoryName: string,
+    foodNames: string[],
+    _id: string,
+    emoji: string,
+    selected: any[],
+    setSelected: React.Dispatch<React.SetStateAction<any[]>>,
+    addNewFoodFunc: any,
+    removeFoodFunc: any,
+    editCatNameFunc: any,
+    editTileNameFunc: any,
+    removeCatFunc: any,
+    updateEmojiFunc: any
+}
 
-function GroceryBagCategory({ categoryName, foodNames, _id, emoji, selected, setSelected, addNewFoodFunc, removeFoodFunc, editCatNameFunc, editTileNameFunc, removeCatFunc, updateEmojiFunc }) {
-    const [openAddNewFood, setOpenAddNewFood] = useState(false);
-    const [canEditCategoryName, setCanEditCategoryName] = useState(false);
-    const [canEditFoods, setCanEditFoods] = useState(false);
-    const [showAlert, setShowAlert] = useState(false);
-    const [alertMsg, setAlertMsg] = useState([]);
-    const [showConfirmDelete, setShowConfirmDelete] = useState(false);
-    const [categoryEmoji, setCategoryEmoji] = useState(emoji);
-    const newFoodInputRef = useRef(null);
-    const categoryNameRef = useRef(null);
+function GroceryBagCategory({ categoryName, foodNames, _id, emoji, selected, setSelected, addNewFoodFunc, removeFoodFunc, editCatNameFunc, editTileNameFunc, removeCatFunc, updateEmojiFunc }: GroceryBagCategoryProps) {
+    const [openAddNewFood, setOpenAddNewFood] = useState<boolean>(false);
+    const [canEditCategoryName, setCanEditCategoryName] = useState<boolean>(false);
+    const [canEditFoods, setCanEditFoods] = useState<boolean>(false);
+    const [showAlert, setShowAlert] = useState<boolean>(false);
+    const [alertMsg, setAlertMsg] = useState<string[]>([]);
+    const [showConfirmDelete, setShowConfirmDelete] = useState<boolean>(false);
+    const [categoryEmoji, setCategoryEmoji] = useState<any>(emoji);
+    const newFoodInputRef = useRef<any>(null);
+    const categoryNameRef = useRef<any>(null);
 
     useEffect(() => {
         // console.log(categoryEmoji);
@@ -43,7 +57,7 @@ function GroceryBagCategory({ categoryName, foodNames, _id, emoji, selected, set
 
 
     // Functions handles a tile click, based off a type
-    function handleTileClick(foodName, categoryName, expirationDate, ind, type) {
+    function handleTileClick(foodName: string, categoryName :string, expirationDate: Date, ind: number, type :string) {
         // To add a food to the selected array
         if (type === "add") {
             setSelected([...selected, { foodName: foodName, categoryName: categoryName, expirationDate: expirationDate }])
@@ -66,7 +80,7 @@ function GroceryBagCategory({ categoryName, foodNames, _id, emoji, selected, set
 
 
     // Add New Food to Category
-    async function _handleNewCatFoodSubmit(event) {
+    async function _handleNewCatFoodSubmit(event : any) {
         event.preventDefault(); // prevent the default form submission
 
         // Gaurd Conditions for adding category
@@ -103,10 +117,15 @@ function GroceryBagCategory({ categoryName, foodNames, _id, emoji, selected, set
         setCanEditFoods(false);
     }
 
+    type EditCategoryDropDownToggleProps = {
+        children: any;
+        onClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
+      };
+      
+
     // Custom Edit Category Dropdown Toggle
-    const EditCategoryDropDownToggle = forwardRef(({ children, onClick }, ref) => (
+    const EditCategoryDropDownToggle = forwardRef(({ children, onClick } : EditCategoryDropDownToggleProps, ref : any) => (
         <div
-            href=""
             ref={ref}
             onClick={(e) => {
                 e.preventDefault();

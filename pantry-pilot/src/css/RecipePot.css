@@ -1,0 +1,140 @@
+.recipe-pot-container{
+    border-radius: 15px;
+}
+
+.recipe-pot{
+
+}
+
+.recipe-pot-header {
+    font-size: 1.5em;
+    font-weight: 400;
+    padding: 16px 20px 16px ;
+    /* border-top: 1px solid #000; */
+    border-bottom: 1px solid #000;
+    width: 100%;
+}
+.recipe-pot-subheader{
+    font-size: 1em;
+    font-weight: 300;
+    font-style: italic;
+    padding: 16px 20 ;
+    /* border-top: 1px solid #000; */
+
+}
+
+.recipe-pot-body{
+    border-radius: 15px;
+    margin: 10px;
+    
+    /* padding-bottom: 150px; */
+}
+
+.no-items{
+    border-radius: 15px;
+    margin: 10px;
+    padding: 10px 25px 140px 25px;
+    min-width: 200px;
+}
+
+.items {
+    border-radius: 15px;
+    margin: 10px;
+    padding: 0px 25px 125px;
+    min-width: 200px;
+}
+
+.active-dropzone{
+    box-shadow: 0 0 10px 0 rgba(0,0,0,0.2);
+}
+
+.over-active-dropzone{
+    box-shadow: 0 0 15px 0 rgba(0,0,0,0.4);
+}
+
+.recipe-pot-btn{
+    cursor: default;
+}
+
+.recipe-pot-btn-active{
+    cursor: pointer;
+    animation: ScaleBtnUp 200ms ease 0s 1 normal forwards;
+    /* animation: ScaleBtnDownHover 200ms ease 0s 1 normal forwards; */
+
+}
+.recipe-pot-btn-active:hover{
+    cursor: pointer;
+    animation: ScaleBtnUpHover 200ms ease 0s 1 normal forwards;
+
+}
+.recipe-pot-btn-active:hover::after{
+    cursor: pointer;
+    animation: ScaleBtnDownHover 200ms ease 0s 1 normal forwards;
+
+}
+
+.recipe-pot-btn-inactive{
+    cursor: default;
+    animation: ScaleBtnDown 200ms ease 0s 1 normal forwards;
+}
+
+/* 
+=============================
+Keyframes
+=============================
+*/
+
+@keyframes ScaleBtnUp {
+	0% {
+		transform: scale(1.0);
+	}
+
+	100% {
+		transform: scale(1.1);
+	}
+}
+@keyframes ScaleBtnUpHover {
+	0% {
+		transform: scale(1.1);
+	}
+
+	100% {
+		transform: scale(1.15);
+	}
+}
+
+
+@keyframes ScaleBtnDown {
+	0% {
+		transform: scale(1.1);
+	}
+
+	100% {
+		transform: scale(1.0);
+	}
+}
+@keyframes ScaleBtnDownHover {
+	0% {
+		transform: scale(1.15);
+	}
+
+	100% {
+		transform: scale(1.1);
+	}
+}
+
+
+/* RECIPIE POT TILE STYLES */
+.recipe-pot-tile{
+    animation: recipe-pot-tile-landing 150ms ease 0s 1 normal both;
+    animation-fill-mode: forwards;
+}
+@keyframes recipe-pot-tile-landing {
+	0% {
+		transform: scale(1.5);
+	}
+
+	100% {
+		transform: scale(1);
+	}
+}

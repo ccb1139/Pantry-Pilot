@@ -5,6 +5,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 //Page imports
 import Home from './Pages/Home';
 import Pantry from './Pages/Pantry';
+import Recipes from './Pages/Recipes';
 
 //Component imports
 import NavBar from './Components/Structural/NavBar';
@@ -16,6 +17,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/pantry" element={<Pantry />} />
+        <Route path="/recipes" element={<Recipes />} />
       </Routes>
     
     </BrowserRouter>

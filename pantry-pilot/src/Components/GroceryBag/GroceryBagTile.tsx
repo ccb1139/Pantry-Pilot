@@ -22,10 +22,21 @@ import Popover from 'react-bootstrap/Popover';
     ind: The index of the food item in the array
     canEdit: Boolean value saying if the food item can be edited
 */
-function GroceryBagTile({ foodName, categoryName, handleClickFunc, inSelected, expDate, ind, canEditFoods }) {
-    const [startDate, setStartDate] = useState(new Date(Date.now() + 12096e5));
-    const [showEditPopover, setShowEditPopover] = useState(false);
-    const foodNameRef = useRef(null);
+
+type GroceryBagTileProps = {
+    foodName: string,
+    categoryName: string,
+    handleClickFunc: any,
+    inSelected: boolean,
+    expDate: Date,
+    ind: number,
+    canEditFoods: boolean
+}
+
+function GroceryBagTile({ foodName, categoryName, handleClickFunc, inSelected, expDate, ind, canEditFoods }: GroceryBagTileProps) {
+    const [startDate, setStartDate] = useState<any>(new Date(Date.now() + 12096e5));
+    const [showEditPopover, setShowEditPopover] = useState<boolean>(false);
+    const foodNameRef = useRef<any>(null);
 
     // Function used to handle the click event on a particular tile
     const _handleClick = () => {
@@ -43,7 +54,7 @@ function GroceryBagTile({ foodName, categoryName, handleClickFunc, inSelected, e
         handleClickFunc(foodName, categoryName, startDate, ind, "remove")
     }
 
-    const handleNameEdit = (event) => {
+    const handleNameEdit = (event:any) => {
         event.preventDefault();
         // console.log(foodNameRef.current.value);
         if(foodNameRef.current.value === foodName || foodNameRef.current.value.trim() === "") {
@@ -54,8 +65,12 @@ function GroceryBagTile({ foodName, categoryName, handleClickFunc, inSelected, e
         
     }
 
+    type ExampleCustomInputProps = {
+        value: any,
+        onClick: any
+    }
 
-    const ExampleCustomInput = forwardRef(({ value, onClick }, ref) => {
+    const ExampleCustomInput = forwardRef(({ value, onClick }: ExampleCustomInputProps, ref: any) => {
         const handleClick = () => {
             setStartDate(new Date(value));
             onClick();
@@ -69,8 +84,8 @@ function GroceryBagTile({ foodName, categoryName, handleClickFunc, inSelected, e
         );
     });
     return (
-        <div className='grocery-bag-tile'>
-            <div onClick={_handleClick} className="d-inline-flex" style={{ width: "auto" }}>
+        <div onClick={_handleClick} className={'grocery-bag-tile' + (inSelected ? " grocery-bag-entrance-anim" : " grocery-bag-hover")}>
+            <div  className="d-inline-flex" style={{ width: "auto" }}>
                 {foodName}
             </div>
             {inSelected ? <div className='d-inline-flex'>
@@ -125,19 +140,3 @@ function GroceryBagTile({ foodName, categoryName, handleClickFunc, inSelected, e
 
 export default GroceryBagTile
 
-
-{/* <OverlayTrigger
-          trigger="click"
-          key={placement}
-          placement={placement}
-          overlay={
-            <Popover id={`popover-positioned-${placement}`}>
-              <Popover.Header as="h3">{`Popover ${placement}`}</Popover.Header>
-              <Popover.Body>
-                <strong>Holy guacamole!</strong> Check this info.
-              </Popover.Body>
-            </Popover>
-          }
-        >
-          <Button variant="secondary">Popover on {placement}</Button>
-        </OverlayTrigger> */}

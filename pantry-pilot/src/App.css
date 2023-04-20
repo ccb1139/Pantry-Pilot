@@ -1,11 +1,13 @@
 .App {
   text-align: center;
-  font-family: 'EB Garamond', serif;
+  font-family: 'EB Garamond', serif;;
 }
 .app-font {
   font-family: 'Slabo 27px', serif;
 }
-
+body{
+  background-color: #fffefa!important;
+}
 .App-logo {
   height: 40vmin;
   pointer-events: none;

@@ -1,17 +1,18 @@
 /* GroceryBag.js */
-.add-cat{
+.add-cat {
     height: 31px;
     max-height: 31px;
     margin: 5px 0px;
 }
 
 /* GroceryBagCategory.js */
-.add-food{
+.add-food {
     height: 25px;
     max-height: 25px;
     margin: 5px 0px;
 }
-.category{
+
+.category {
     margin: 5px 0px;
     border-top: 1px solid #000;
     border-bottom: 1px solid #000;
@@ -19,26 +20,30 @@
     padding: 5px;
     /* cursor: pointer; */
 }
-.category-header{
+
+.category-header {
     margin: 2px;
-    
+
 }
-.Grocery-Bag-SubHeader{
+
+.Grocery-Bag-SubHeader {
     min-height: 38px;
 }
-.category-title{
+
+.category-title {
     border: none;
     font-size: 1.5em;
     font-weight: 450;
     cursor: default;
 }
-.category-title:focus{
+
+.category-title:focus {
     border: none;
     outline: none;
     cursor: default;
 }
 
-.category-title-edit{
+.category-title-edit {
     border: none;
     border-bottom: 1px solid #000;
     font-size: 1.5em;
@@ -47,14 +52,15 @@
     font-style: italic;
 
 }
-.category-title-edit:focus{
+
+.category-title-edit:focus {
     border: none;
     border-bottom: 1px solid #000;
     outline: none;
     cursor: default;
 }
 
-.grocery-bag-tile{
+.grocery-bag-tile {
     border: none;
     cursor: pointer;
 }
@@ -67,10 +73,10 @@
 
     display: inline-flex;
     align-items: center;
-    
+
 }
 
-.tile-custom-input{
+.tile-custom-input {
     border: none;
     border: 1px solid #414141;
     border-radius: 10px;
@@ -81,4 +87,64 @@
     background: none;
     margin-left: 5px;
     margin-right: 5px;
+}
+
+.grocery-bag-entrance-anim {
+    animation: grocery-tile-selected-entrance 200ms ease 1 normal none;
+}
+
+@keyframes grocery-tile-selected-entrance {
+    0% {
+        opacity: 0;
+        transform: translateY(-25px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+.grocery-bag-hover:hover {
+    animation: gb-hover-in 100ms ease 0s 1 normal both;
+}
+
+.grocery-bag-hover:not(:hover) {
+    animation: gb-hover-out 100ms ease 0s 1 normal both;
+}
+.grocery-bag-hover:active {
+    animation: grocery-tile-click 100ms ease 0ms 1 normal none;
+}
+@keyframes gb-hover-in {
+    0% {
+        transform: scale(1);
+    }
+
+    100% {
+        transform: scale(1.05);
+    }
+}
+
+@keyframes gb-hover-out {
+    0% {
+        transform: scale(1.05);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+@keyframes grocery-tile-click {
+	0% {
+		transform: scale(1);
+	}
+
+	50% {
+		transform: scale(0.9);
+	}
+
+	100% {
+		transform: scale(1);
+	}
 }

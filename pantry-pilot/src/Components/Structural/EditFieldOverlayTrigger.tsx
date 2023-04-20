@@ -97,7 +97,7 @@ function EditFieldOverlayTrigger({ enabled, defaultField, handleNameEdit, show, 
                 </Popover>}
         >
             {enabled ?
-                <div>
+                <div className='edit-in-anim '>
                     <AiOutlineEdit />
                 </div>
                 : <div></div>}

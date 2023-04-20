@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, forwardRef } from 'react'
 
 //Pantry Imports
-import PantryItemOptionsMenu from './PantryItemOptionsMenu';
+import PantryItemOptionsMenu from '../Pantry/PantryItemOptionsMenu';
 
 //Emoji Imports
 import { Emoji } from 'emoji-picker-react';
@@ -19,14 +19,17 @@ import { AiOutlineCheckCircle } from 'react-icons/ai'
 import { GiPlainCircle } from 'react-icons/gi'
 import { eventEmitter } from '../Structural/Emitter';
 
+// Selected Ingredient Import Help
+import { addToSelectedIngredients, removeFromSelectedIngredients } from '../FoodStockHelpers/selectedIngredients';
+
 type FieldValue = string | Date;
-type PantryListProps = {
+type PantryTileProps = {
     category: string,
     foodName: string,
     expirationDate: string | Date,
     emoji: string,
     _id: string,
-    handleTileClick: any,
+    handleTileClick: (action: string, field: string, category: string, foodName: FieldValue, expirationDate: string | Date, emoji: string, _id: string) => void,
     inSelectedIngredients: boolean,
 }
 
@@ -42,8 +45,7 @@ interface DropResult {
     name: string
 }
 
-
-function PantryList({ category, foodName, expirationDate, emoji, _id, handleTileClick, inSelectedIngredients }: PantryListProps) {
+function RecipePotTile({ category, foodName, expirationDate, emoji, _id, handleTileClick, inSelectedIngredients }: PantryTileProps) {
     const [daysTillExp, setDaysTillExp] = useState<string>("");
     const [indicatorColor, setIndicatorColor] = useState<string>("");
     const [tileEmoji, setTileEmoji] = useState<string>(emoji);
@@ -141,58 +143,58 @@ function PantryList({ category, foodName, expirationDate, emoji, _id, handleTile
         return <div ref={drag} />
     }
     return (
-            <div role="Handle" ref={drag} className='pantry-list'>
-                <div className='pantry-list-element pantry-list-header col-lg-3 col-4 mx-2'>
-                    {foodName}
-                    <EditFieldOverlayTrigger
-                        enabled={canEditFoods}
-                        defaultField={foodName}
-                        handleNameEdit={handleNameEdit}
-                        show={showNameEditPopover}
-                        setShow={setShowNameEditPopover}
-                        isDatePicker={false}
-                    />
+        <div role="Handle" ref={drag} className='pantry-list recipe-pot-tile'>
+            <div className='pantry-list-element pantry-list-header col-6 mx-2'>
+                {foodName}
+                <EditFieldOverlayTrigger
+                    enabled={canEditFoods}
+                    defaultField={foodName}
+                    handleNameEdit={handleNameEdit}
+                    show={showNameEditPopover}
+                    setShow={setShowNameEditPopover}
+                    isDatePicker={false}
+                />
+            </div>
+            <div className='pantry-list-element col-3 justify-content-center'>
+                <IconContext.Provider value={{
+                    color: indicatorColor,
+                    className: "exp-color-ind mx-2"
+                }}>
+                    <GiPlainCircle size={10} />
+                </IconContext.Provider>
+                <div className='d-none'>
+                    {daysTillExp}
                 </div>
-                <div className='pantry-list-element col-lg-4 col-2 justify-content-center'>
-                    <IconContext.Provider value={{
-                        color: indicatorColor,
-                        className: "exp-color-ind mx-2"
-                    }}>
-                        <GiPlainCircle size={10} />
-                    </IconContext.Provider>
-                    <div className='d-none d-lg-block'>
-                        {daysTillExp}
-                    </div>
 
-                    <EditFieldOverlayTrigger
-                        enabled={canEditFoods}
-                        defaultField={new Date(expirationDate)}
-                        handleNameEdit={handleDateEdit}
-                        show={showExpDateEditPopover}
-                        setShow={setShowExpDateEditPopover}
-                        isDatePicker
-                    />
-                </div>
-                <div className='pantry-list-element col-3 justify-content-center'>
+                <EditFieldOverlayTrigger
+                    enabled={canEditFoods}
+                    defaultField={new Date(expirationDate)}
+                    handleNameEdit={handleDateEdit}
+                    show={showExpDateEditPopover}
+                    setShow={setShowExpDateEditPopover}
+                    isDatePicker
+                />
+            </div>
+            <div className='pantry-list-element col-3 justify-content-center'>
 
 
-                    <div className='mx-1 d-none d-lg-block'>
+                {/* <div className='d-none'>
                         {category}
-                    </div>
-                    <Emoji unified={tileEmoji} />
-
-                </div>
-                <div className='pantry-list-element col-2 justify-content-end pe-4'>
-                    {canEditFoods ? <div className='done-edit-check'><AiOutlineCheckCircle size={25} onClick={() => { setCanEditFoods(false) }} /></div> : null}
-                    <PantryItemOptionsMenu foodName={foodName} handleRemove={handleRemove} handleEdit={handleEdit} />
-                </div>
-
-
-
-
+                    </div> */}
+                <Emoji unified={tileEmoji} />
 
             </div>
+            {/* <div className='pantry-list-element col-2 justify-content-end pe-4'>
+                    {canEditFoods ? <div className='done-edit-check'><AiOutlineCheckCircle size={25} onClick={() => { setCanEditFoods(false) }} /></div> : null}
+                    <PantryItemOptionsMenu foodName={foodName} handleRemove={handleRemove} handleEdit={handleEdit} />
+                </div> */}
+
+
+
+
+
+        </div>
     )
 }
 
-export default PantryList
+export default RecipePotTile

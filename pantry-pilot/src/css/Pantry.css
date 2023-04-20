@@ -6,24 +6,32 @@
 
 .pantry-container {
   margin: 10px;
-  display: flex;
+  display: inline-flex;
   flex-wrap: wrap;
-  justify-content: space-evenly;
+  justify-content: center;
+  /* background-color: #ffa27a; */
   align-items: start;
+  border-radius: 15px;
+  /* border: #ffa27a 1px solid; */
+  box-shadow: 0px 3px 3px #ccc;
+  height: 80vh;
 }
 
 .pantry-header {
   position: relative;
-  width: 100%;
+
   margin: 10px;
   padding: 10px;
 }
 .pantry-header-container{
   display: flex;
   flex-direction: column;
-  background-color: rgb(198, 255, 255);
+  /* background-color: #8b98c2; */
+  /* border-right: #ffa27a 1px solid; */
+  /* box-shadow: 3px 3px 5px #ccc; */
+
   border-radius: 15px;
-  filter:drop-shadow(0px 3px 3px #ccc);
+  /* filter:drop-shadow(0px 3px 3px #ccc); */
   height: 100%;
   /* border: solid 1px #ccc; */
 }
@@ -62,8 +70,8 @@
 
   border: 1px solid #ccc;
   border-radius: 5px;
-  padding: 10px;
-  margin: 10px;
+  padding: 10px 10px 10px;
+  margin: 5px 5px 5px;
   
   min-width: 200px;
 
@@ -100,12 +108,14 @@
   border: 1px solid #ccc;
   border-radius: 5px;
   padding: 10px;
-  margin: 10px;
+  /* margin: 10px; */
+  margin-top: 10px;
+  margin-bottom: 10px;
   width: 100%;
 
   font-size: 1.2em;
   font-weight: 400;
-
+  justify-content: center;
 
 }
 .pantry-list-element{
@@ -156,3 +166,123 @@
   border-radius: 5px;
 
 }
+.total-stock-stats-body{
+  display: flex;
+  flex-direction: column;
+  /* overflow-y: scroll; */
+  
+  
+}
+
+.total-stock-stats{
+
+  /* display: flex;
+  flex-direction: column; */
+  margin: 0px 10px 0px;
+  padding: 0px 10px;
+  /* overflow-y: scroll; */
+  /* height: auto; */
+
+  /* max-height: 20vh; */
+}
+.total-stock-stats::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.total-stock-stats {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.pantry-body-container::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.pantry-body-container {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.grocery-bag-btn{
+  border: 2px solid #000000;
+  border-radius: 15px;
+  cursor: pointer;
+  box-shadow: 2px 2px 2px 0 rgba(0,0,0,0.5);
+  font-size: 1.25em;
+  min-width: 155px;
+  margin: 5px 0px 5px;
+}
+
+/*============================
+Keyframes
+============================*/
+
+/* ANIMATIONS FOR EDIT BUTTONS */
+.edit-in-anim {
+  animation: edit-in 100ms ease 0s 1 normal both;
+}
+
+.edit-in-anim:hover {
+  animation: hover-in 100ms ease 0s 1 normal both;
+}
+
+.edit-in-anim:not(:hover){
+  animation: edit-out 100ms ease 0s 1 normal both;
+}
+
+@keyframes edit-in {
+  0% {
+    transform: scale(0.5);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes hover-in {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.2);
+  }
+}
+
+@keyframes edit-out {
+  0% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* ANIMATIONS FOR PANTRY HEADER BUTTONS */
+.ph-btn-hover-anim:hover {
+  animation: ph-hover-in 100ms ease 0s 1 normal both;
+}
+
+.ph-btn-hover-anim:not(:hover ){
+  animation: ph-hover-out 100ms ease 0s 1 normal both;
+}
+
+@keyframes ph-hover-in {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.05);
+  }
+}
+
+@keyframes ph-hover-out {
+  0% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+

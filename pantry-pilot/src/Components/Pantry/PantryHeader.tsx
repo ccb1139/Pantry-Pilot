@@ -22,7 +22,8 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 
 //Icon Imports
-import { FaPlus } from 'react-icons/fa'
+import { FaPlus, } from 'react-icons/fa';
+import { AiOutlinePlusCircle } from 'react-icons/ai';
 
 type PantyHeaderProps = {
   pantry: any,
@@ -59,18 +60,53 @@ function PantryHeader({ pantry, setPantry, viewType, setViewType, categorySort, 
 
 
   return (
-    <div className="pantry-header col-12">
+    <div className="pantry-header">
       <div className='pantry-subheader'>
-        <h2>My Pantry:</h2>
-        <div>Today's Date: {today.toISOString().substring(0, 10)}</div>
-        <div>Number of Food Items: {pantry[0]?.fridge?.length ?? 0} </div>
-        <button className='btn btn-primary' onClick={handleShow}><FaPlus /> Add Food</button>
+        {/* <div className='d-flex justify-content-center'>
+          <h2 className=''>My Pantry</h2>
+        </div> */}
+        <div className='row'>
+          {/* <div className='col-auto'>
+            <div>{today.toISOString().substring(0, 10)}</div>
+            <div>Near Expiring Count: {tsStats?.totalCloseToExpiring} </div>
+          </div> */}
+          <div className='col-10 m-auto'>
+            <div onClick={handleShow} className='grocery-bag-btn d-flex align-items-center justify-content-center py-2 px-1 ph-btn-hover-anim'>
+              <span>Add Groceries</span>
+              <FaPlus className='ms-2' size={20} />
+            </div>
+
+          </div>
+          <div className='col-10 m-auto'>
+            <div onClick={() => {eventEmitter.dispatch("CREATE-RECP", "")}} className='grocery-bag-btn d-flex align-items-center justify-content-center py-2 px-1 ph-btn-hover-anim '>
+              <span>Create Recpie</span>
+              <FaPlus className='ms-2' size={20} />
+            </div>
+
+          </div>
+        </div>
+
+
+
         <GroceryBag show={show} handleClose={handleClose} handleShow={handleShow} pantry={pantry} setPantry={setPantry} />
       </div>
       <div className='pantry-header-body '>
         <div className='pantry-header-body-item'>
           <SearchBar search={search} setSearch={setSearch} />
         </div>
+        <Form className='pantry-header-body-item'>
+          <Form.Group as={Row}>
+            <div className='col-auto'>
+              <Form.Select aria-label="Default select example" onChange={(change) => { setSortType(change.target.value); }}>
+                <option value="NONE">Sort by</option>
+                <option value="EXP-DATE-SORT" >Expiration Date</option>
+                <option value="NAME-SORT">Name</option>
+                <option value="QUANTITY-SORT">Quantity</option>
+              </Form.Select>
+            </div>
+          </Form.Group>
+
+        </Form>
         <Form>
           <Form.Check
             type="switch"
@@ -82,25 +118,12 @@ function PantryHeader({ pantry, setPantry, viewType, setViewType, categorySort, 
           <Form.Check
             type="switch"
             id="Category-switch-"
-            label={categorySort === true ? "Catgories on" : "Catgories off"}
+            label={categorySort === true ? "Categories on" : "Categories off"}
             className='pantry-header-body-item'
             onChange={() => { setCategorySort(!categorySort) }}
           />
         </Form>
-        <Form className=''>
-          <Form.Group as={Row}>
-            <Form.Label column sm="4" >Sort By:</Form.Label>
-            <div className='col-8'>
-              <Form.Select aria-label="Default select example" onChange={(change) => { setSortType(change.target.value); }}>
-                <option value="NONE">None</option>
-                <option value="EXP-DATE-SORT" >Expiration Date</option>
-                <option value="NAME-SORT">Name</option>
-                <option value="QUANTITY-SORT">Quantity</option>
-              </Form.Select>
-            </div>
-          </Form.Group>
 
-        </Form>
 
       </div>
 

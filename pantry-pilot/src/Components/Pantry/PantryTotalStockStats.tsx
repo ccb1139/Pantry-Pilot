@@ -1,8 +1,18 @@
 import React, { useState, useEffect, useRef } from 'react'
 
+//Component Imports
+import CategoryStatsGraph from '../Structural/CategoryStatsGraph';
+
+//Google Chart Imports
+import { Chart } from "react-google-charts";
+
 //Bootstrap Imports
 import Button from 'react-bootstrap/Button';
 import Collapse from 'react-bootstrap/Collapse';
+import ProgressBar from 'react-bootstrap/ProgressBar';
+
+//Emoij Imports
+import { Emoji } from 'emoji-picker-react';
 
 //API Imports
 import {
@@ -39,30 +49,98 @@ type PantryTotalStockStatsProps = {
 
 function PantryTotalStockStats({ pantry, setPantry, stats }: PantryTotalStockStatsProps) {
     const [open, setOpen] = useState(false);
+    const [openPieChart, setOpenPieChart] = useState(false);
     const [categories, setCategories] = useState<object[]>(getCategories(pantry, setPantry));
     const [catgoriesQuantity, setCategoriesQuantity] = useState<number[]>([0]);
 
+    const [pantryCharData, setPantryCharData] = useState<any>([]);
 
+    const options = {
+        width: "auto",
+        height: "auto",
+        backgroundColor: 'transparent',
+        is3D: true
+    };
+
+    useEffect(() => {
+        let tmpPantryCharData: any = [];
+        tmpPantryCharData.push(['Category', 'Quantity']);
+        stats?.categoryStats?.forEach((category: any) => {
+            tmpPantryCharData.push([category.categoryName, category.totalItems]);
+        })
+        setPantryCharData(tmpPantryCharData);
+    }, [stats])
 
     return (
-        <div className='total-stock-container border'>
-            <Collapse in={open}>
+        <div className='total-stock-container '>
+            <div className='total-stock-stats total-stock-stats-header'>
+                <h4>Pantry Stats</h4>
+                <hr />
+                <div className='d-flex flex-row justify-content-between'>
+                    <span>Total Foods</span>
+                    <span>{stats.totalItems}</span>
+                </div>
+                <div className='d-flex flex-row justify-content-between'>
+                    <span>Close to Expiring</span>
+                    <span>{stats.totalCloseToExpiring}</span>
+                </div>
+                <div className='d-flex flex-row justify-content-between'>
+                    <span>Expired</span>
+                    <span>{stats.totalExpired}</span>
+                </div>
+                <CategoryStatsGraph stats={stats} />
+                <hr />
+            </div>
+            {/* MOVE THIS TO MODAL */}
+            {/* <Collapse in={open}>
                 <div className='total-stock-stats'>
-                    <div className='total-stock-stats-header'>
-                        <h3>Total Stock Stats</h3>
-                    </div>
                     <div className='total-stock-stats-body'>
+                        <div>
+                            {stats?.categoryStats?.map((category: any, index: number) => {
+                                if (category.totalItems === 0) {
+                                    return null;
+                                }
+                                return (
+                                    <div key={index}>
+                                        <h5>{category.categoryName}: {category.totalItems} {(category.totalItems > 1 ? "foods" : "food")}</h5>
+                                        <CategoryStatsGraph
+                                            stats={
+                                                {
+                                                    totalItems: category.totalItems,
+                                                    totalCloseToExpiring: category.totalCloseToExpiring,
+                                                    totalExpired: category.totalExpired
+                                                }
+                                            }
+                                        />
+                                    </div>
+                                )
+                            })
+                            }
+                        </div>
+                        <div>
+                            <Chart
+                                chartType="PieChart"
+                                data={pantryCharData}
+                                options={options}
+                                width={"auto"}
+                            // height={"400px"}
+                            />
+                        </div>
 
                     </div>
                 </div>
             </Collapse >
-            <div className='d-flex justify-content-center ts-stats-tab-btn' onClick={() => setOpen(!open)}>
+            <div className='d-flex flex-column mt-2 align-items-center ts-stats-tab-btn' onClick={() => setOpen(!open)}>
+
+                <div style={{ marginBottom: "-5px" }}>Category Breakdown</div>
+
                 {!open ?
                     <AiFillCaretDown className='ts-stats-tab-btn' size={30} onClick={() => setOpen(!open)} />
                     :
                     <AiFillCaretUp className='ts-stats-tab-btn' size={30} onClick={() => setOpen(!open)} />
                 }
-            </div>
+
+            </div> */}
 
         </div >
     )

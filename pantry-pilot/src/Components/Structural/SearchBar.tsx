@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useMemo, ChangeEvent } from 'react'
 import debounce from 'lodash.debounce';
 
+import '../../css/Structrual.css'
 
 //Icon Imports
 import { AiOutlineClose } from 'react-icons/ai'

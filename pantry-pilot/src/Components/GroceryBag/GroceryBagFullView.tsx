@@ -3,8 +3,15 @@ import React, { useState, useEffect, useRef, forwardRef } from 'react'
 //Grocery Bag Imports
 import GroceryBagTile from './GroceryBagTile'
 
-function GroceryBagSearchResults({ SearchArray, search, selected, setSelected }) {
-  const [_SearchArray, _setSearchArray] = useState([]);
+type GroceryBagSearchResultsProps = {
+  SearchArray: any,
+  search: string,
+  selected: any,
+  setSelected: React.Dispatch<React.SetStateAction<any>>
+}
+
+function GroceryBagSearchResults({ SearchArray, search, selected, setSelected }: GroceryBagSearchResultsProps) {
+  const [_SearchArray, _setSearchArray] = useState<any>([]);
   
   useEffect(() => {
     let tmpArr = []
@@ -17,7 +24,7 @@ function GroceryBagSearchResults({ SearchArray, search, selected, setSelected })
   }, [SearchArray])
 
   // Functions handles a tile click, based off a type
-  function handleTileClick(foodName, categoryName, expirationDate, ind, type) {
+  function handleTileClick(foodName: string, categoryName: string, expirationDate:Date, ind: number, type: string) {
     // To add a food to the selected array
     if (type === "add") {
       setSelected([...selected, { foodName: foodName, categoryName: categoryName, expirationDate: expirationDate }])
@@ -32,7 +39,7 @@ function GroceryBagSearchResults({ SearchArray, search, selected, setSelected })
 
   return (
     <div className='col-12 d-flex flex-wrap'>
-      {_SearchArray?.map((item, index) => {
+      {_SearchArray?.map((item: any, index: any) => {
         return (
           <GroceryBagTile
             foodName={item.foodName}

@@ -5,9 +5,16 @@ import GroceryBagTile from './GroceryBagTile'
 //Bootstrap Imports
 import Button from 'react-bootstrap/Button';
 
-function SelectedCategory({categoryName, foodNames, _id, setSelected}) {
+type SelectedCategoryProps = {
+    categoryName: string,
+    foodNames: any,
+    _id: string,
+    setSelected: React.Dispatch<React.SetStateAction<any>>
+}
 
-    function editSelected(foodName, categoryName, startDate, index, type) {
+function SelectedCategory({categoryName, foodNames, _id, setSelected}: SelectedCategoryProps) {
+
+    function editSelected(foodName: string, categoryName: string, startDate: any, index: number, type: any) {
         // setSelected([...selected, foodN ame])
         // console.log(foodName, categoryName, startDate, index, type)
         if (type === "remove") {
@@ -34,7 +41,7 @@ function SelectedCategory({categoryName, foodNames, _id, setSelected}) {
             </div>
             <div className='col-12 selected-body'>
 
-                {foodNames?.map((fItm, index) => {
+                {foodNames?.map((fItm: any, index: number) => {
                     return (
                         <GroceryBagTile
                             foodName={fItm.foodName}
@@ -43,8 +50,8 @@ function SelectedCategory({categoryName, foodNames, _id, setSelected}) {
                             handleClickFunc={editSelected}
                             inSelected
                             expDate={fItm.expirationDate}
-                            ind={index}
-                        />
+                            ind={index} 
+                            canEditFoods={false}                        />
                     )
                 })
                 }

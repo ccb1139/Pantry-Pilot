@@ -40,17 +40,24 @@ FEATURES TO IMPLEMENT LATER:
 ==============================
 */
 
+type GroceryBagProps = {
+  pantry: any,
+  setPantry: React.Dispatch<React.SetStateAction<any>>,
+  show: boolean,
+  handleClose: any,
+  handleShow: any
+}
 
-function GroceryBag({ pantry, setPantry, show, handleClose, handleShow }) {
+function GroceryBag({ pantry, setPantry, show, handleClose, handleShow }: GroceryBagProps) {
   // Selected Holds foodNames, Category, and ExpirationDate
-  const [selected, setSelected] = useState([])
-  const [openNewCatInput, setOpenNewCatInput] = useState(false);
-  const [showAlert, setShowAlert] = useState(false);
-  const [alertMsg, setAlertMsg] = useState([]);
-  const [search, setSearch] = useState("");
-  const [searchResults, setSearchResults] = useState([]);
-  const [selectedView, setSelectedView] = useState(1); //1 For categories, 2 for all
-  const newCatInputRef = useRef(null);
+  const [selected, setSelected] = useState<any>([])
+  const [openNewCatInput, setOpenNewCatInput] = useState<boolean>(false);
+  const [showAlert, setShowAlert] = useState<boolean>(false);
+  const [alertMsg, setAlertMsg] = useState<string[]>([]);
+  const [search, setSearch] = useState<string>("");
+  const [searchResults, setSearchResults] = useState<any>([]);
+  const [selectedView, setSelectedView] = useState<number>(1); //1 For categories, 2 for all
+  const newCatInputRef = useRef<any>(null);
 
 
   useEffect(() => {
@@ -95,7 +102,7 @@ function GroceryBag({ pantry, setPantry, show, handleClose, handleShow }) {
 
 
   //Function adds a new category to the pantry
-  async function handleAddNewCategory(event) {
+  async function handleAddNewCategory(event: any ) {
     event.preventDefault();
     // console.log(newCatInputRef.current.value);
     // Gaurd Conditions for adding category
@@ -103,7 +110,7 @@ function GroceryBag({ pantry, setPantry, show, handleClose, handleShow }) {
     if (newCatInputRef.current.value === "") {
       tmpAlrtMSG.push("Please enter a category name");
     }
-    if (pantry[0].categories.find((cat) => cat.categoryName.trim().toLowerCase() === newCatInputRef.current.value.trim().toLowerCase())) {
+    if (pantry[0].categories.find((cat:any ) => cat.categoryName.trim().toLowerCase() === newCatInputRef.current.value.trim().toLowerCase())) {
       tmpAlrtMSG.push("Category already exists");
     }
 
@@ -117,62 +124,62 @@ function GroceryBag({ pantry, setPantry, show, handleClose, handleShow }) {
     }
 
     let newPantry;
-    await addCategory(newCatInputRef.current.value, [], pantry, setPantry).then((res) => {
+    await addCategory(newCatInputRef.current.value, [], pantry, setPantry).then((res: any) => {
       newPantry = res;
-    }).catch((err) => { console.log(err) })
+    }).catch((err: any ) => { console.log(err) })
     sendPantryToServer(newPantry, pantry, setPantry);
     newCatInputRef.current.value = "";
     setOpenNewCatInput(false);
   }
 
   // Function adds a new food to a category
-  async function handleNewFoodToCategory(foodName, _id) {
+  async function handleNewFoodToCategory(foodName: string, _id: string) {
     console.log(foodName);
     let newPantry;
-    await addFoodToCategory(_id, foodName, pantry, setPantry).then((res) => {
+    await addFoodToCategory(_id, foodName, pantry, setPantry).then((res: any) => {
       newPantry = res;
-    }).catch((err) => { console.log(err) })
+    }).catch((err: any) => { console.log(err) })
     sendPantryToServer(newPantry, pantry, setPantry);
   }
 
   // Function removes a food from a category
-  async function handleRemoveFoodFromCategory(_id, foodName) {
+  async function handleRemoveFoodFromCategory(_id: string, foodName: any) {
     console.log(_id, foodName);
     let newPantry;
-    await removeFoodFromCategory(_id, foodName, pantry, setPantry).then((res) => {
+    await removeFoodFromCategory(_id, foodName, pantry, setPantry).then((res: any) => {
       newPantry = res;
     }
-    ).catch((err) => { console.log(err) })
+    ).catch((err: any) => { console.log(err) })
     console.log(newPantry);
     sendPantryToServer(newPantry, pantry, setPantry);
 
   }
 
   // Function handles the edit of a food name
-  async function handleEditTileName(_id, categoryName, foodNames) {
+  async function handleEditTileName(_id: string, categoryName: string, foodNames: any) {
     // console.log(_id, categoryName, foodNames);
     let newPantry;
-    await updateCategory(_id, categoryName, foodNames, pantry, setPantry).then((res) => {
+    await updateCategory(_id, categoryName, foodNames, pantry, setPantry).then((res: any) => {
       newPantry = res;
-    }).catch((err) => { console.log(err) })
+    }).catch((err: any) => { console.log(err) })
     sendPantryToServer(newPantry, pantry, setPantry);
   }
 
   // Function removes a category
-  async function handleRemoveCategory(_id) {
+  async function handleRemoveCategory(_id: any) {
     console.log(_id);
     let newPantry;
-    await removeCategory(_id, pantry, setPantry).then((res) => {
+    await removeCategory(_id, pantry, setPantry).then((res: any) => {
       newPantry = res;
-    }).catch((err) => { console.log(err) })
+    }).catch((err: any) => { console.log(err) })
     sendPantryToServer(newPantry, pantry, setPantry);
   }
 
-  async function handleUpdateEmoji(_id, emoji) {
+  async function handleUpdateEmoji(_id: any, emoji: any) {
     let newPantry;
-    await updateCategoryEmoji(_id, emoji, pantry, setPantry).then((res) => {
+    await updateCategoryEmoji(_id, emoji, pantry, setPantry).then((res: any) => {
       newPantry = res;
-    }).catch((err) => { console.log(err) })
+    }).catch((err: any) => { console.log(err) })
     sendPantryToServer(newPantry, pantry, setPantry);
   }
 
@@ -197,11 +204,11 @@ function GroceryBag({ pantry, setPantry, show, handleClose, handleShow }) {
     let newPantry = pantry[0];
     for (let i = 0; i < selected.length; i++) {
       await addToPantry(selected[i].foodName, selected[i].categoryName, selected[i].expirationDate, [newPantry], setPantry)
-        .then((res) => {
+        .then((res: any) => {
           // console.log(res)
           newPantry = res;
         })
-        .catch((err) => {
+        .catch((err: any) => {
           console.log(err)
         })
     }
@@ -224,7 +231,6 @@ function GroceryBag({ pantry, setPantry, show, handleClose, handleShow }) {
   return (
     <>
       <Modal
-        className={"modal-90w app-font "}
         open={show}
         onClose={handleClose}
         center
@@ -259,7 +265,7 @@ function GroceryBag({ pantry, setPantry, show, handleClose, handleShow }) {
 
           } */}
 
-          {pantry[0].categories?.map((category) => (
+          {pantry[0].categories?.map((category: any) => (
             <GroceryBagCategory
               categoryName={category.categoryName}
               foodNames={category.foodNames}
