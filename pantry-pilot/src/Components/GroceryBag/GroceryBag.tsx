@@ -102,7 +102,7 @@ function GroceryBag({ pantry, setPantry, show, handleClose, handleShow }: Grocer
 
 
   //Function adds a new category to the pantry
-  async function handleAddNewCategory(event: any ) {
+  async function handleAddNewCategory(event: any) {
     event.preventDefault();
     // console.log(newCatInputRef.current.value);
     // Gaurd Conditions for adding category
@@ -110,7 +110,7 @@ function GroceryBag({ pantry, setPantry, show, handleClose, handleShow }: Grocer
     if (newCatInputRef.current.value === "") {
       tmpAlrtMSG.push("Please enter a category name");
     }
-    if (pantry[0].categories.find((cat:any ) => cat.categoryName.trim().toLowerCase() === newCatInputRef.current.value.trim().toLowerCase())) {
+    if (pantry[0].categories.find((cat: any) => cat.categoryName.trim().toLowerCase() === newCatInputRef.current.value.trim().toLowerCase())) {
       tmpAlrtMSG.push("Category already exists");
     }
 
@@ -126,7 +126,7 @@ function GroceryBag({ pantry, setPantry, show, handleClose, handleShow }: Grocer
     let newPantry;
     await addCategory(newCatInputRef.current.value, [], pantry, setPantry).then((res: any) => {
       newPantry = res;
-    }).catch((err: any ) => { console.log(err) })
+    }).catch((err: any) => { console.log(err) })
     sendPantryToServer(newPantry, pantry, setPantry);
     newCatInputRef.current.value = "";
     setOpenNewCatInput(false);
@@ -260,41 +260,41 @@ function GroceryBag({ pantry, setPantry, show, handleClose, handleShow }: Grocer
 
 
         <div className='Grocery-Bag-Body'>
-          {/* {
-            (searchResults.length > 0 && search !== "") &&
-
-          } */}
-
-          {pantry[0].categories?.map((category: any) => (
-            <GroceryBagCategory
-              categoryName={category.categoryName}
-              foodNames={category.foodNames}
-              _id={category._id}
-              key={category._id + category.categoryName}
-              emoji={category.unifiedEmoji}
-              selected={selected}
-              setSelected={setSelected}
-              addNewFoodFunc={handleNewFoodToCategory}
-              removeFoodFunc={handleRemoveFoodFromCategory}
-              // editCatNameFunc={handleEditCategoryName}
-              editTileNameFunc={handleEditTileName}
-              removeCatFunc={handleRemoveCategory}
-              updateEmojiFunc={handleUpdateEmoji}
-            />
-          ))}
-
-
-          <SelectedCategory
-            categoryName={"Selected"}
-            foodNames={selected}
-            setSelected={setSelected}
-          />
-          <div className='d-flex border'>
-            <Button variant="primary" className='d-block' style={{ width: "100% " }} onClick={addSelectedFoodsToPantry}>
-              Add Foods
-            </Button>
+          <div className='col-12 d-flex'>
+            <div className='col-8 px-2 grocery-bag-categories d-flex flex-column'>
+              {pantry[0].categories?.map((category: any) => (
+                <GroceryBagCategory
+                  categoryName={category.categoryName}
+                  foodNames={category.foodNames}
+                  _id={category._id}
+                  key={category._id + category.categoryName}
+                  emoji={category.unifiedEmoji}
+                  selected={selected}
+                  setSelected={setSelected}
+                  addNewFoodFunc={handleNewFoodToCategory}
+                  removeFoodFunc={handleRemoveFoodFromCategory}
+                  // editCatNameFunc={handleEditCategoryName}
+                  editTileNameFunc={handleEditTileName}
+                  removeCatFunc={handleRemoveCategory}
+                  updateEmojiFunc={handleUpdateEmoji}
+                />
+              ))}
+            </div>
+            <div className='col-4 px-2'>
+              <SelectedCategory
+                categoryName={"Selected"}
+                foodNames={selected}
+                setSelected={setSelected}
+              />
+              <div className='d-flex'>
+                <div
+                  className='grocery-bag-submit-btn w-100 d-flex align-items-center justify-content-center'
+                  onClick={addSelectedFoodsToPantry}>
+                  Add Groceries
+                </div>
+              </div>
+            </div>
           </div>
-
         </div>
 
 

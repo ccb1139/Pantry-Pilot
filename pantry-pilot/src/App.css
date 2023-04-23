@@ -3,7 +3,10 @@
   font-family: 'EB Garamond', serif;;
 }
 .app-font {
-  font-family: 'Slabo 27px', serif;
+  /* font-family: 'Slabo 27px', serif; */
+  /* font-family: 'Playfair Display', serif; */
+  /* font-family: 'PT Sans', sans-serif; */
+  font-family: 'Quicksand', sans-serif;
 }
 body{
   background-color: #fffefa!important;
@@ -41,4 +44,7 @@ body{
   to {
     transform: rotate(360deg);
   }
+}
+body > #root > div {
+  height: 100vh;
 }

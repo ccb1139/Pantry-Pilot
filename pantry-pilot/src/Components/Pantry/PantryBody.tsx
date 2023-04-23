@@ -49,8 +49,20 @@ function PantryBody({ pantry, setPantry, viewType, categorySort, sortType, stats
   const [newRemovedFood, setNewRemovedFood] = useState<any>([])
   const [newRemovedFoodForComponent, setNewRemovedFoodForComponent] = useState<any>([])
   const [newAddedFoodForComponent, setNewAddedFoodForComponent] = useState<any>([])
+  const [classNameForAnimation, setClassNameForAnimation] = useState<string>(showCreateRecipe ? 'col-9 shrink ' : 'col-12')
 
   eventEmitter.subscribe("CREATE-RECP", (data: string) => { setShowCreateRecipe(!showCreateRecipe) });
+
+  useEffect(() => {
+    // setClassNameForAnimation(showCreateRecipe ? 'col-9 shrink ' : 'col-12')
+    if(showCreateRecipe){
+      setClassNameForAnimation('shrink-anim col-9 ')
+      // setClassNameForAnimation('col-9 ')
+      setTimeout(() => {setClassNameForAnimation('col-9 ')}, 200)
+    } else {
+      setClassNameForAnimation('col-12')
+    }
+  }, [showCreateRecipe])
 
   useEffect(() => {
 
@@ -115,7 +127,7 @@ function PantryBody({ pantry, setPantry, viewType, categorySort, sortType, stats
 
   return (
     <div className='row h-100'>
-      <div ref={drop} className={showCreateRecipe ? 'col-8' : 'col-12'}>
+      <div ref={drop} className={classNameForAnimation}>
         <PantryDynamicShelves
           pantry={pantry}
           setPantry={setPantry}
@@ -129,7 +141,7 @@ function PantryBody({ pantry, setPantry, viewType, categorySort, sortType, stats
           />
 
       </div>
-      <div className='col-4'>
+      <div className='col-3'>
         {/* <Collapse in={showCreateRecipe} dimension="width">
           <div id="example-collapse-text">
             <RecipePot

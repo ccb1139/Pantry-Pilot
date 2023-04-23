@@ -1,5 +1,18 @@
 .recipe-pot-container{
     border-radius: 15px;
+    animation: recipe-pot-entrance 300ms ease 0ms 1 normal none;
+}
+
+@keyframes recipe-pot-entrance {
+	0% {
+		opacity: 0;
+		transform: translateX(250px);
+	}
+
+	100% {
+		opacity: 1;
+		transform: translateX(0);
+	}
 }
 
 .recipe-pot{

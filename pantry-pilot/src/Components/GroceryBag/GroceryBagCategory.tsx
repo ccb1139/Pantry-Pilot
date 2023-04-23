@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useRef, forwardRef } from 'react'
+import React, { useState, useEffect, useRef, forwardRef, useLayoutEffect } from 'react'
 
 //Grocery Bag Imports
 import GroceryBagTile from './GroceryBagTile'
+import GroceryBagAddNewForm from './GroceryBagAddNewForm';
 
 //Structural Imports
 import IconSelectMenu from '../Structural/IconSelectMenu';
@@ -22,7 +23,7 @@ import { Modal } from 'react-responsive-modal';
 import { updateCategory, sendPantryToServer } from '../FoodStockHelpers/pantryAPI';
 
 //Icon Imports 
-import { AiOutlinePlusCircle, AiOutlineMinusCircle, AiOutlineEllipsis, AiOutlineClose, AiOutlineCheckCircle } from 'react-icons/ai'
+import { AiOutlinePlusCircle, AiOutlineMinusCircle, AiOutlineEllipsis, AiOutlineClose, AiOutlineCheckCircle, AiOutlineDown, AiOutlineUp, AiOutlineEdit } from 'react-icons/ai'
 
 type GroceryBagCategoryProps = {
     categoryName: string,
@@ -40,24 +41,36 @@ type GroceryBagCategoryProps = {
 }
 
 function GroceryBagCategory({ categoryName, foodNames, _id, emoji, selected, setSelected, addNewFoodFunc, removeFoodFunc, editCatNameFunc, editTileNameFunc, removeCatFunc, updateEmojiFunc }: GroceryBagCategoryProps) {
-    const [openAddNewFood, setOpenAddNewFood] = useState<boolean>(false);
+
     const [canEditCategoryName, setCanEditCategoryName] = useState<boolean>(false);
     const [canEditFoods, setCanEditFoods] = useState<boolean>(false);
-    const [showAlert, setShowAlert] = useState<boolean>(false);
-    const [alertMsg, setAlertMsg] = useState<string[]>([]);
+
     const [showConfirmDelete, setShowConfirmDelete] = useState<boolean>(false);
     const [categoryEmoji, setCategoryEmoji] = useState<any>(emoji);
-    const newFoodInputRef = useRef<any>(null);
-    const categoryNameRef = useRef<any>(null);
+    const [showFullCategory, setShowFullCategory] = useState<boolean>(false);
+    const [isOverflowing, setIsOverflowing] = useState<boolean>(false);
+    const [overFlowCss, setOverFlowCss] = useState<string>("");
 
+    const categoryNameRef = useRef<any>(null);
+    const tileContainerRef = useRef<any>(null);
+    // console.log(tileContainerRef)
     useEffect(() => {
         // console.log(categoryEmoji);
         updateEmojiFunc(_id, categoryEmoji);
     }, [categoryEmoji])
 
+    useEffect(() => {
+        const hasOverflow = tileContainerRef.current.scrollHeight > tileContainerRef.current.clientHeight;
+        // console.log("hasOverflow:", hasOverflow);
+        setIsOverflowing(hasOverflow);
+        if(!hasOverflow){
+            setOverFlowCss("-not-overflowing");
+        }
+            
+    }, []);
 
     // Functions handles a tile click, based off a type
-    function handleTileClick(foodName: string, categoryName :string, expirationDate: Date, ind: number, type :string) {
+    function handleTileClick(foodName: string, categoryName: string, expirationDate: Date, ind: number, type: string) {
         // To add a food to the selected array
         if (type === "add") {
             setSelected([...selected, { foodName: foodName, categoryName: categoryName, expirationDate: expirationDate }])
@@ -78,31 +91,14 @@ function GroceryBagCategory({ categoryName, foodNames, _id, emoji, selected, set
         }
     }
 
-
-    // Add New Food to Category
-    async function _handleNewCatFoodSubmit(event : any) {
-        event.preventDefault(); // prevent the default form submission
-
-        // Gaurd Conditions for adding category
-        var tmpAlrtMSG = [];
-        if (newFoodInputRef.current.value === "") {
-            tmpAlrtMSG.push("Please enter a food name");
-        }
-        if (foodNames.find((food) => food.trim().toLowerCase() === newFoodInputRef.current.value.trim().toLowerCase())) {
-            tmpAlrtMSG.push("Food already exists");
-        }
-        if (tmpAlrtMSG.length > 0) {
-            setAlertMsg(tmpAlrtMSG);
-            setShowAlert(true);
-            return;
-        } else {
-            setAlertMsg([]);
-            setShowAlert(false);
-        }
-        setAlertMsg(tmpAlrtMSG);
-        addNewFoodFunc(newFoodInputRef.current.value, _id);
-        newFoodInputRef.current.value = "";
+    function reCalcOverFlow() {
+        const hasOverflow = tileContainerRef.current.scrollHeight > tileContainerRef.current.clientHeight;
+        // console.log("hasOverflow:", hasOverflow);
+        // setIsOverflowing(hasOverflow);
+        console.log("overflow changed");
     }
+
+
 
 
     // Edit Category Name
@@ -120,11 +116,11 @@ function GroceryBagCategory({ categoryName, foodNames, _id, emoji, selected, set
     type EditCategoryDropDownToggleProps = {
         children: any;
         onClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
-      };
-      
+    };
+
 
     // Custom Edit Category Dropdown Toggle
-    const EditCategoryDropDownToggle = forwardRef(({ children, onClick } : EditCategoryDropDownToggleProps, ref : any) => (
+    const EditCategoryDropDownToggle = forwardRef(({ children, onClick }: EditCategoryDropDownToggleProps, ref: any) => (
         <div
             ref={ref}
             onClick={(e) => {
@@ -136,45 +132,35 @@ function GroceryBagCategory({ categoryName, foodNames, _id, emoji, selected, set
             {/* &#x25bc; */}
         </div>
     ));
-
+    // console.log(showFullCategory, isOverflowing, categoryName)
 
     return (
         <div className='category d-flex flex-column'>
             <div className='category-header col-12 d-flex'>
                 <div className='col-12 d-inline-flex'>
-                    <div className='col-auto d-inline-flex ' >
+                    <div className='col-auto d-inline-flex align-items-center' >
                         <IconSelectMenu Icon={categoryEmoji} SetIcon={setCategoryEmoji} />
-                        <input
-                            // className={"d-inline-block " + (canEditCategoryName ? "category-title-edit" : "category-title")}
+                        {/* <input
                             className={"d-inline-block category-title"}
                             type="text"
                             defaultValue={categoryName}
                             readOnly={!canEditCategoryName}
-                            ref={categoryNameRef} />
-                        {/* { canEditCategoryName ? 
-                            <AiOutlineCheckCircle size={20} onClick={handleEditCategoryName}/> 
-                            : null } */}
+                            ref={categoryNameRef} /> */}
+                        <div className='d-inline-block category-title'>{categoryName}</div>
                     </div>
-                    <div className='col-auto ms-auto d-inline-flex'>
-                        {/* <AiOutlineEllipsis size={20} /> */}
-                        {(canEditCategoryName || canEditFoods) ? ( <div className='done-edit-check'><AiOutlineCheckCircle size={25} onClick={doneWithChanges}/></div>) : null}
+                    <div className='col-auto ms-auto d-inline-flex align-items-center flex-column'>
+
+
                         <Dropdown>
                             <Dropdown.Toggle as={EditCategoryDropDownToggle} id="dropdown-custom-components">
-                                <AiOutlineEllipsis size={25} />
-                                
+
+                                {(canEditCategoryName || canEditFoods) ?
+                                    (<div className='done-edit-check ms-auto'><AiOutlineCheckCircle size={25} onClick={doneWithChanges} /></div>)
+                                    : <AiOutlineEllipsis size={25} />}
+
                             </Dropdown.Toggle>
 
                             <Dropdown.Menu >
-                                {/* <Dropdown.Item
-                                    as="button"
-                                    onClick={() => setCanEditCategoryName(!canEditCategoryName)}>
-                                    Edit Category Name
-                                </Dropdown.Item> */}
-                                <Dropdown.Item
-                                    as="button"
-                                    onClick={() => setOpenAddNewFood(!openAddNewFood)}>
-                                    Add Food
-                                </Dropdown.Item>
                                 <Dropdown.Item
                                     as="button"
                                     onClick={() => setCanEditFoods(!canEditFoods)}>
@@ -203,58 +189,35 @@ function GroceryBagCategory({ categoryName, foodNames, _id, emoji, selected, set
 
 
             </div>
-            <div className='col-12 '>
+            <div className='grocery-bag-body'>
+                <div ref={tileContainerRef} 
+                className={'col-12 pe-1 grocery-bag-category-tile-container' + ((!showFullCategory ) ? '' : '-nohiddenOF') + overFlowCss }>
 
-                {foodNames?.map((foodName, index) => {
-                    return (
-                        <GroceryBagTile
-                            foodName={foodName}
-                            categoryName={categoryName}
-                            key={foodName + _id}
-                            handleClickFunc={handleTileClick}
-                            ind={index}
-                            canEditFoods={canEditFoods}
-                        />
-                    )
-                })
-                }
-            </div>
-
-            <div className='add-food d-inline-flex align-items-center'>
-                <div className='col-auto d-inline-flex align-items-center'>
-                    {openAddNewFood ?
-                        <AiOutlineMinusCircle onClick={() => setOpenAddNewFood(!openAddNewFood)} size={20} />
-                        : <AiOutlinePlusCircle onClick={() => setOpenAddNewFood(!openAddNewFood)} size={20} />}
-                    <div>
-                        <Collapse in={openAddNewFood} dimension="width">
-                            <div>
-                                <form onSubmit={_handleNewCatFoodSubmit}>
-                                    <div className='d-inline-flex mx-2'>
-                                        <input type="text" placeholder="Food Name" ref={newFoodInputRef} />
-                                        <Button type="submit" variant="primary" size="sm">+</Button>
-                                    </div>
-                                </form>
-                                <Overlay show={showAlert} target={newFoodInputRef.current} placement="bottom">
-                                    <Popover id="add-category-alert" >
-                                        <Popover.Body className='d-flex align-items-center'>
-                                            {alertMsg.map((msg) => (
-                                                <div>{msg}</div>
-                                            ))}
-                                            <div className="ms-2">
-                                                <AiOutlineClose onClick={() => setShowAlert(false)} size={15} />
-                                            </div>
-
-                                        </Popover.Body>
-                                    </Popover>
-                                </Overlay>
-                            </div>
-
-                        </Collapse>
-                    </div>
+                    {foodNames?.map((foodName, index) => {
+                        // console.log(categoryName, index)
+                        return (
+                            <GroceryBagTile
+                                foodName={foodName}
+                                categoryName={categoryName}
+                                key={foodName + _id}
+                                handleClickFunc={handleTileClick}
+                                ind={index}
+                                canEditFoods={canEditFoods}
+                            />
+                        )
+                    })
+                    }
+                    <GroceryBagAddNewForm addNewFoodFunc={addNewFoodFunc} foodNames={foodNames} _id={_id} recalcOverflow={reCalcOverFlow} />
                 </div>
-                {/* <div className='col-auto ms-auto d-inline-flex align-items-center'>
-                    {(canEditCategoryName || canEditFoods) ? (<Button onClick={doneWithChanges} >Done <AiOutlineCheckCircle size={20} /></Button>) : null}
-                </div> */}
+
+                <div className='col-12 d-flex align-items-center justify-content-center' style={{ height: "24px" }}>
+                    { isOverflowing &&
+                        <div className='cat-expand-btn' onClick={() => { setShowFullCategory(!showFullCategory) }} >
+                            {showFullCategory ? <AiOutlineUp size={20} /> : <AiOutlineDown size={20} />}
+                        </div>
+                    }
+
+                </div>
             </div>
         </div>
     )

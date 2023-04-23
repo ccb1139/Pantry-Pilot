@@ -10,16 +10,21 @@ import Recipes from './Pages/Recipes';
 //Component imports
 import NavBar from './Components/Structural/NavBar';
 
+import CounterTop from './img/CounterTop.jpeg'
+
 function App() {
   return (
-    <BrowserRouter> 
+    <BrowserRouter>
       <NavBar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/pantry" element={<Pantry />} />
-        <Route path="/recipes" element={<Recipes />} />
-      </Routes>
-    
+      <div className="" 
+      // style={{ backgroundImage: `url(${CounterTop})`, backgroundSize: "cover" }}
+      >
+        <Routes >
+          <Route path="/" element={<Home />} />
+          <Route path="/pantry" element={<Pantry />} />
+          <Route path="/recipes" element={<Recipes />} />
+        </Routes>
+      </div>
     </BrowserRouter>
   );
 }

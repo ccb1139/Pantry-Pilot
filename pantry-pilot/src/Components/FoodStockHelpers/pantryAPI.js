@@ -9,7 +9,7 @@ import axios from 'axios';
 
 // This functions updates the pantry object in the database and sets the state
 export function sendPantryToServer(newPantry, pantry, setPantry) {
-    // console.log(newPantry);
+    console.log(newPantry);
     axios
         .put("http://localhost:4000/foodStock/update-foodStock/" + pantry[0]._id, {
             categories: newPantry.categories,

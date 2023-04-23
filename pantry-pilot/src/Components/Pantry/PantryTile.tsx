@@ -140,10 +140,10 @@ function PantryTile({ category, foodName, expirationDate, emoji, _id, handleTile
     }
     return (
         <div ref={dragPreview} >
-            <div role="Handle" ref={drag} className='pantry-tile d-inline-flex ' style={{ opacity: opacity }}>
+            <div role="Handle" ref={drag} className='pantry-tile d-inline-flex ' style={{ opacity: opacity, cursor: "grab" }}>
                 <div className='col-12 pantry-tile-header'>
                     <div className='d-flex align-items-center party-title-text'>
-                        {foodName}
+                        <span className='pantry-tile-foodname'>{foodName}</span>
                         <EditFieldOverlayTrigger
                             enabled={canEditFoods}
                             defaultField={foodName}
@@ -160,11 +160,21 @@ function PantryTile({ category, foodName, expirationDate, emoji, _id, handleTile
                         {/* <PantryItemOptionsMenu foodName={foodName} handleRemove={handleRemove} handleEdit={handleEdit} /> */}
                     </div>
                 </div>
-                <div className='pantry-tile-body'>
-                    <div className='d-flex align-items-center'>
-                        <IconContext.Provider value={{ color: indicatorColor, className: "exp-color-ind me-1 " }}>
-                            <GiPlainCircle size={10} />
-                        </IconContext.Provider>
+
+                <div className='pantry-tile-body flex-column'>
+                    <div className='d-flex align-items-center justify-content-between'>
+
+
+                        <div className='me-1'>
+                            {category}
+                        </div>
+
+                        <div className='col-3 d-flex justify-content-end '>
+                            <Emoji unified={tileEmoji} />
+                        </div>
+                    </div>
+
+                    <div className='d-flex align-items-center justify-content-between'>
                         {daysTillExp}
                         <EditFieldOverlayTrigger
                             enabled={canEditFoods}
@@ -174,19 +184,12 @@ function PantryTile({ category, foodName, expirationDate, emoji, _id, handleTile
                             setShow={setShowExpDateEditPopover}
                             isDatePicker
                         />
-                    </div>
-
-                    <div className='d-flex align-items-center ms-auto'>
-                        <div className='me-1'>
-                            {category}
-                        </div>
-
-                        <Emoji unified={tileEmoji} />
+                        <IconContext.Provider value={{ color: indicatorColor, className: "exp-color-ind me-1  d-inline-flex justify-content-end" }}>
+                            <GiPlainCircle size={10} />
+                        </IconContext.Provider>
 
                     </div>
                 </div>
-
-
             </div>
         </div>
     )

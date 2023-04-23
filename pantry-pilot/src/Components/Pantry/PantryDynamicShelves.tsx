@@ -197,9 +197,11 @@ function PantryDynamicShelves({ pantry, setPantry, viewType, handleTileClick, ca
                                     </div>
                                 </Accordion.Header>
                                 <Accordion.Body className='d-flex flex-wrap justify-content-center'>
-                                    {fridge.map((food: any) => {
+                                    {fridge.length !== 1 && fridge.map((food: any) => {
                                         // Category Sort check, if true, then only show foods that match the category
                                         if (food.category === category.categoryName || category.categoryName === "All") {
+                                            // console.log(food);
+                                            
                                             return (
                                                 viewType === "grid" ?
                                                     <PantryTile

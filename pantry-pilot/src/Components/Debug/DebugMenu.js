@@ -260,7 +260,7 @@ function DebugMenu({ pantry, setPantry, selected, setSelected }) {
                     <Dropdown.Item as="button" onClick={clearFridge} >Clear FoodStock</Dropdown.Item>
                     <Dropdown.Item as="button" onClick={resetFridge} >Reset FoodStock</Dropdown.Item>
                 </DropdownButton>
-                
+{/*                 
                 <DropdownButton id="dropdown-item-button2" title="CRUD CATGEORIES">
                     <Dropdown.Item as="button" onClick={_addCategory}>Add Categories</Dropdown.Item>
                     <Dropdown.Item as="button" onClick={_removeCategory}>Remove Categories</Dropdown.Item>
@@ -294,7 +294,7 @@ function DebugMenu({ pantry, setPantry, selected, setSelected }) {
                     <Dropdown.Item as="button" onClick={_addToPantry}>Add to pantry</Dropdown.Item>
                     <Dropdown.Item as="button" onClick={_removeFromPantry}>remove from pantry</Dropdown.Item>
                     <Dropdown.Item as="button" onClick={_getPantry}>get pantry</Dropdown.Item>
-                </DropdownButton>
+                </DropdownButton> */}
 
                 <DropdownButton id="dropdown-item-button2" title="Logs">
                     <Dropdown.Item as="button" onClick={logPantry}>logPantry</Dropdown.Item>

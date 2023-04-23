@@ -70,16 +70,16 @@ function PantryHeader({ pantry, setPantry, viewType, setViewType, categorySort, 
             <div>{today.toISOString().substring(0, 10)}</div>
             <div>Near Expiring Count: {tsStats?.totalCloseToExpiring} </div>
           </div> */}
-          <div className='col-10 m-auto'>
+          <div className='col-10 me-auto'>
             <div onClick={handleShow} className='grocery-bag-btn d-flex align-items-center justify-content-center py-2 px-1 ph-btn-hover-anim'>
               <span>Add Groceries</span>
               <FaPlus className='ms-2' size={20} />
             </div>
 
           </div>
-          <div className='col-10 m-auto'>
+          <div className='col-10 me-auto'>
             <div onClick={() => {eventEmitter.dispatch("CREATE-RECP", "")}} className='grocery-bag-btn d-flex align-items-center justify-content-center py-2 px-1 ph-btn-hover-anim '>
-              <span>Create Recpie</span>
+              <span>Get Recpies</span>
               <FaPlus className='ms-2' size={20} />
             </div>
 

@@ -32,8 +32,8 @@
 
 .category-title {
     border: none;
-    font-size: 1.5em;
-    font-weight: 450;
+    font-size: 1.75em;
+    font-weight: 500;
     cursor: default;
 }
 
@@ -75,7 +75,9 @@
     align-items: center;
 
 }
-
+.react-responsive-modal-modal{
+    max-width: 80vw !important;
+}
 .tile-custom-input {
     border: none;
     border: 1px solid #414141;
@@ -88,7 +90,18 @@
     margin-left: 5px;
     margin-right: 5px;
 }
-
+.grocery-bag-categories{
+    overflow-y: scroll;
+    max-height: 75vh;
+}
+.grocery-bag-category-tile-container{
+    max-height: 40px;
+    overflow-y: hidden;
+    
+}
+.grocery-bag-category-tile-container-hiddenOF{
+    
+}
 .grocery-bag-entrance-anim {
     animation: grocery-tile-selected-entrance 200ms ease 1 normal none;
 }
@@ -96,12 +109,12 @@
 @keyframes grocery-tile-selected-entrance {
     0% {
         opacity: 0;
-        transform: translateY(-25px);
+        transform: translateX(-50px);
     }
 
     100% {
         opacity: 1;
-        transform: translateY(0);
+        transform: translateX(0);
     }
 }
 
@@ -113,9 +126,11 @@
 .grocery-bag-hover:not(:hover) {
     animation: gb-hover-out 100ms ease 0s 1 normal both;
 }
+
 .grocery-bag-hover:active {
     animation: grocery-tile-click 100ms ease 0ms 1 normal none;
 }
+
 @keyframes gb-hover-in {
     0% {
         transform: scale(1);
@@ -135,16 +150,166 @@
         transform: scale(1);
     }
 }
+
 @keyframes grocery-tile-click {
-	0% {
-		transform: scale(1);
-	}
+    0% {
+        transform: scale(1);
+    }
 
-	50% {
-		transform: scale(0.9);
-	}
+    50% {
+        transform: scale(0.9);
+    }
 
-	100% {
-		transform: scale(1);
-	}
+    100% {
+        transform: scale(1);
+    }
+}
+
+.grocery-bag-submit-btn {
+    border: 2px solid #000000;
+    border-radius: 15px;
+    cursor: pointer;
+    box-shadow: 2px 2px 2px 0 rgba(0, 0, 0, 0.5);
+    font-size: 1.25em;
+    min-width: 155px;
+    margin: 5px 0px 5px;
+    padding: 5px 10px;
+
+    -webkit-user-select: none;
+    /* Safari */
+    -ms-user-select: none;
+    /* IE 10 and IE 11 */
+    user-select: none;
+    /* Standard syntax */
+}
+.grocery-bag-submit-btn-sm {
+    border: 2px solid #000000;
+    border-radius: 15px;
+    cursor: pointer;
+    box-shadow: 2px 2px 2px 0 rgba(0, 0, 0, 0.5);
+    font-size: 1em;
+    /* min-width: 155px; */
+    /* margin: 5px 0px 5px; */
+    background-color: inherit;
+    /* padding: 5px 10px; */
+    
+    -webkit-user-select: none;
+    /* Safari */
+    -ms-user-select: none;
+    /* IE 10 and IE 11 */
+    user-select: none;
+    /* Standard syntax */
+}
+
+.new-food-input-div{
+    display: inline-flex;
+    align-items: center;
+    background-color: inherit;
+    border: 1px solid #000000;
+    padding: 5px;
+    border-radius: 5px;
+    height: 34px;
+}
+.new-food-input{
+    /* width: 100%; */
+    width: 90px;
+    height: 100%;
+    border: none;
+    outline: none;
+}
+.grocery-bag-submit-btn:hover {
+    animation: gbs-hover-in 100ms ease 0s 1 normal both;
+
+}
+
+.grocery-bag-submit-btn:not(:hover) {
+    animation: gbs-hover-out 100ms ease 0s 1 normal both;
+}
+
+.grocery-bag-submit-btn:active {
+    animation: gbs-btn-tile-click 100ms ease 0ms 1 normal none;
+}
+
+@keyframes gbs-hover-in {
+    0% {
+        transform: scale(1);
+    }
+
+    100% {
+        transform: scale(1.02);
+    }
+}
+
+@keyframes gbs-hover-out {
+    0% {
+        transform: scale(1.02);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes gbs-btn-tile-click {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(0.95);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.cat-expand-btn{
+    cursor: pointer;
+}
+.cat-expand-btn:active{
+    cursor: pointer;
+    
+    animation: cat-expand-hover-click 100ms ease 0s 1 normal both;
+}
+
+.cat-expand-btn:hover{
+    animation: cat-expand-hover-in 100ms ease 0s 1 normal both;
+}
+
+.cat-expand-btn:not(:hover){
+    animation: cat-expand-hover-out 100ms ease 0s 1 normal both;
+}
+@keyframes cat-expand-hover-in {
+    0% {
+        transform: scale(1);
+    }
+
+    100% {
+        transform: scale(1.15);
+    }
+}
+
+@keyframes cat-expand-hover-out {
+    0% {
+        transform: scale(1.02);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes cat-expand-hover-click {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(0.95);
+    }
+
+    100% {
+        transform: scale(1);
+    }
 }

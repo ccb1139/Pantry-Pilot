@@ -14,6 +14,7 @@ import PantryTotalStockStats from '../Components/Pantry/PantryTotalStockStats';
 import GroceryBag from '../Components/GroceryBag/GroceryBag';
 
 // DebugMenu Component imports
+import DebugMenu from '../Components/Debug/DebugMenu';
 import PantryBody from '../Components/Pantry/PantryBody';
 
 // Stats Component imports
@@ -22,6 +23,9 @@ import { calculateStats } from '../Components/FoodStockHelpers/stats';
 // Dnd Imports
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import { DndProvider } from 'react-dnd'
+
+// Image Imports
+import CuttingBoard from '../img/cuttingboard.png'
 
 /*
 ==============================
@@ -109,7 +113,7 @@ function Pantry() {
       - Total number of expired items
     */
     calculateStats(pantry).then((stats) => {
-      console.log(stats)
+      // console.log(stats)
       setStatsInfoObject(stats)
     })
   }, [pantry])
@@ -118,8 +122,10 @@ function Pantry() {
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <div className='window-container container d-flex justify-content-center'>
-        <div className='pantry-container app-font col-12'>
+      <div className='window-container container d-flex justify-content-center'
+      //  style={{backgroundImage: `url(${CuttingBoard})`}}
+       >
+        <div className='pantry-container h-100 app-font col-12'>
           <div className='pantry-header-container col-3 '>
             <PantryHeader
               pantry={pantry}
@@ -153,6 +159,7 @@ function Pantry() {
         <GroceryBag />
       </div> */}
         </div>
+        {/* <DebugMenu pantry={pantry} setPantry={setPantry} /> */}
       </div>
     </DndProvider>
   )

@@ -1,5 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react'
 
+// Components Imports
+import RecipePreviewModal from './RecipePreviewModal'
+
 // Draggable Imports
 import { useDrop } from 'react-dnd'
 import { useDrag } from 'react-dnd'
@@ -37,6 +40,8 @@ function RecipePot({ pantry, selectedIngredients, setSelectedIngredients, setNew
   const [newAddedFood, setNewAddedFood] = useState<any>([])
   const canQueryRecipes = selectedIngredients.length === 1 ? false : true;
   const [hasAddedFood, setHasAddedFood] = useState<boolean>(false);
+
+  const [showRecepiePreviewModal, setShowRecepiePreviewModal] = useState<boolean>(false)
 
   // const [canQueryRecipes, setCanQueryRecipes] = useState<boolean>(false)
   
@@ -79,7 +84,7 @@ function RecipePot({ pantry, selectedIngredients, setSelectedIngredients, setNew
         <div className={'recipe-pot-header text-center '} >
           <div 
           className={'recipe-pot-btn' + ((hasAddedFood) ? ( canQueryRecipes ? '-active' : '-inactive'): '')}
-          onClick={() => {console.log(selectedIngredients)}}
+          onClick={() => {setShowRecepiePreviewModal(!showRecepiePreviewModal)}}
           >
             Get Recipes
             { !canQueryRecipes ?  null : <AiOutlineArrowRight />}
@@ -120,6 +125,8 @@ function RecipePot({ pantry, selectedIngredients, setSelectedIngredients, setNew
           }
         </div>
       </div>
+      <RecipePreviewModal selectedIngredients={selectedIngredients} show={showRecepiePreviewModal} setShow={setShowRecepiePreviewModal} />
+
     </div>
   )
 }
