@@ -9,7 +9,7 @@ import PantryDynamicShelves from './PantryDynamicShelves'
 import { Events, eventEmitter } from '../Structural/Emitter';
 
 // Recipe Pot Imports
-import RecipePot from '../Recipes/RecipePot';
+import RecipePot from '../Recipes/Preview/RecipePot';
 
 // Bootstrap Imports
 import Collapse from 'react-bootstrap/Collapse';

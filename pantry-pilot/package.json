@@ -17,6 +17,7 @@
     "eventemitter3": "^5.0.0",
     "formik": "^2.2.9",
     "lodash.debounce": "^4.0.8",
+    "node-env-file": "^0.1.8",
     "react": "^18.2.0",
     "react-bootstrap": "^2.7.2",
     "react-datepicker": "^4.10.0",
@@ -39,7 +40,7 @@
     "typescript": "^5.0.3"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "set REACT_APP_API_KEY=374b61c440ca48e78c33ae7c2c6fa639 && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

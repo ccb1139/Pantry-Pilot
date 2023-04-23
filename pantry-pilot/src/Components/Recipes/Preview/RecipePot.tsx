@@ -7,10 +7,10 @@ import RecipePreviewModal from './RecipePreviewModal'
 import { useDrop } from 'react-dnd'
 import { useDrag } from 'react-dnd'
 
-import { eventEmitter } from '../Structural/Emitter';
+import { eventEmitter } from '../../Structural/Emitter';
 
 //Pantry Imports
-import PantryTile from '../Pantry/PantryTile'
+import PantryTile from '../../Pantry/PantryTile'
 
 // Recipe Pot Imports
 import RecipePotTile from './RecipePotTile';
@@ -23,10 +23,10 @@ import { AiOutlineArrowRight } from 'react-icons/ai'
 import {
   getCategoryEmojiByName,
   getCategories,
-} from '../FoodStockHelpers/pantryAPI';
+} from '../../FoodStockHelpers/pantryAPI';
 
 // CSS Imports
-import '../../css/RecipePot.css'
+import '../../../css/RecipePot.css'
 
 type Props = {
   pantry: any,

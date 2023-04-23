@@ -61,16 +61,17 @@ function Home() {
   }
 
   function getsource(id){
-    axios.post("https://api.spoonacular.com/recipes/"+id+"/information?apiKey=9cb66156f2cbe6f3abfde689784d385d").then(({ data }) => {
+    axios.post("https://api.spoonacular.com/recipes/"+id+"/information?apiKey=" + process.env.REACT_APP_API_KEY).then(({ data }) => {
       console.log(data);
       // console.log(data);
     }
     )
 
   }
-
+  
   function getRecepie(query){
-    axios.get(`https://api.spoonacular.com/recipes/search?apiKey=374b61c440ca48e78c33ae7c2c6fa639&query=${query}` ).then(response => {
+
+    axios.get("https://api.spoonacular.com/recipes/search?apiKey=" + (process.env.REACT_APP_API_KEY)?.trim() + "&query=" + query).then(response => {
       console.log(response.data);
       // Do something with the response data here
     })

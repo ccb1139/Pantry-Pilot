@@ -17,7 +17,14 @@ function RecipePreviewModal({ selectedIngredients, show, setShow }: Props) {
   return (
     <Modal open={show} onClose={() => setShow(false)} center>
       <h2>Recipe Preview</h2>
-
+      {selectedIngredients.map((ingredient: any) => {
+        return (
+          <div>
+            <p>{ingredient.foodName}</p>
+          </div>
+        )
+      })
+      }
     </Modal>
   )
 }

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, forwardRef } from 'react'
 
 //Pantry Imports
-import PantryItemOptionsMenu from '../Pantry/PantryItemOptionsMenu';
+import PantryItemOptionsMenu from '../../Pantry/PantryItemOptionsMenu';
 
 //Emoji Imports
 import { Emoji } from 'emoji-picker-react';
@@ -11,16 +11,16 @@ import { useDrop } from 'react-dnd';
 import { useDrag } from 'react-dnd';
 
 //Structure Imports
-import EditFieldOverlayTrigger from '../Structural/EditFieldOverlayTrigger';
+import EditFieldOverlayTrigger from '../../Structural/EditFieldOverlayTrigger';
 
 //Icon Imports 
 import { IconContext } from "react-icons";
 import { AiOutlineCheckCircle } from 'react-icons/ai'
 import { GiPlainCircle } from 'react-icons/gi'
-import { eventEmitter } from '../Structural/Emitter';
+import { eventEmitter } from '../../Structural/Emitter';
 
 // Selected Ingredient Import Help
-import { addToSelectedIngredients, removeFromSelectedIngredients } from '../FoodStockHelpers/selectedIngredients';
+import { addToSelectedIngredients, removeFromSelectedIngredients } from '../../FoodStockHelpers/selectedIngredients';
 
 type FieldValue = string | Date;
 type PantryTileProps = {
