@@ -139,7 +139,11 @@ function PantryTile({ category, foodName, expirationDate, emoji, _id, handleTile
         return <div ref={drag} />
     }
     return (
-        <div ref={dragPreview} >
+        <div ref={dragPreview} 
+        style={{
+            position: "relative",
+            zIndex: isDragging ? 100000 : 0,
+          }}>
             <div role="Handle" ref={drag} className='pantry-tile d-inline-flex ' style={{ opacity: opacity, cursor: "grab" }}>
                 <div className='col-12 pantry-tile-header'>
                     <div className='d-flex align-items-center party-title-text'>

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 
 //Component Imports
 import CategoryStatsGraph from '../Structural/CategoryStatsGraph';
+import PantryTotalStockStatsExpanded from './PantryTotalStockStatsExpanded';
 
 //Google Chart Imports
 import { Chart } from "react-google-charts";
@@ -21,7 +22,7 @@ import {
 } from '../FoodStockHelpers/pantryAPI';
 
 // Icon Imports
-import { AiFillCaretDown, AiFillCaretUp } from 'react-icons/ai';
+import { AiFillCaretDown, AiFillCaretUp, AiOutlineBars } from 'react-icons/ai';
 
 /*
 STATS TO SHOW:
@@ -74,7 +75,13 @@ function PantryTotalStockStats({ pantry, setPantry, stats }: PantryTotalStockSta
     return (
         <div className='total-stock-container '>
             <div className='total-stock-stats total-stock-stats-header'>
-                <h4>Pantry Stats</h4>
+                <div className='total-stock-stats-subheader d-flex align-items-center justify-content-between'>
+                    <h4>Pantry Stats</h4>
+                    <div className='total-stats-expand-btn' onClick={() => {setOpen(!open)}}>
+                        <AiOutlineBars />
+                    </div>
+                </div>
+                <PantryTotalStockStatsExpanded open={open} setOpen={setOpen} stats={stats} />
                 <hr />
                 <div className='d-flex flex-row justify-content-between'>
                     <span>Total Foods</span>

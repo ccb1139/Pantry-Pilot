@@ -33,6 +33,7 @@
   border-radius: 15px;
   /* filter:drop-shadow(0px 3px 3px #ccc); */
   height: 100%;
+  min-width: 270px;
   /* border: solid 1px #ccc; */
 }
 .accordion-body{
@@ -381,3 +382,49 @@ Keyframes
 		transform-origin: 0% 0%;
 	}
 } */
+
+.total-stats-expand-btn{
+  display: inline-flex;
+  cursor: pointer;
+}
+.total-stats-expand-btn:hover{
+  animation: total-stats-expand-btn-hover 100ms ease 0ms 1 normal both;
+}
+.total-stats-expand-btn:active{
+  animation: total-stats-expand-btn-click 100ms ease 0ms 1 normal none;
+}
+.total-stats-expand-btn:not(:hover){
+  animation: total-stats-expand-btn-release 100ms ease 0ms 1 normal both;
+}
+
+@keyframes total-stats-expand-btn-hover {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.20);
+  }
+}
+
+@keyframes total-stats-expand-btn-release {
+  0% {
+    transform: scale(1.20);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes total-stats-expand-btn-click {
+	0% {
+		transform: scale(1.20);
+	}
+
+	50% {
+		transform: scale(0.95);
+	}
+
+	100% {
+		transform: scale(1.20);
+	}
+}

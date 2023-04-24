@@ -99,6 +99,7 @@ export async function calculateStats(pantry: any) {
         // Add new item
         const newItem = {
           foodName: item.foodName,
+          categoryName: item.category,
           totalItems: foodItemCount[item.foodName],
           totalCloseToExpiring: foodCloseToExpiringCount[item.foodName],
           totalExpired: foodExpiredCount[item.foodName]

@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react'
 import PantryTile from './PantryTile'
 import PantryList from './PantryList'
 import PantryDynamicShelves from './PantryDynamicShelves'
+// import CustomDragLayer from './CustomDragLayerComponents/CustomDragLayer'
 
 //Emmiter Imports
 import { Events, eventEmitter } from '../Structural/Emitter';
@@ -30,6 +31,7 @@ import {
   addToSelectedIngredients,
   removeFromSelectedIngredients
 } from '../FoodStockHelpers/selectedIngredients';
+import { CustomDragLayer } from './CustomDragLayerComponents/CustomDragLayer'
 
 type PantryBodyProps = {
   pantry: any,
@@ -127,6 +129,7 @@ function PantryBody({ pantry, setPantry, viewType, categorySort, sortType, stats
 
   return (
     <div className='row h-100'>
+      {/* <CustomDragLayer /> */}
       <div ref={drop} className={classNameForAnimation}>
         <PantryDynamicShelves
           pantry={pantry}
