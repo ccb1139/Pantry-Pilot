@@ -1,0 +1,28 @@
+.recipe-card{
+    display: inline-flex;
+    flex-direction: column;
+    background-color: #f5f5f5;
+    border: 1px solid #e5e5e5;
+    border-radius: 5px;
+    box-shadow: 0 1px 2px rgba(0,0,0,.05);
+    margin: 0 0 20px;
+    padding: 20px;
+    
+}
+.recipe-card-header{
+    display: inline-flex;
+}
+.recipe-card-img{
+    width: 300px;
+
+
+}
+
+.recipe-card-title{
+    align-items: center;
+    justify-content: center;
+
+    margin: 10px 30px 10px
+
+}
+

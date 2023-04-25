@@ -67,11 +67,17 @@
 
 .recipe-pot-btn{
     cursor: default;
+    
 }
+.no-link-style, .no-link-style:visited, .no-link-style:active, .no-link-style:hover{
+    text-decoration: none;
+    color: inherit;
 
+}
 .recipe-pot-btn-active{
     cursor: pointer;
-    animation: ScaleBtnUp 200ms ease 0s 1 normal forwards;
+    animation: ScaleBtnUp 200ms ease 0s 1 normal forwards,get-recipe-pulse 3s ease 0s infinite normal forwards;
+    animation-fill-mode: forwards;
     /* animation: ScaleBtnDownHover 200ms ease 0s 1 normal forwards; */
 
 }
@@ -89,6 +95,8 @@
 .recipe-pot-btn-inactive{
     cursor: default;
     animation: ScaleBtnDown 200ms ease 0s 1 normal forwards;
+    pointer-events: none;
+    
 }
 
 /* 
@@ -132,6 +140,34 @@ Keyframes
 	}
 
 	100% {
+		transform: scale(1.1);
+	}
+}
+
+@keyframes get-recipe-pulse {
+	0% {
+		animation-timing-function: ease-out;
+		transform: scale(1.1);
+		transform-origin: center center;
+	}
+
+	10% {
+		animation-timing-function: ease-in;
+		transform: scale(0.91);
+	}
+
+	17% {
+		animation-timing-function: ease-out;
+		transform: scale(1.08);
+	}
+
+	33% {
+		animation-timing-function: ease-in;
+		transform: scale(0.97);
+	}
+
+	45% {
+		animation-timing-function: ease-out;
 		transform: scale(1.1);
 	}
 }

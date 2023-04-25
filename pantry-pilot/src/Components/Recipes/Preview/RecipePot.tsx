@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
+import { Link } from "react-router-dom";
 
 // Components Imports
 import RecipePreviewModal from './RecipePreviewModal'
@@ -82,17 +83,15 @@ function RecipePot({ pantry, selectedIngredients, setSelectedIngredients, setNew
     <div ref={drop} role={'Dustbin'} style={{ height: "100%" }} className={'recipe-pot-container '}>
       <div className='d-flex flex-column align-items-center recipe-pot' style={{ height: "100%" }}>
         <div className={'recipe-pot-header text-center '} >
-          <div 
-          className={'recipe-pot-btn' + ((hasAddedFood) ? ( canQueryRecipes ? '-active' : '-inactive'): '')}
-          onClick={() => {setShowRecepiePreviewModal(!showRecepiePreviewModal)}}
+          <div className={'recipe-pot-btn' + ((hasAddedFood) ? ( canQueryRecipes ? '-active' : '-inactive'): '-inactive')} >
+          <Link to='/recipes'
+          state={{ selectedIngredients: selectedIngredients }}
+          className={'no-link-style recipe-pot-btn' + ((hasAddedFood) ? ( canQueryRecipes ? '-active' : '-inactive'): '-inactive')}
           >
             Get Recipes
             { !canQueryRecipes ?  null : <AiOutlineArrowRight />}
-            </div>
-          {/* <IconContext.Provider>
-            <AiOutlineArrowRight />
-          </IconContext.Provider> */}
-          
+            </Link>
+          </div>
 
         </div>
 
