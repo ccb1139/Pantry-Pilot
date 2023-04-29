@@ -14,13 +14,40 @@ type Props = {}
 function Recipes({}: Props) {
   const [fullRecipeData, setFullRecipeData] = useState<any>([])
 
-
   const location = useLocation()
   const selectedIngredients = location.state?.selectedIngredients || []
 
+  const dummySelectedIngredients = [
+    [],
+    {
+        "foodName": "Broccoli",
+        "expirationDate": "2023-05-08T19:04:03.782Z",
+        "category": "Vegetables",
+        "emoji": "1f966",
+        "_id": "6446d2bbe2982783f4abe8a7",
+        "inSelectedIngredients": false
+    },
+    {
+        "foodName": "Rice",
+        "expirationDate": "2023-05-08T19:09:44.077Z",
+        "category": "Grains",
+        "emoji": "1f35e",
+        "_id": "6446d403e2982783f4abeb09",
+        "inSelectedIngredients": false
+    },
+    {
+        "foodName": "Beef",
+        "expirationDate": "2023-05-08T19:04:03.785Z",
+        "category": "Protein",
+        "emoji": "1f356",
+        "_id": "6446d2bbe2982783f4abe8a6",
+        "inSelectedIngredients": false
+    }
+]
+
   useEffect(() => { 
-    console.log("selectedIngredients", selectedIngredients)
-    console.log("dummyRecipieData", dummyRecipeData2)
+    // console.log("selectedIngredients", selectedIngredients)
+    // console.log("dummyRecipieData", dummyRecipeData2)
     if(selectedIngredients.length > 0) {
       let query = ""; 
       selectedIngredientsToQuery(selectedIngredients).then((query_str) => {
@@ -94,7 +121,7 @@ function Recipes({}: Props) {
 
   return (
     <div className='app-font'>
-      <RecipesContainer newRecipes={fullRecipeData} />
+      <RecipesContainer newRecipes={fullRecipeData} selectedIngredients={dummySelectedIngredients}/>
     </div>
   )
 }

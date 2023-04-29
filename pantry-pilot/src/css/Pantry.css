@@ -54,8 +54,8 @@
   margin: 5px;
 }
 .pantry-body-container{
-  overflow-y: scroll;
-  max-height: 80vh;
+  /* overflow-y: scroll; */
+  /* max-height: 80vh; */
 
   padding-left: 2em;
   padding-right: 2em;

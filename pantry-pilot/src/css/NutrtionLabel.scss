@@ -12,8 +12,9 @@ p {
 .performance-facts {
     border: 1px solid black;
     margin: 20px;
-    float: left;
-    width: 280px;
+    // float: left;
+    min-width: 280px;
+    max-width: 300px;
     padding: 0.5rem;
 
     table {

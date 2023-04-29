@@ -5,12 +5,13 @@ import NewRecipes from './NewRecipes'
 
 type Props = {
     newRecipes: any,
+    selectedIngredients: any,
 }
 
-export default function RecipesContainer({newRecipes}: Props) {
+export default function RecipesContainer({newRecipes, selectedIngredients}: Props) {
   return (
     <div>
-        <NewRecipes newRecipes={newRecipes}/>
+        <NewRecipes newRecipes={newRecipes} selectedIngredients={selectedIngredients}/>
     </div>
   )
 }

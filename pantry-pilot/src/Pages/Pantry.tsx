@@ -125,8 +125,8 @@ function Pantry() {
       <div className='window-container container d-flex justify-content-center'
       //  style={{backgroundImage: `url(${CuttingBoard})`}}
        >
-        <div className='pantry-container h-100 app-font col-12'>
-          <div className='pantry-header-container col-3 '>
+        <div className='pantry-container h-100 app-font col-12 '>
+          <div className='pantry-header-container col-3 sticky-top'>
             <PantryHeader
               pantry={pantry}
               setPantry={setPantry}
