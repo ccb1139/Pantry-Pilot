@@ -83,7 +83,12 @@ function NewRecipes({ newRecipes, selectedIngredients }: Props) {
 
                                     let hrefString = "#link" + index
                                     return (
-                                        <ListGroup.Item action href={hrefString} key={index}>
+                                        <ListGroup.Item 
+                                        action href={hrefString} 
+                                        key={index}
+                                        variant='light'
+                                        // bsPrefix
+                                        >
                                             <RecipieTab tabData={tab} />
                                         </ListGroup.Item>
                                     )

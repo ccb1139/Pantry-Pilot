@@ -126,7 +126,7 @@ function Pantry() {
       //  style={{backgroundImage: `url(${CuttingBoard})`}}
        >
         <div className='pantry-container h-100 app-font col-12 '>
-          <div className='pantry-header-container col-3 sticky-top'>
+          <div className='pantry-header-container col-3'> {/*Add Sticky Top */}
             <PantryHeader
               pantry={pantry}
               setPantry={setPantry}

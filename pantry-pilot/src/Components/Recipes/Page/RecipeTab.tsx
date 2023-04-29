@@ -68,7 +68,16 @@ function RecipeTab({ tabData }: Props) {
 
                 </div>
                 <div className='d-flex align-items-center ms-auto'>
-                    {missedIngredients.length} <AiOutlineShoppingCart size={iconSize} />
+                    <OverlayTrigger
+                        placement='right'
+                        delay={{ show: 150, hide: 100 }}
+                        overlay={<Tooltip id="button-tooltip" >{missedIngredients.length} foods not in your pantry </Tooltip>}
+                    >
+                        <span>
+                            {missedIngredients.length} <AiOutlineShoppingCart size={iconSize} />
+                        </span>
+
+                    </OverlayTrigger>
                 </div>
             </div>
 
