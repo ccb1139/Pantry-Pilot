@@ -14,6 +14,7 @@ export const eventEmitter = {
     dispatch(event: string, data: any) : void{
         if (!this._events[event]) return;
         this._events[event].forEach(callback => callback(data))
+        console.log("_events:", this._events, "event:", event, "data:", data)
     },
     subscribe(event: string, callback: (data: any) => any): void {
         if (!this._events[event]) this._events[event] = [];
@@ -24,3 +25,4 @@ export const eventEmitter = {
         delete this._events[event];
     }
 }
+

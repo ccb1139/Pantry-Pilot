@@ -6,6 +6,7 @@ let dbConfig = require('./database/db');
 
 // Express Route
 const foodStockRoute = require('../backend/routes/foodStock.route')
+const cookbookRoute = require('../backend/routes/cookbook.route')
 
 // Configure mongoDB Database
 // mongoose.set('useNewUrlParser', true);
@@ -30,7 +31,7 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(cors());
 app.use('/foodStock', foodStockRoute)
-
+app.use('/cookbook', cookbookRoute)
 
 // PORT
 const port = process.env.PORT || 4000;

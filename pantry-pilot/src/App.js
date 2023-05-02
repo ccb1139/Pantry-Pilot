@@ -6,6 +6,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from './Pages/Home';
 import Pantry from './Pages/Pantry';
 import Recipes from './Pages/Recipes';
+import Cookbook from './Pages/Cookbook';
+import RecipeFullPage from './Pages/RecipeFullPage';
 
 //Component imports
 import NavBar from './Components/Structural/NavBar';
@@ -23,6 +25,8 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/pantry" element={<Pantry />} />
           <Route path="/recipes" element={<Recipes />} />
+          <Route path="/cookbook" element={<Cookbook />} />
+          <Route path="/full-recipe/:recipeId" element={<RecipeFullPage />} />
         </Routes>
       </div>
     </BrowserRouter>

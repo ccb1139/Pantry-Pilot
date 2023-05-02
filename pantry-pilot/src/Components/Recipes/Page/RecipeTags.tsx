@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo, useLayoutEffect } from 'react'
 
+import SaveButton from './SaveButton'
 
 //Bootstrap Imports
 import Image from 'react-bootstrap/Image'
@@ -23,7 +24,7 @@ type Props = {
 
 function RecipeTags({ recipeData, tagData }: Props) {
     const iconSize = "30px"
-
+    const [saved, setSaved] = useState<boolean>(false)
 
 
     const dietIcons: any = {
@@ -75,7 +76,9 @@ function RecipeTags({ recipeData, tagData }: Props) {
                 </div>
             </div>
             <div className='d-flex col-2 flex-help justify-content-end'>
-                <div className=''>By&nbsp; <a target="_blank" href={recipeData.spoonacularSourceUrl}> <span>{recipeData.sourceName}</span></a></div>
+                <div className=' '>
+                    <SaveButton saved={saved} setSaved={setSaved} recipeData={recipeData} />
+                </div>
             </div>
 
 

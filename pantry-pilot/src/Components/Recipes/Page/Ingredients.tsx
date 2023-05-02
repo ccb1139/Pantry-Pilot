@@ -7,6 +7,9 @@ import Form from 'react-bootstrap/Form';
 //Icon Imports
 import { AiOutlineClose } from 'react-icons/ai'
 
+//Event emitter
+import { eventEmitter } from '../../Structural/Emitter'
+
 type Props = {
     recipeData: any,
 }
@@ -57,6 +60,15 @@ function Ingredients({ recipeData }: Props) {
         setSortedIngredients(sorted);
         setScaledServings(servings);
     }, [recipeData])
+
+    useEffect(() => {
+        console.log(unit)
+    }, [unit])
+
+    eventEmitter.subscribe('changeUnit', (unit: string) => {
+        setUnit(unit)
+        eventEmitter.unsubscribe('changeUnit')
+    })
 
     // console.log(sortedIngredients)
     return (

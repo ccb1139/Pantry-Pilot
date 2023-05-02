@@ -31,9 +31,6 @@ router.get("/", (req, res) => {
 
 // UPDATE student
 router.put("/update-foodStock/:id", async (req, res, next) => {
-  console.log(req.params.id)
-  console.log(req.body)
-  console.log("WHAT IS THIS")
   try {
     const data = await foodStockSchema.findByIdAndUpdate(
       req.params.id,
@@ -43,7 +40,7 @@ router.put("/update-foodStock/:id", async (req, res, next) => {
       { new: true }
     );
     res.json(data);
-    console.log("Food stock updated successfully !");
+    // console.log("Food stock updated successfully !");
     // console.log(data)
   } catch (error) {
     return next(error);

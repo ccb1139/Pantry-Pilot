@@ -48,6 +48,7 @@ function PantryHeader({ pantry, setPantry, viewType, setViewType, categorySort, 
   useEffect(() => {
     // console.log("search:", search)
     eventEmitter.dispatch("search", search);
+    
   }, [search]);
 
 

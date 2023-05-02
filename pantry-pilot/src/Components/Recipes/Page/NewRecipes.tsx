@@ -1,13 +1,20 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react'
 
+// Function Imports
+import { getRecipeTagsBulk } from '../../Structural/RecipeHelpers'
+
+//Bootstrap Imports
 import Col from 'react-bootstrap/Col';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Row from 'react-bootstrap/Row';
 import Tab from 'react-bootstrap/Tab';
+import Tabs from 'react-bootstrap/Tabs';
 
 // Component Imports
 import RecipeCard from './RecipeCard'
 import RecipieTab from './RecipeTab'
+import RecipeUtility from './RecipeUtility';
+import { Button } from 'react-bootstrap';
 
 type Props = {
     newRecipes: any,
@@ -17,90 +24,78 @@ type Props = {
 function NewRecipes({ newRecipes, selectedIngredients }: Props) {
     // const [recipeTabs, setRecipeTabs] = useState<any>([])
     const [recipeTabContent, setRecipeTabContent] = useState<any>([])
+    const [activeTab, setActiveTab] = useState<string>('recipes')
+    const recipeTabs = useMemo(() => getRecipeTagsBulk(newRecipes), [newRecipes])
 
-    const recipeTabs = useMemo(() => getTabInfo(), [newRecipes])
-
-    function getTabInfo() {
-        let tabs: any = []
-        for (let i = 0; i < newRecipes.length; i++) {
-            const { glutenFree, dairyFree, sustainable, cheap, vegan, vegetarian, veryHealthy } = newRecipes[i];
-            const { nutrients } = newRecipes[i].nutrition;
-
-            //Get the tags
-            let dietTags = []
-            if (glutenFree) dietTags.push("gluten free");
-            if (dairyFree) dietTags.push("dairy free");
-            if (vegan) dietTags.push("vegan");
-            if (vegetarian) dietTags.push("vegetarian");
-            if (cheap) dietTags.push("cheap");
-            if (sustainable) dietTags.push("sustainable");
-            if (veryHealthy) dietTags.push("very healthy");
-
-            //Get the nutrition info
-            let nutritionInfo = {
-                calories: 0,
-                fat: 0,
-                carbs: 0,
-                protein: 0,
-            }
-            for (let i = 0; i < nutrients.length; i++) {
-                // console.log(nutrients[i])
-                const { name, amount } = nutrients[i]
-                if (name == "Calories") {
-                    nutritionInfo.calories = amount
-                }
-                if (name == "Fat") {
-                    nutritionInfo.fat = amount
-                }
-                if (name == "Carbohydrates") {
-                    nutritionInfo.carbs = amount
-                }
-                if (name == "Protein") {
-                    nutritionInfo.protein = amount
-                }
-            }
-            tabs.push({
-                title: newRecipes[i].title,
-                dietTags: dietTags,
-                nutritionInfo: nutritionInfo,
-                missedIngredients: newRecipes[i].missedIngredients,
-            })
-        }
+    function RecipeTabGroup({visable} : any) {
+        return (
+            <div className={(visable ? 'visible': 'd-none')}>
+                <ListGroup variant=''>
+                    {recipeTabs?.map((tab: any, index: number) => {
+                        let hrefString = "#link" + index
+                        return (
+                            <ListGroup.Item
+                                action
+                                href={hrefString}
+                                key={index}
+                                variant='light'
+                            // bsPrefix
+                            >
+                                <RecipieTab tabData={tab} />
+                            </ListGroup.Item>
+                        )
+                    })}
 
 
-        return tabs
+                </ListGroup>
+            </div>
+        )
+    }
+
+    function TabBtn({ btnText, btnType }: any) {
+        const btnClass = activeTab === btnType ? 'active-tab-btn' : ''
+        return (
+            <div
+                className={'custom-tab-btn ' + btnClass}
+                onClick={() => { setActiveTab(btnType) }}
+
+            >
+                {btnText}
+            </div>
+        )
     }
 
     return (
         <div className='container'>
             <Tab.Container id="list-group-tabs-example" defaultActiveKey="#link1">
                 <Row>
-                    <Col sm={2} className='sticky-top new-recipies-side-nav'>
-                        <div className=' '>
-                            <ListGroup variant=''>
+                    <Col sm={3} className='sticky-top new-recipies-side-nav'>
+                        {/* <Tabs
+                            defaultActiveKey="tabs"
+                            id="RecipeTabs"
+                            className="mb-3"
+                            fill
+                        >
+                            <Tab eventKey="tabs" title="Recipes">
+                                <RecipeTabGroup />
+                            </Tab>
+                            <Tab eventKey="utility" title="Tools">
+                                <RecipeUtility />
+                            </Tab>
 
-                                {recipeTabs?.map((tab: any, index: number) => {
-
-                                    let hrefString = "#link" + index
-                                    return (
-                                        <ListGroup.Item 
-                                        action href={hrefString} 
-                                        key={index}
-                                        variant='light'
-                                        // bsPrefix
-                                        >
-                                            <RecipieTab tabData={tab} />
-                                        </ListGroup.Item>
-                                    )
-                                })
-                                }
-
-
-                            </ListGroup>
+                        </Tabs> */}
+                        <div className='col-12 d-flex recipe-side-pane-header'>
+                            <TabBtn btnText='Recipes' btnType='recipes' />
+                            <TabBtn btnText='Tools' btnType='tools' />
                         </div>
+                        <div className='recipe-side-pane-content'>
+                            <RecipeTabGroup visable={activeTab === 'recipes'}/>
+                            <RecipeUtility visable={activeTab === 'tools'} />
+                        </div>
+
                     </Col>
 
-                    <Col sm={10}>
+                    <Col sm={9}>
                         <Tab.Content>
                             {recipeTabs?.map((tab: any, index: number) => {
                                 let hrefString = "#link" + index
@@ -115,8 +110,7 @@ function NewRecipes({ newRecipes, selectedIngredients }: Props) {
                                 )
                             })
                             }
-                            <Tab.Pane eventKey="#link1">
-                            </Tab.Pane>
+
 
                         </Tab.Content>
                     </Col>

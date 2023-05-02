@@ -20,26 +20,36 @@
     margin: 10px 10px;
     justify-content: space-between;
     height: 400px;
+
+
+    /* Gradient view */
+
     border-radius: 15px 15px 0px 0px;
-    /* filter: blur(2px);
-    -webkit-filter: blur(2px);
-    -moz-filter: blur(2px); */
-    /* margin: -20px; */
-    /* padding: -20px; */
     -webkit-mask-image: linear-gradient(to bottom, black 70%, transparent 95%);
-    mask-image: linear-gradient(to bottom, black 30%, transparent 80%);
+    mask-image: linear-gradient(to bottom, black 70%, transparent 95%);
+    background-color: rgba(215, 242, 254, 0.3);
+
+
+    /* Frosted Glass look */
+    border-radius: 15px;
+    /* background-blend-mode: ; */
+    /* box-shadow: 0px 0px 0px 4px rgba(0, 0, 0, 0.3); */
+
 }
 
 .recipe-card-header-2 {
+
     display: flex;
     justify-content: center;
     align-items: flex-start;
     flex-direction: row;
     z-index: 1;
-    backdrop-filter: blur(4px) brightness(0.5) opacity(100%);
+    /* background-color: rgba(215,242,254,0.3); */
+    backdrop-filter: blur(6px) brightness(0.5) opacity(100%);
     padding: 20px;
     width: 100%;
     height: 100%;
+    /* box-shadow: 11px 29px 0px 0px rgba(0, 0, 0, 0.3); */
 }
 
 .recipe-card-header-mini {
@@ -151,7 +161,7 @@
     align-items: start;
     justify-content: start;
     /* margin: 0px 10px; */
-
+    margin-bottom: 0px;
 
 }
 
@@ -168,14 +178,14 @@
     width: fit-content;
 }
 
-.recipe-food-tile-header{
+.recipe-food-tile-header {
     font-size: 16px;
     font-weight: 400;
     display: flex;
     align-items: center;
 }
 
-.recipe-food-tile{
+.recipe-food-tile {
     display: flex;
     flex-direction: row;
     border: 1px solid #ccc;
@@ -195,10 +205,12 @@
     /* font-weight: 400; */
     justify-content: center;
 }
-.label{
+
+.label {
     padding-top: 10px;
 }
-.tile-ingredients{
+
+.tile-ingredients {
     max-height: 400px;
     display: flex;
     overflow-wrap: normal;
@@ -209,27 +221,31 @@
     flex-wrap: wrap;
     overflow-y: auto;
 }
-.user-ingredients-cont{
+
+.user-ingredients-cont {
     /* height: max(auto, 100%); */
     border-radius: 15px;
     margin: 5px;
 }
-.need-to-get{
-    background-color: #F5F7FF;
-}
-.will-use{
-    background-color: #F5F7FF;
-}
-.wont-use{
+
+.need-to-get {
     background-color: #F5F7FF;
 }
 
-.recipie-tag-container{
+.will-use {
+    background-color: #F5F7FF;
+}
+
+.wont-use {
+    background-color: #F5F7FF;
+}
+
+.recipie-tag-container {
     display: flex;
     width: 100%;
 }
 
-.flex-help{
+.flex-help {
     display: flex;
     flex-direction: row;
     /* justify-content: center; */
@@ -237,21 +253,23 @@
 }
 
 /* Side Nav */
-.list-group-item{
+.list-group-item {
     border: none !important;
     border-bottom: 1px solid #000 !important;
     border-top: 1px solid #000 !important;
-    margin-bottom: 5px!important;
+    margin-bottom: 5px !important;
 
 }
 
-.list-group-item:first-child{
+.list-group-item:first-child {
     border-radius: 0px !important;
 }
-.list-group-item:last-child{
+
+.list-group-item:last-child {
     border-radius: 0px !important;
 }
-.list-group-item-light.list-group-item-action.active{
+
+.list-group-item-light.list-group-item-action.active {
     background-color: #F5F7FF !important;
     color: inherit !important;
     /* font-weight: 600 !important; */
@@ -263,4 +281,202 @@
     border-top: 1px solid #000 !important;
     margin-bottom: 5px!important;
     border-radius: 0px !important; */
+}
+
+.save-btn {
+    border: 2px solid #000000;
+    border-radius: 15px;
+    cursor: pointer;
+    box-shadow: 2px 2px 2px 0 rgba(0, 0, 0, 0.5);
+    /* font-size: 1.25em; */
+    /* min-width: 155px; */
+    /* margin: 5px 0px 5px; */
+    padding: 5px 10px;
+    align-items: center;
+    justify-content: center;
+
+    -webkit-user-select: none;
+    /* Safari */
+    -ms-user-select: none;
+    /* IE 10 and IE 11 */
+    user-select: none;
+    /* Standard syntax */
+    z-index: 1000;
+    position: relative;
+    background-color: inherit;
+}
+
+.save-btn:hover {
+    animation: custom-tab-btn-hover 100ms ease 0ms 1 normal both;
+}
+
+.save-btn:active {
+    animation: custom-tab-btn-click 100ms ease 0ms 1 normal none;
+}
+
+.save-btn:not(:hover) {
+    animation: custom-tab-btn-release 100ms ease 0ms 1 normal both;
+}
+
+@keyframes custom-tab-btn-hover {
+    0% {
+        transform: scale(1);
+    }
+
+    100% {
+        transform: scale(1.05);
+    }
+}
+
+@keyframes custom-tab-btn-release {
+    0% {
+        transform: scale(1.05);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes custom-tab-btn-click {
+    0% {
+        transform: scale(1.05);
+    }
+
+    50% {
+        transform: scale(1);
+    }
+
+    100% {
+        transform: scale(1.05);
+    }
+}
+
+.saved-animation {
+    animation: saved 500ms cubic-bezier(0.64, 0, 0.78, 0) 0s 1 normal forwards;
+}
+
+@keyframes saved {
+    0% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateY(-250px);
+    }
+}
+
+.icon-cont {
+    position: relative;
+}
+
+.book-anim {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -100;
+
+
+}
+
+.recipe-card-diet-icon {
+    /* background-color: inherit; */
+    /* filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.5)); */
+}
+
+.recipe-side-pane-header{
+    padding: 10px 0px;
+}
+
+
+.custom-tab-btn{
+    border: 2px solid #000000;
+    border-radius: 15px;
+    cursor: pointer;
+    box-shadow: 2px 2px 2px 0 rgba(0, 0, 0, 0.5);
+    /* font-size: 1.25em; */
+    /* min-width: 155px; */
+    /* margin: 5px 0px 5px; */
+    padding: 5px 10px;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    -webkit-user-select: none;
+    /* Safari */
+    -ms-user-select: none;
+    /* IE 10 and IE 11 */
+    user-select: none;
+    margin: 5px;
+    width: 50%;
+}
+
+.active-tab-btn{
+    background-color: #F5F7FF !important;
+    font-weight: bold;
+}
+
+.custom-tab-btn:hover {
+    animation: custom-tab-btn-hover 100ms ease 0ms 1 normal both;
+}
+
+.custom-tab-btn:active {
+    animation: custom-tab-btn-click 100ms ease 0ms 1 normal none;
+}
+
+.custom-tab-btn:not(:hover) {
+    animation: custom-tab-btn-release 100ms ease 0ms 1 normal both;
+}
+
+@keyframes custom-tab-btn-hover {
+    0% {
+        transform: scale(1);
+    }
+
+    100% {
+        transform: scale(1.05);
+    }
+}
+
+@keyframes custom-tab-btn-release {
+    0% {
+        transform: scale(1.05);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes custom-tab-btn-click {
+    0% {
+        transform: scale(1.05);
+    }
+
+    50% {
+        transform: scale(1);
+    }
+
+    100% {
+        transform: scale(1.05);
+    }
+}
+
+.recipe-utility-timer{
+    display: flex;
+    flex-direction: row;
+}
+
+.recipe-utility-timer-container, .recipe-utility-timer-body{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.timer-hour, .timer-min, .timer-sec{
+    width: 4em;
 }

@@ -11,10 +11,11 @@ import Ingredients from './Ingredients'
 import UserIngredients from './UserIngredients'
 import RecipeTags from './RecipeTags'
 
+
 //Icon Imports
 import { AiOutlineFieldTime, AiOutlineLeft, AiOutlineRight } from 'react-icons/ai'
 import { IoPeopleOutline } from 'react-icons/io5'
-import { BsCash, BsCashStack } from 'react-icons/bs'
+import { BsCash, BsCashStack, BsBookmarkPlus, BsFillBookmarkStarFill } from 'react-icons/bs'
 import { url } from 'inspector'
 
 type Props = {
@@ -25,8 +26,9 @@ type Props = {
 
 function RecipeCard({ recipeData, tagData, selectedIngredients }: Props) {
     const [equipmentUsed, setEquipmentUsed] = useState<any>([])
+    
     // const equipmentTileRef = useRef<any>(null)
-
+    // console.log("recipeData", recipeData)
 
     useEffect(() => {
         let equipment: any = []
@@ -76,9 +78,10 @@ function RecipeCard({ recipeData, tagData, selectedIngredients }: Props) {
                 }}
             >
                 <div className='recipe-card-header-2 '>
+                    
                     <div className='col-7 recipe-card-header-mini'>
                         <h2 className='recipe-card-title text-end'>{recipeData.title}</h2>
-                        {/* <div className='recipe-card-quick-info'>By&nbsp;<a target="_blank" href={recipeData.spoonacularSourceUrl}> <span>{recipeData.sourceName}</span></a></div> */}
+                        <div className='recipe-card-quick-info'>By&nbsp;<a target="_blank" href={recipeData.spoonacularSourceUrl}> <span>{recipeData.sourceName}</span></a></div>
 
                     </div>
                     <div className='col-5 recipe-card-header-mini-right'>
@@ -138,7 +141,10 @@ function RecipeCard({ recipeData, tagData, selectedIngredients }: Props) {
 
                 </div>
                 <div className='col-12 d-flex flex-column'>
-                    <NutritionLabel rd={recipeData} fullSize={true} />
+                    <div className='m-auto'>
+                        <NutritionLabel rd={recipeData} fullSize={true} />
+                    </div>
+                    
 
                 </div>
             </div>

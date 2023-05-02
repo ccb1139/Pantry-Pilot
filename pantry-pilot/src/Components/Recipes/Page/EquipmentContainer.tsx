@@ -3,6 +3,9 @@ import React, { useState, useEffect, useRef, useLayoutEffect } from 'react'
 //Bootstrap imports
 import Image from 'react-bootstrap/Image'
 
+import Carousel from "react-multi-carousel";
+import "react-multi-carousel/lib/styles.css";
+
 //Icon Imports
 import { AiOutlineLeft, AiOutlineRight } from 'react-icons/ai'
 
@@ -10,6 +13,26 @@ import { AiOutlineLeft, AiOutlineRight } from 'react-icons/ai'
 type Props = {
     equipmentUsed: any,
 }
+
+const responsive = {
+    superLargeDesktop: {
+        // the naming can be any, depends on you.
+        breakpoint: { max: 4000, min: 3000 },
+        items: 5
+    },
+    desktop: {
+        breakpoint: { max: 3000, min: 1024 },
+        items: 3
+    },
+    tablet: {
+        breakpoint: { max: 1024, min: 464 },
+        items: 2
+    },
+    mobile: {
+        breakpoint: { max: 464, min: 0 },
+        items: 1
+    }
+};
 
 function EquipmentContainer({ equipmentUsed }: Props) {
     const equipmentTileRef = useRef<any>(null)
@@ -57,22 +80,22 @@ function EquipmentContainer({ equipmentUsed }: Props) {
     // function scrollEquipment(direction: string, action: string) {
     //     const { scrollTop } = equipmentTileRef.current;
     //     setStatus();
-    
+
     //     let requestId: number;
-    
+
     //     if (action === 'start') {
     //         const scrollStep = direction === 'left' ? -40 : 40;
-    
+
     //         const step = () => {
     //             equipmentTileRef.current.scrollBy({
     //                 top: 0,
     //                 left: scrollStep,
     //                 behavior: 'smooth'
     //             });
-    
+
     //             requestId = requestAnimationFrame(step);
     //         };
-    
+
     //         step();
     //     } else if (action === 'stop') {
     //         cancelAnimationFrame(requestId);
@@ -123,6 +146,11 @@ function EquipmentContainer({ equipmentUsed }: Props) {
                     equipmentTile(item, index)
                 ))}
             </div>
+            {/* <Carousel responsive={responsive}>
+            {equipmentUsed?.map((item: any, index: number) => (
+                    equipmentTile(item, index)
+                ))}
+            </Carousel> */}
             <div>
                 <AiOutlineRight
                     size={30}

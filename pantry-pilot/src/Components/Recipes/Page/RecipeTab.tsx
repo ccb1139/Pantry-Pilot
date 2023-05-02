@@ -6,6 +6,7 @@ import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 
 //Icon Imports
+import { IconContext } from "react-icons";
 import { AiOutlineShoppingCart } from 'react-icons/ai'
 import { BiMoney, BiRecycle } from 'react-icons/bi'
 import { AiOutlineHeart } from 'react-icons/ai'
@@ -49,6 +50,16 @@ function RecipeTab({ tabData }: Props) {
 
     }
 
+    const iconColor = () => {
+        if (missedIngredients.length > 7) {
+            return "red"
+        } else if (missedIngredients.length > 3) {
+            return "#fcba03"
+        } else {
+            return "green"
+        }
+    }
+
     return (
         <div className='d-flex flex-column'>
             <div className='d-flex' >{title}</div>
@@ -74,7 +85,9 @@ function RecipeTab({ tabData }: Props) {
                         overlay={<Tooltip id="button-tooltip" >{missedIngredients.length} foods not in your pantry </Tooltip>}
                     >
                         <span>
-                            {missedIngredients.length} <AiOutlineShoppingCart size={iconSize} />
+                            <IconContext.Provider value={{ color:iconColor()}}>
+                                {missedIngredients.length} <AiOutlineShoppingCart size={iconSize} />
+                            </IconContext.Provider>
                         </span>
 
                     </OverlayTrigger>
