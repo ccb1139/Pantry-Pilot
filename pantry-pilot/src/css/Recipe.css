@@ -476,7 +476,71 @@
     justify-content: center;
 
 }
+.recipe-utility-timer-header{
+    height: 40px;
+    display: flex;
+    align-items: center;
+}
 
 .timer-hour, .timer-min, .timer-sec{
-    width: 4em;
+    text-align: center;
+    width: 3em;
+    height:fit-content;
+    border: none!important; 
+    background-color: transparent;
+    font-weight: bold !important;
+
+}
+.timer-hour:focus, .timer-min:focus, .timer-sec:focus{
+    border: none!important; 
+    outline: none!important;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+.timer-input-display{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.timer-display{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    
+
+}
+.timer-display-num{
+    font-size: 2em;
+    font-weight: bold;
+    margin: 0px;
+}
+
+.timer-display-btn{
+    display: flex;
+    width: fit-content!important;
+    height: 2.5em!important;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.reset-btn{
+    display: flex;
+    width: fit-content!important;
+    font-size: 1.25em;
+    font-weight: bold;
 }
