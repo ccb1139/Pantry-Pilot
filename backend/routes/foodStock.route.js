@@ -2,10 +2,10 @@ let mongoose = require("mongoose"),
   express = require("express"),
   router = express.Router();
 
-// Student Model
+// foodStock Model
 let foodStockSchema = require("../models/FoodStock");
 
-// CREATE Student
+// CREATE foodStock
 router.post("/create-foodStock", (req, res, next) => {
   foodStockSchema.create(req.body)
     .then(createdDoc => {
@@ -17,7 +17,7 @@ router.post("/create-foodStock", (req, res, next) => {
     });
 });
 
-// READ Students
+// READ foodStock
 router.get("/", (req, res) => {
   foodStockSchema.find()
     .then((data) => {
@@ -28,8 +28,25 @@ router.get("/", (req, res) => {
     });
 });
 
+// Get totalStock from foodStock
+router.get("/get-totalStock", (req, res) => {
+  foodStockSchema.aggregate([
+    {
+      $group: {
+        _id: null,
+        totalStock: { $sum: "$stock" },
+      },
+    },
+  ])
+    .then((data) => {
+      res.json(data);
+    })
+    .catch((error) => {
+      return next(error);
+    });
+});
 
-// UPDATE student
+// UPDATE foodStock
 router.put("/update-foodStock/:id", async (req, res, next) => {
   try {
     const data = await foodStockSchema.findByIdAndUpdate(

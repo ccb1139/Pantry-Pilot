@@ -24,10 +24,19 @@ let cookbookSchema = new Schema({
     missedIngredients: {
         type: [Object]
     },
+    missedIngredientsList: {
+        type: [Object]
+    },
     usedIngredients: {
         type: [Object]
     },
+    usedIngredientsList: {
+        type: [Object]
+    },
     unusedIngredients: {
+        type: [Object]
+    },
+    unusedIngredientsList: {
         type: [Object]
     },
     likes: {

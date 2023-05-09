@@ -73,14 +73,14 @@ const CountdownInput: React.FC<Props> = ({ onSetTime }) => {
 
       <div className='recipe-utility-timer-header '>
         <input className='timer-hour' ref={hourRef} type='number' max={99} placeholder='hour' onChange={(e) => { handleTimeChange(e) }} />
-        <span> : </span>
+        <span className='fw-bolder fs-5'> : </span>
         <input className='timer-min' ref={minRef} type='number' max={59} placeholder='min' onChange={(e) => { handleTimeChange(e) }} />
-        <span> : </span>
+        <span className='fw-bolder fs-5'> : </span>
         <input className='timer-sec' ref={secRef} type='number' max={59} placeholder='sec' onChange={(e) => { handleTimeChange(e) }} />
         {/* <TimeInput onSetTime={setTimerTime} /> */}
       </div>
 
-      <div className='custom-tab-btn' onClick={(e) => { handleSubmit(e); }}>
+      <div className='custom-tab-btn fw-bold' onClick={(e) => { handleSubmit(e); }}>
         Start
       </div>
       {/* <button type="submit" style={{display: 'none'}}></button> */}

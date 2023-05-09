@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef, useMemo, useLayoutEffect } from 're
 
 import SaveButton from './SaveButton'
 
+
+
 //Bootstrap Imports
 import Image from 'react-bootstrap/Image'
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
@@ -20,11 +22,17 @@ import _pescetarian from '../../../img/DietIcons/fish.png'
 type Props = {
     recipeData: any,
     tagData: any,
+    inCookbook: boolean,
 }
 
-function RecipeTags({ recipeData, tagData }: Props) {
+function RecipeTags({ recipeData, tagData, inCookbook }: Props) {
     const iconSize = "30px"
     const [saved, setSaved] = useState<boolean>(false)
+
+    useEffect(() => {
+        setSaved(inCookbook)
+    }, [inCookbook])
+    console.log(recipeData)
 
 
     const dietIcons: any = {

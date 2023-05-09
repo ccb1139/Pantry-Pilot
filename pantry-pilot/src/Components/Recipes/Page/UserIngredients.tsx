@@ -1,9 +1,12 @@
-import React, { useState, useEffect, useRef, useLayoutEffect } from 'react'
+import React, { useState, useEffect, useRef, useMemo, useLayoutEffect } from 'react'
 
 // Component Imports
 import RecipeFoodTile from './RecipeFoodTile'
 import RecipiePotTile from '../Preview/RecipePotTile'
 
+//Helper function
+import { findUsedIng } from './UserIngredientsTS/FindUsedIng'
+import { getCategoryEmojiByName } from '../../../Components/FoodStockHelpers/pantryAPI'
 
 // Object imports
 import { aisleEmojis } from './SpoonacularAisleEmojis'
@@ -11,72 +14,32 @@ import { aisleEmojis } from './SpoonacularAisleEmojis'
 type Props = {
     recipeData: any,
     selectedIngredients: any,
+    pantry: any,
 }
 // NEED TO FIX THIS LOGIC
 
-function UserIngredients({ recipeData, selectedIngredients }: Props) {
-    const { usedIngredients, missedIngredients, unusedIngredients } = recipeData
-    const [usedIngredientsList, setUsedIngredientsList] = useState<any[]>([]);
-    const [unusedIngredientsList, setUnusedIngredientsList] = useState<any[]>([]);
-    const [missedIngredientsList, setMissedIngredientsList] = useState<any[]>([]);
+function UserIngredients({ recipeData, selectedIngredients, pantry }: Props) {
+    const { usedIngredientsList, unusedIngredientsList, missedIngredientsList } = recipeData
 
-    useEffect(() => {
-        // console.log('selectedIngredients', selectedIngredients)
-        // console.log('usedIngredients', usedIngredients)
-        // selectedIngredients.shift();
-        let used: any = [];
-        let unused: any = [];
-        for (let j = 1; j < selectedIngredients.length; j++) {
-            const { foodName } = selectedIngredients[j];
-            const foodNameLower = foodName.toLowerCase().trim();
-            for (let i = 0; i < usedIngredients.length; i++) {
-
-                const { name, original, originalName } = usedIngredients[i];
+    // const [usedIngredientsList, setUsedIngredientsList] = useState<any[]>();
+    // const [unusedIngredientsList, setUnusedIngredientsList] = useState<any[]>();
+    // const [missedIngredientsList, setMissedIngredientsList] = useState<any[]>();
 
 
-                // Check if in usedIngredients
-                if (name.includes(foodNameLower) || original.includes(foodNameLower) || originalName.includes(foodNameLower)) {
+    // console.log(pantry)
 
-                    // console.log('match', foodName, usedIngredients[i]);
-                    // console.log('match2', selectedIngredients[j])
-                    used.push({
-                        foodName: foodName,
-                        category: selectedIngredients[j].category,
-                        expDate: selectedIngredients[j].expirationDate,
-                        ind: j,
-                        inSelectedIngredients: false,
-                        _id: selectedIngredients[j]._id,
-                        emoji: selectedIngredients[j].emoji,
-                    })
-                }
-            }
-            for (let i = 0; i < unusedIngredients.length; i++) {
-                const { name, original, originalName } = unusedIngredients[i];
-                // Check if in unusedIngredients
-                // console.log(name, "selected:", foodNameLower)
-                if (name.includes(foodNameLower) || original.includes(foodNameLower) || originalName.includes(foodNameLower)) {
+    // useEffect(() => {
+    //     // console.log(pantry[0].categories.length)
+    //     // console.log(pantry)
 
-                    // console.log('match', foodName, usedIngredients[i]);
-                    // console.log('match2', selectedIngredients[j])
-                    unused.push({
-                        foodName: foodName,
-                        category: selectedIngredients[j].category,
-                        expDate: selectedIngredients[j].expirationDate,
-                        ind: j,
-                        inSelectedIngredients: false,
-                        _id: selectedIngredients[j]._id,
-                        emoji: selectedIngredients[j].emoji,
-                    })
-                }
-            }
-        }
-
-
-        // console.log(recipeData.title)
-        // console.log('used', used)
-        setUsedIngredientsList(used)
-        setUnusedIngredientsList(unused)
-    }, [selectedIngredients])
+    //     const {usedIngredients, unusedIngredients, missingIngredients} = findUsedIng(recipeData, selectedIngredients, pantry);
+    //     // console.log('usedIngredients', usedIngredients)
+    //     setUsedIngredientsList(usedIngredients);
+    //     setUnusedIngredientsList(unusedIngredients);
+    //     setMissedIngredientsList(missingIngredients);
+    //     // debugger;
+        
+    // }, [pantry])
 
     const label = (name: string) => (
         <h5 className=' label text-center'>{name}</h5>
@@ -85,10 +48,11 @@ function UserIngredients({ recipeData, selectedIngredients }: Props) {
 
     return (
         <div className='col-12 d-flex flex-row'>
+            {/* <button onClick={() => { console.log(recipeData.extendedIngredients, selectedIngredients, pantry[0]["totalStock"]) }}>Log Data</button> */}
             <div className='col-7 need-to-get user-ingredients-cont '>
                 {label('Need to get')}
                 <div className='tile-ingredients  '>
-                    {missedIngredients.map((ingredient: any, index: number) => {
+                    {missedIngredientsList?.map((ingredient: any, index: number) => {
                         const { name, aisle } = ingredient;
                         const nameTrimmed = name.trim();
                         const aisleParsed = aisle.split(';');
@@ -111,18 +75,31 @@ function UserIngredients({ recipeData, selectedIngredients }: Props) {
 
             </div>
             <div className='col-5'>
-                <div className='will-use user-ingredients-cont'>  
+                <div className='will-use user-ingredients-cont' >
                     {label('Will be using')}
+                    {/* <button onClick={() => { console.log(usedIngredientsList) }}>Log Data</button> */}
                     <div className='tile-ingredients '>
-                        {usedIngredientsList.map((ingredient: any, index: number) => {
-                            // console.log(ingredient)
+                        {usedIngredientsList?.map((ingredient: any, index: number) => {
+                            // if(unusedIngredientsList.length === 0){
+                            //     return
+                            // }
+                            if(recipeData.title === 'Beefy Coconutty Curry'){
+                                // console.log(ingredient.category)
+                                // console.log(ingredient.emoji, '<<>>', getCategoryEmojiByName(ingredient.category, pantry, ()=>{}))
+                                // console.log(unusedIngredientsList.length)
+                                
+                                // debugger;
+
+                            }
+                            
+                            const emoji = ingredient.emoji ?? getCategoryEmojiByName(ingredient.category, pantry, ()=>{});
                             return (
                                 <div className='' key={index}>
                                     <RecipeFoodTile
                                         foodName={ingredient.foodName}
                                         category={ingredient.category}
                                         expirationDate={ingredient.expDate}
-                                        emoji={ingredient.emoji}
+                                        emoji={emoji}
                                         _id={ingredient._id}
                                     />
                                 </div>
@@ -131,26 +108,26 @@ function UserIngredients({ recipeData, selectedIngredients }: Props) {
                         }
                     </div>
                 </div>
-            { unusedIngredientsList.length > 0 &&
-                <div className='wont-use user-ingredients-cont'>
-                    {label('Wont be using')}
-                    <div className='tile-ingredients'>
-                        {unusedIngredientsList.map((ingredient: any, index: number) => {
-                            return (
-                                <div className='' key={index}>
-                                    <RecipeFoodTile
-                                        foodName={ingredient.foodName}
-                                        category={ingredient.category}
-                                        expirationDate={ingredient.expDate}
-                                        emoji={ingredient.emoji}
-                                        _id={ingredient._id}
-                                    />
-                                </div>
-                            )
-                        })
-                        }
+                {unusedIngredientsList?.length > 0 &&
+                    <div className='wont-use user-ingredients-cont'>
+                        {label('Wont be using')}
+                        <div className='tile-ingredients'>
+                            {unusedIngredientsList?.map((ingredient: any, index: number) => {
+                                return (
+                                    <div className='' key={index}>
+                                        <RecipeFoodTile
+                                            foodName={ingredient.foodName}
+                                            category={ingredient.category}
+                                            expirationDate={ingredient.expDate}
+                                            emoji={ingredient.emoji}
+                                            _id={ingredient._id}
+                                        />
+                                    </div>
+                                )
+                            })
+                            }
+                        </div>
                     </div>
-                </div>
                 }
             </div>
 

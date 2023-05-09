@@ -25,17 +25,17 @@ function SearchBar({ search, setSearch }: Props) {
     const handleClear = (event: React.MouseEvent<SVGElement, MouseEvent>): void => {
         searchRef.current!.value = '';
         setSearch('');
-      };
+    };
 
-      const handleSearchChange = (event: ChangeEvent<HTMLInputElement>): void => {
+    const handleSearchChange = (event: ChangeEvent<HTMLInputElement>): void => {
         setSearch(event.target.value);
-      };
+    };
 
     const _handleSearchChange = useMemo(() => {
         return debounce(handleSearchChange, 200);
     }, []);
 
-    
+
 
 
 

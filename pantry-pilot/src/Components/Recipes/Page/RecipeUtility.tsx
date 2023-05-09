@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useRef, useLayoutEffect } from 'react'
+import React, { useState } from 'react'
 
 //Components
 import Timer from './Timer'
+import UnitConversionCalc from './UnitConversionCalc'
 
 // CSS Imports
 import '../../../css/RecipeUtility.css'
@@ -20,7 +21,7 @@ type Props = {
 
 function RecipeUtility({ visable }: Props) {
     const [unit, setUnit] = useState<string>('metric');
-    
+
 
     // console.log(remainingTime)
 
@@ -35,11 +36,11 @@ function RecipeUtility({ visable }: Props) {
         }
         eventEmitter.unsubscribe('changeUnit')
     }
-   
+
 
     return (
-        <div className={'recipe-utility-container ' + (visable ? 'visible' : 'invisible')}>
-            <div className='recipe-utility-units d-flex align-items-center justify-content-between'>
+        <div className={'recipe-utility-container ' + (visable ? 'visible' : 'd-none')}>
+            <div className='recipe-utility-item recipe-utility-units d-flex align-items-center justify-content-between'>
 
                 <h5 className='mb-0 '>Unit:</h5>
                 <div className='d-flex align-items-center justify-content-center'>
@@ -56,9 +57,12 @@ function RecipeUtility({ visable }: Props) {
                 </div>
 
             </div>
-            <div className='recipe-utility-timer'>
+            <div className='recipe-utility-item recipe-utility-timer'>
                 <Timer />
 
+            </div>
+            <div className='recipe-utility-item recipe-utility-unit-conversion'>
+                <UnitConversionCalc />
             </div>
         </div>
     )

@@ -107,6 +107,11 @@
     /* Firefox */
 
 }
+.prevent-select {
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
+  }
 
 .recipe-card-equipment::-webkit-scrollbar {
     display: none;
@@ -429,39 +434,7 @@
     animation: custom-tab-btn-release 100ms ease 0ms 1 normal both;
 }
 
-@keyframes custom-tab-btn-hover {
-    0% {
-        transform: scale(1);
-    }
 
-    100% {
-        transform: scale(1.05);
-    }
-}
-
-@keyframes custom-tab-btn-release {
-    0% {
-        transform: scale(1.05);
-    }
-
-    100% {
-        transform: scale(1);
-    }
-}
-
-@keyframes custom-tab-btn-click {
-    0% {
-        transform: scale(1.05);
-    }
-
-    50% {
-        transform: scale(1);
-    }
-
-    100% {
-        transform: scale(1.05);
-    }
-}
 
 .recipe-utility-timer{
     display: flex;
@@ -489,11 +462,15 @@
     border: none!important; 
     background-color: transparent;
     font-weight: bold !important;
+    border-bottom: 1px solid #000000 !important;
+    
 
 }
 .timer-hour:focus, .timer-min:focus, .timer-sec:focus{
     border: none!important; 
     outline: none!important;
+    border-bottom: 2px solid #000000 !important;
+    /* box-shadow: 2px 2px 2px 0 rgba(0, 0, 0, 0.5); */
 }
 
 /* Chrome, Safari, Edge, Opera */
@@ -535,6 +512,7 @@ input[type=number] {
     height: 2.5em!important;
     align-items: center;
     justify-content: center;
+    
 
 }
 
@@ -543,4 +521,53 @@ input[type=number] {
     width: fit-content!important;
     font-size: 1.25em;
     font-weight: bold;
+}
+.plus-minus-btn{
+    margin: 0px 1px;
+    cursor: pointer;
+}
+.plus-minus-btn:hover {
+    animation: plus-minus-btn-hover 100ms ease 0ms 1 normal both;
+}
+
+.plus-minus-btn:active {
+    animation: plus-minus-btn-click 100ms ease 0ms 1 normal none;
+}
+
+.plus-minus-btn:not(:hover) {
+    animation: plus-minus-btn-release 100ms ease 0ms 1 normal both;
+}
+
+@keyframes plus-minus-btn-hover {
+    0% {
+        transform: scale(1);
+    }
+
+    100% {
+        transform: scale(1.2);
+    }
+}
+
+@keyframes plus-minus-btn-release {
+    0% {
+        transform: scale(1.2);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes plus-minus-btn-click {
+    0% {
+        transform: scale(1.2);
+    }
+
+    50% {
+        transform: scale(1);
+    }
+
+    100% {
+        transform: scale(1.2);
+    }
 }

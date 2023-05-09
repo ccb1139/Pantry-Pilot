@@ -50,6 +50,9 @@ export interface Recipe {
     userTags: any[]
     originalId: any
     spoonacularSourceUrl: string
+    missedIngredientsList: any[],
+    usedIngredientsList: any[],
+    unusedIngredientsList: any[],
   }
   
   export interface MissedIngredient {

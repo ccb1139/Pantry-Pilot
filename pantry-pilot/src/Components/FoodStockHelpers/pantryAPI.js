@@ -7,6 +7,17 @@ import axios from 'axios';
     The totalStock object is an array of objects that contain the food name, category, and quantity
 */}
 
+export function getFoodStock(setPantry) {
+    axios.get("http://localhost:4000/foodStock/").then(({ data }) => {
+        setPantry(data);
+        console.log(data);
+        // console.log(data);
+    })
+        .catch((error) => {
+            console.log(error);
+        });
+}
+
 // This functions updates the pantry object in the database and sets the state
 export function sendPantryToServer(newPantry, pantry, setPantry) {
     console.log(newPantry);
@@ -170,7 +181,7 @@ export async function removeFoodFromCategory(category_id, foodName, pantry, setP
         // console.log(pantry[0].categories[i]._id)
         if (pantry[0].categories[i]._id === category_id) {
             // console.log(pantry[0].categories[i].foodNames);
-            
+
             pantry[0].categories[i].foodNames = pantry[0].categories[i].foodNames.filter((food) => food !== foodName);
         }
     }
@@ -180,7 +191,7 @@ export async function removeFoodFromCategory(category_id, foodName, pantry, setP
         fridge: pantry[0].fridge,
         totalStock: pantry[0].totalStock,
     }
-    
+
     return newPantry;
 }
 
@@ -217,6 +228,7 @@ export function getCategory(category_id, pantry, setPantry) {
 
 // Gets the emoji of the category
 export function getCategoryEmojiById(category_id, pantry, setPantry) {
+    
     for (let i = 0; i < pantry[0].categories.length; i++) {
         if (pantry[0].categories[i]._id === category_id) {
             return (pantry[0].categories[i].unifiedEmoji);
@@ -227,6 +239,7 @@ export function getCategoryEmojiById(category_id, pantry, setPantry) {
 }
 
 export function getCategoryEmojiByName(categoryName, pantry, setPantry) {
+
     for (let i = 0; i < pantry[0].categories.length; i++) {
         if (pantry[0].categories[i].categoryName === categoryName) {
             return (pantry[0].categories[i].unifiedEmoji);
@@ -420,7 +433,7 @@ export async function findInFridge(foodName, category, expirationDate, pantry, s
 export async function findInFridgeByID(_id, pantry, setPantry) {
     var tmpFridge = pantry[0].fridge;
     for (let i = 0; i < tmpFridge.length; i++) {
-        if (tmpFridge[i]._id === _id ) {
+        if (tmpFridge[i]._id === _id) {
             return tmpFridge[i];
         }
     }
@@ -474,11 +487,11 @@ export async function removeFromPantry(foodName, category, expirationDate, pantr
 
     // Remove from Fridge and FoodStock
     // console.log(inTS, fridgeOBJ)
-    if(inTS !== -1 && fridgeOBJ !== undefined && fridgeOBJ !== -1) {
+    if (inTS !== -1 && fridgeOBJ !== undefined && fridgeOBJ !== -1) {
         newPantry = await removeFridge(fridgeOBJ._id, pantry, setPantry);
         newPantry = await decreaseTotalStock(foodName, category, 1, [newPantry], setPantry);
     }
-    
+
     return newPantry;
 }
 
@@ -489,9 +502,9 @@ export async function changeNameInPantry(foodName, category, expirationDate, _id
     let inFridge = await findInFridge(foodName, category, (tmpDate.toISOString()), pantry, setPantry);
     let inTS = await findInTotalStock(foodName, pantry, setPantry);
     let oldName = await findInFridgeByID(_id, pantry, setPantry);
-    
+
     // console.log(oldName.foodName, inTS, inFridge)
-    
+
     // Check if the food name is in the foodstock already
     if (inTS === -1) {
         newPantry = await decreaseTotalStock(oldName.foodName, oldName.category, 1, pantry, setPantry);
@@ -499,7 +512,7 @@ export async function changeNameInPantry(foodName, category, expirationDate, _id
     } else {
         newPantry = await increaseTotalStock(foodName, category, 1, pantry, setPantry);
     }
- 
+
     newPantry = await updateFridge(foodName, category, expirationDate, _id, [newPantry], setPantry);
     // console.log(newPantry)
     return newPantry;

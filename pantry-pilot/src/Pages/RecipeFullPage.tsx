@@ -9,9 +9,12 @@ import '../css/RecipeFullPage.css'
 import RecipeCard from '../Components/Recipes/Page/RecipeCard'
 import RecipeUtility from '../Components/Recipes/Page/RecipeUtility'
 
-type Props = {}
+type Props = {
+    pantry: any,
+    setPantry: any,
+}
 
-function RecipeFullPage({ }: Props) {
+function RecipeFullPage({ pantry, setPantry}: Props) {
     const location = useLocation();
     let navigate  = useNavigate();
 
@@ -30,7 +33,7 @@ function RecipeFullPage({ }: Props) {
             </div>
             <div className='col-9'>
 
-                <RecipeCard recipeData={recipe} tagData={tags} selectedIngredients={[]} />
+                <RecipeCard recipeData={recipe} tagData={tags} selectedIngredients={[]} inCookbook={true} pantry={pantry} />
             </div>
             
         </div>

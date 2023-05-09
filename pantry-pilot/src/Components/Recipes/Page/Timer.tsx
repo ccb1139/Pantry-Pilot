@@ -10,25 +10,25 @@ import { useCountdown, CountdownCircleTimer } from 'react-countdown-circle-timer
 import { FaPlay, FaPause, FaStop } from 'react-icons/fa'
 import { AiOutlineClose } from 'react-icons/ai'
 
+// Sound
+// import { alarm } from '../../../sound/alarm'
+const alarm = require('../../../sound/alarm.mp3')
+
 type Props = {}
+
+/*
+NEED TO ADD TIMER END ANIMATION
+
+*/
+
 
 function Timer({ }: Props) {
     const [timerGoing, setTimerGoing] = useState<boolean>(false);
-    const [timerTimeSeconds, setTimerTimeSeconds] = useState<number>(0);
+    const [timerTimeSeconds, setTimerTimeSeconds] = useState<number>(-1);
 
     const [key, setKey] = useState(0);
 
-    const {
-        path,
-        pathLength,
-        stroke,
-        strokeDashoffset,
-        remainingTime,
-        elapsedTime,
-        size,
-        strokeWidth,
-    } = useCountdown({ isPlaying: true, duration: 7, colors: '#abc' })
-    console.log(remainingTime, elapsedTime, pathLength)
+    const audioRef = useRef<any>(null);
 
     function startTimer(timeArr: string[]) {
 
@@ -39,19 +39,11 @@ function Timer({ }: Props) {
     }
     function resetTimer() {
         setTimerGoing(false);
-        setTimerTimeSeconds(0);
+        setTimerTimeSeconds(-1);
         setKey(prevKey => prevKey + 1);
+        audioRef?.current.pause();
     }
 
-    const formatTime = useCallback((timeArr: string[]): string => {
-        const [hours, minutes, seconds] = timeArr;
-        const hoursStr = hours.toString().padStart(2, '0');
-        const minutesStr = minutes.toString().padStart(2, '0');
-        const secondsStr = seconds.toString().padStart(2, '0');
-        const timeString = `${hoursStr}:${minutesStr}:${secondsStr}`;
-        return timeString
-
-    }, []);
     const timeToSeconds = useCallback((timeArray: string[]): number => {
         const [hours, minutes, seconds] = timeArray.map((t) => parseInt(t.trim(), 10));
         const totalSeconds = (hours * 60 * 60) + (minutes * 60) + seconds;
@@ -59,9 +51,9 @@ function Timer({ }: Props) {
     }, []);
 
     const TimerDisplay = ({ hr, mn, sc }: any) => {
-        if (hr < 10) {hr = '0' + hr;}
-        if (mn < 10) {mn = '0' + mn;}
-        if (sc < 10) {sc = '0' + sc;}
+        if (hr < 10) { hr = '0' + hr; }
+        if (mn < 10) { mn = '0' + mn; }
+        if (sc < 10) { sc = '0' + sc; }
         return (
             <div className='timer-display'>
                 <div className='timer-display-num'>
@@ -101,39 +93,29 @@ function Timer({ }: Props) {
             <h5 className='me-auto'>Timer:</h5>
             {/* <TimeInput onSetTime={startTimer} /> */}
             <div className='recipe-utility-timer-body'>
-                <div >
+                <audio ref={audioRef} id='alarm' src={alarm} preload='auto' loop />
+                <div>
                     <CountdownCircleTimer
                         key={key}
                         isPlaying={timerGoing}
-                        duration={timerTimeSeconds}
-                        colors={['#004777', '#F7B801', '#A30000', '#A30000']}
-                        colorsTime={[7, 5, 2, 0]}
+                        duration={(timerTimeSeconds === -1) ? 0 : timerTimeSeconds}
+                        colors={['#198754', '#ff0000']}
+                        colorsTime={[10, 0]}
                         children={TimerCountdown}
                         size={200}
                         strokeLinecap='butt'
                         onComplete={() => {
-                            setTimerGoing(false)
+                            setTimerGoing(false);
+                            audioRef?.current.play();
                             return { delay: 0, newInitialRemainingTime: timerTimeSeconds }
                         }}
                     />
-                    {/* <TimerCountdown remainingTime={remainingTime} />
-                        <div>Hey YA</div> */}
-                    {/* </CountdownCircleTimer> */}
                 </div>
-                {/* <div className='custom-tab-btn' onClick={() => { setTimerGoing(!timerGoing) }}>
-                    {timerGoing ? <FaPause /> : <FaPlay />}
-
-
-                </div> */}
-                {(!timerGoing && elapsedTime !== 0)?
+                {(!timerGoing && timerTimeSeconds !== -1) ?
                     <div className='custom-tab-btn reset-btn' onClick={() => { resetTimer() }}>
                         Reset
                     </div> : null}
             </div>
-            {/* 
-            <div className='custom-tab-btn' onClick={() => { changeTimerTime(2) }}>
-                reset
-            </div> */}
         </div>
     )
 }

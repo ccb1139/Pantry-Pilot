@@ -19,9 +19,11 @@ import _pescetarian from '../../img/DietIcons/fish.png'
 
 type Props = {
     tags: any,
+    missedIngredientCount: number,
+
 }
 
-function CookBookTileTags({ tags }: Props) {
+function CookBookTileTags({ tags, missedIngredientCount }: Props) {
 
     const iconSize = "20px"
     const dietIcons: any = {
@@ -47,7 +49,17 @@ function CookBookTileTags({ tags }: Props) {
 
     }
 
-    console.log(tags)
+    const iconColor = () => {
+        if (missedIngredientCount > 7) {
+            return "red"
+        } else if (missedIngredientCount > 4) {
+            return "#fcba03"
+        } else {
+            return "green"
+        }
+    }
+
+    // console.log(tags)
     return (
         <div className='cookbook-tile-tags-cont'>
             {tags?.dietTags?.map((diet: any, index: number) => (
@@ -55,12 +67,24 @@ function CookBookTileTags({ tags }: Props) {
                     placement='top'
                     delay={{ show: 150, hide: 100 }}
                     overlay={<Tooltip id="button-tooltip" >{diet}</Tooltip>}
+                    key={index}
                 >
-                    <div className='recipe-card-diet-icon mx-1' style={{ height: iconSize, width: iconSize }}>
+                    <div className='recipe-card-diet-icon mx-1 d-flex' style={{ height: iconSize, width: iconSize }}>
                         {tagIcon(diet)}
                     </div>
                 </OverlayTrigger>
             ))}
+            <OverlayTrigger
+                placement='top'
+                delay={{ show: 150, hide: 100 }}
+                overlay={<Tooltip id="button-tooltip" >{missedIngredientCount} foods not in your pantry</Tooltip>}
+            >
+                <div className='cookbook-basic-info-item ms-auto'>
+                    <IconContext.Provider value={{ color: iconColor() }}>
+                        <AiOutlineShoppingCart size={20} className='me-1 ' />
+                    </IconContext.Provider>
+                </div>
+            </OverlayTrigger>
 
         </div>
     )

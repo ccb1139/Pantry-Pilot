@@ -10,6 +10,9 @@ import { AiOutlineClose } from 'react-icons/ai'
 //Event emitter
 import { eventEmitter } from '../../Structural/Emitter'
 
+//ICON imports
+import { AiOutlinePlus, AiOutlineMinus } from 'react-icons/ai'
+
 type Props = {
     recipeData: any,
 }
@@ -65,10 +68,46 @@ function Ingredients({ recipeData }: Props) {
         console.log(unit)
     }, [unit])
 
+    function scaleIngredients(amount: number) {
+        if (scaledServings <= 0.125 && amount < 0) {
+            return
+        }
+        else if (scaledServings <= 1) {
+            if (amount < 0) {
+                setScaledServings(scaledServings / 2);
+            } else {
+                setScaledServings(scaledServings * 2);
+            }
+            // scaleIngredients(scaledServings / amount)
+        } else {
+            setScaledServings(scaledServings + amount);
+        }
+    }
+
     eventEmitter.subscribe('changeUnit', (unit: string) => {
         setUnit(unit)
         eventEmitter.unsubscribe('changeUnit')
     })
+
+    function decimalToFraction(decimal: number) {
+        const tolerance = 1.0E-6; // set the tolerance level for precision errors
+        let numerator = 1;
+        let denominator = 1;
+        let error = decimal - numerator / denominator;
+
+        while (Math.abs(error) > tolerance) {
+            if (error > 0) {
+                numerator++;
+            } else {
+                denominator++;
+            }
+            error = decimal - numerator / denominator;
+        }
+        if (denominator === 1) {
+            return `${numerator}`;
+        } 
+        return `${numerator}/${denominator}`;
+    }
 
     // console.log(sortedIngredients)
     return (
@@ -93,8 +132,13 @@ function Ingredients({ recipeData }: Props) {
                 </div>
                 <div className='col-4 d-flex align-items-center'>
                     <div className='col-11 d-flex align-items-center'>
-                        <span className='pe-1 '>Servings:</span>
-                        <Form.Control type="number" size="sm" min={1} value={scaledServings} onChange={(event) => { setScaledServings(Number(event.target.value)) }} />
+                        <span className='pe-1 d-flex '>Servings: {decimalToFraction(scaledServings)}</span>
+                        <span className='ms-auto prevent-select'>
+                            <AiOutlineMinus className='plus-minus-btn' onClick={() => { scaleIngredients(-1) }} />
+                            <AiOutlinePlus className='plus-minus-btn' onClick={() => { scaleIngredients(1) }} />
+                        </span>
+
+                        {/* <Form.Control type="number" size="sm" min={1} value={scaledServings} onChange={(event) => { setScaledServings(Number(event.target.value)) }} /> */}
 
                     </div>
                     <div className='col-1 ms-1 d-flex align-items-center'>

@@ -1,3 +1,36 @@
-.recipe-utility-container{
+.recipe-utility-container {
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
+
+.recipe-utility-item {
+    width: 100%;
+
+    border-radius: 5px;
+    padding-top: 10px;
+    padding: 10px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    display: flex;
+    background-color: #dee6cb;
+    box-shadow: 0 12px 20px -12px rgba(0, 0, 0, 0.35);
+}
+
+.UNC-input {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+
+    align-items: stretch;
+}
+
+.convert-to,
+.convert-from {
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* align-items: center; */
 }

@@ -11,6 +11,8 @@ import Ingredients from './Ingredients'
 import UserIngredients from './UserIngredients'
 import RecipeTags from './RecipeTags'
 
+// // API Imports
+// import { getRecipe } from '../../FoodStockHelpers/cookbookAPI'
 
 //Icon Imports
 import { AiOutlineFieldTime, AiOutlineLeft, AiOutlineRight } from 'react-icons/ai'
@@ -22,13 +24,15 @@ type Props = {
     recipeData: any,
     tagData: any,
     selectedIngredients: any,
+    inCookbook: any,
+    pantry: any,
 }
 
-function RecipeCard({ recipeData, tagData, selectedIngredients }: Props) {
+function RecipeCard({ recipeData, tagData, selectedIngredients, inCookbook, pantry }: Props) {
     const [equipmentUsed, setEquipmentUsed] = useState<any>([])
-    
+
     // const equipmentTileRef = useRef<any>(null)
-    // console.log("recipeData", recipeData)
+    console.log("recipeData", recipeData)
 
     useEffect(() => {
         let equipment: any = []
@@ -110,14 +114,14 @@ function RecipeCard({ recipeData, tagData, selectedIngredients }: Props) {
             </div>
             <div className='recipie-card-body'>
                 <div className='col-12 d-flex justify-content-evenly'>
-                    <RecipeTags recipeData={recipeData} tagData={tagData} />
+                    <RecipeTags recipeData={recipeData} tagData={tagData} inCookbook={inCookbook} />
                 </div>
 
                 {sectionDivider('')}
                 <div className='col-12 d-flex justify-content-evenly'>
 
 
-                    <UserIngredients recipeData={recipeData} selectedIngredients={selectedIngredients} />
+                    <UserIngredients recipeData={recipeData} selectedIngredients={selectedIngredients} pantry={pantry} />
 
 
 

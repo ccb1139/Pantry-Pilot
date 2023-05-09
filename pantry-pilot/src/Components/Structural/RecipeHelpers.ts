@@ -55,9 +55,10 @@ export function getRecipeTagsBulk(Recipes: RecipeTypes.Recipe[]) {
         // Create a tab object with the extracted information and push it to the tabs array
         tabs.push({
             title: Recipes[i].title,
+            id: Recipes[i].id,
             dietTags: dietTags,
             nutritionInfo: nutritionInfo,
-            missedIngredients: Recipes[i].missedIngredients,
+            missedIngredients: Recipes[i].missedIngredientsList,
         })
     }
 
@@ -115,11 +116,12 @@ export function getRecipeTags(recipe: RecipeTypes.Recipe) {
     // Define an array to hold the recipe tabs
   
     // Return the tabs array
+    
     return {
         title: recipe.title,
         dietTags: dietTags,
         nutritionInfo: nutritionInfo,
-        missedIngredients: recipe.missedIngredients,
+        missedIngredients: recipe.missedIngredientsList.length,
       };
   }
 

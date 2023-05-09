@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState, useEffect } from "react";
-import axios from 'axios';
+
 
 // css imports
 import '../css/Fridge.css'
@@ -68,34 +68,17 @@ STRETCH GOALS:
 */
 
 
-function Pantry() {
+function Pantry({pantry, setPantry}:any) {
   // This holds the foods in the users pantry dummy data for first load
-  const [pantry, setPantry] = useState([{
-    _id: "123", totalStock: [{ _id: "ts" }],
-    categories: [{ _id: "ct" }, { foodNames: ["fn"] }],
-    fridge: [{ _id: "fr" }]
-  }])
+  
   // 2 Views grid and list
   const [viewType, setViewType] = useState("grid");
   const [categorySort, setCategorySort] = useState(false);
   const [sortType, setSortType] = useState("NONE");
   const [statsInfoObject, setStatsInfoObject] = useState({});
 
-  // This gets the food from the api
-  useEffect(() => {
-    console.log(pantry)
-    axios.get("http://localhost:4000/foodStock/").then(({ data }) => {
-      setPantry(data);
-      console.log(data);
-      // console.log(data);
-    })
-      .catch((error) => {
-        console.log(error);
-      });
-
-
-
-  }, []);
+  // This gets the food from the server
+ 
 
   // Calculate the stats for the users foodstock
   useEffect(() => {

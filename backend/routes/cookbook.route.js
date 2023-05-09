@@ -29,6 +29,29 @@ router.get("/", (req, res) => {
         });
 });
 
+// Get single cookbook
+router.get("/get-cookbook/:id", async (req, res, next) => {
+    try {
+        const data = await cookbookSchema.findById(req.params.id);
+        res.json(data);
+        // console.log(data)
+        console.log("Cookbook found successfully !");
+    } catch (error) {
+        return next(error);
+    }
+});
+
+// Get single cookbook by Spoonacular ID
+router.get("/get-cookbook-by-spoonID/:spoonID", async (req, res, next) => {
+    try {
+        const data = await cookbookSchema.findOne({ id: req.params.spoonID });
+        res.json(data);
+        // console.log(data);
+        console.log("Cookbook found successfully !");
+    } catch (error) {
+        return next(error);
+    }
+});
 
 // UPDATE cookbook
 router.put("/update-cookbook/:id", async (req, res, next) => {

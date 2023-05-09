@@ -1,5 +1,9 @@
 .cookbook-container {
     display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: flex-start;
 }
 
 .cookbook-tile {
@@ -10,11 +14,11 @@
     width: 225px;
     height: 300px;
     margin: 10px;
-    /* padding: 20px 0px; */
-    /* border: 1px solid black; */
-    border-radius: 15px;
-    /* background-color: #f5f5f5; */
-    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
+
+    /* border: 1px solid #ccc; */
+    border-radius: 5px;
+
+    box-shadow: 0 12px 11px -12px rgba(0, 0, 0, 0.35);
     background-color: #f5f5f5;
 
 }
@@ -38,7 +42,8 @@ a:active {
     width: 100%;
     height: 90%;
     /* border: 1px solid black; */
-    border-radius: 15px;
+    /* border-radius: 15px; */
+    border-top: 1px solid black;
     border-bottom: 1px solid black;
     background-color: #fffefa;
     /* background-color: #f5f5f5; */
@@ -67,7 +72,7 @@ a:active {
 .cookbook-tile-img-cont {
     width: 100%;
     /* height: 200px; */
-    border-radius: 15px;
+    /* border-radius: 15px; */
 
     overflow: hidden;
 }
@@ -82,7 +87,8 @@ a:active {
 }
 
 .title {
-    font-weight: bold;
+    /* font-weight: bold; */
+    font-size: 1em;
 }
 
 .source {
@@ -93,7 +99,7 @@ a:active {
 .cookbook-tile-basic-info {
     display: flex;
     flex-direction: row;
-    justify-content: start;
+    justify-content: space-evenly;
     align-items: center;
     width: 100%;
 }
@@ -123,5 +129,168 @@ a:active {
     width: 100%;
     margin: 5px 0px;
     padding-left: 5px;
+    padding-right: 5px;
     flex-wrap: wrap;
+}
+
+.cookbook-header {
+    display: flex;
+
+    margin: 10px;
+    height: 100%;
+    padding: 10px;
+}
+
+.cookbook-header-container {
+
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 12px 20px -12px rgba(0, 0, 0, 0.35);
+    border-radius: 15px;
+    height: 100%;
+    /* min-width: 270px; */
+}
+
+.cookbook-header-body {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+}
+
+.cookbook-header-body-item {
+    margin: 5px 0px;
+    
+}
+
+
+
+.cookbook-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid #000000;
+    border-radius: 15px;
+    cursor: pointer;
+    box-shadow: 2px 2px 2px 0 rgba(0, 0, 0, 0.5);
+    font-size: 1.25em;
+    width: 100%;
+    height: 50px;
+    margin: 5px 0px 5px;
+}
+
+.no-link-style,
+.no-link-style:visited,
+.no-link-style:active,
+.no-link-style:hover {
+    text-decoration: none;
+    color: inherit;
+
+}
+
+/* ANIMATIONS FOR PANTRY HEADER BUTTONS */
+.cookbook-btn {
+    -webkit-user-select: none;
+    /* Safari */
+    -ms-user-select: none;
+    /* IE 10 and IE 11 */
+    user-select: none;
+    /* Standard syntax */
+}
+
+.cookbook-btn:hover {
+    animation: cookbook-in 100ms ease 0s 1 normal both;
+
+}
+
+.cookbook-btn:not(:hover) {
+    animation: cookbook-out 100ms ease 0s 1 normal both;
+}
+
+.cookbook-btn:active {
+    animation: cookbook-click 100ms ease 0ms 1 normal none;
+}
+
+@keyframes cookbook-in {
+    0% {
+        transform: scale(1);
+    }
+
+    100% {
+        transform: scale(1.05);
+    }
+}
+
+@keyframes cookbook-out {
+    0% {
+        transform: scale(1.05);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes cookbook-click {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(0.95);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.cookbook-header-clear-btn {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid #000000;
+    border-radius: 15px;
+    cursor: pointer;
+    box-shadow: 2px 2px 2px 0 rgba(0, 0, 0, 0.5);
+    font-size: 0.95em;
+    padding: 2px 5px;
+
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.cookbook-header-clear-btn:hover {
+    animation: cookbook-in 100ms ease 0s 1 normal both;
+
+}
+
+.cookbook-header-clear-btn:not(:hover) {
+    animation: cookbook-out 100ms ease 0s 1 normal both;
+}
+
+.cookbook-header-clear-btn:active {
+    animation: cookbook-click 100ms ease 0ms 1 normal none;
+}
+
+.cookbook-sliders{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.cookbook-header-filter-slider{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 70%;
+}
+
+.slider-itm{
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

@@ -23,29 +23,23 @@ import Tooltip from 'react-bootstrap/Tooltip';
 
 type Props = {
     recipe: RecipeTypes.Recipe,
+    recipeTags: any,
 }
 
-function CookBookTile({ recipe }: Props) {
-    const [recipeTags, setRecipeTags] = useState<any>(getRecipeTags(recipe))
+function CookBookTile({ recipe, recipeTags }: Props) {
+    // console.log("recipe", recipe)
+    // const [recipeTags, setRecipeTags] = useState<any>(getRecipeTags(recipe))
     const { id } = recipe
 
 
-    const iconColor = () => {
-        if (recipe.missedIngredientCount > 7) {
-            return "red"
-        } else if (recipe.missedIngredientCount > 3) {
-            return "#fcba03"
-        } else {
-            return "green"
-        }
-    }
+    
 
 
     return (
         <div className='cookbook-tile'>
             <Link className='cookbook-tile-top' to={"/full-recipe/:" + id} state={{recipe: recipe, tags: recipeTags}}>
                 <div className='cookbook-tile-tags'>
-                    <CookBookTileTags tags={recipeTags} />
+                    <CookBookTileTags tags={recipeTags} missedIngredientCount={recipe.missedIngredientCount} />
                 </div>
                 <div className='cookbook-tile-img-cont'>
                     <Image src={recipe.image} fluid className='cookbook-tile-img' />
@@ -63,7 +57,7 @@ function CookBookTile({ recipe }: Props) {
                         delay={{ show: 150, hide: 100 }}
                         overlay={<Tooltip id="button-tooltip" >Ready in {recipe.readyInMinutes} minutes</Tooltip>}
                     >
-                        <div className='cookbook-basic-info-item'> <AiOutlineFieldTime size={20} className='me-1' /> {recipe.readyInMinutes}</div>
+                        <div className='cookbook-basic-info-item'> <AiOutlineFieldTime size={20} className='me-1' /> {recipe.readyInMinutes}min</div>
                     </OverlayTrigger>
                     <OverlayTrigger
                         placement='bottom'
@@ -77,21 +71,10 @@ function CookBookTile({ recipe }: Props) {
                         delay={{ show: 150, hide: 100 }}
                         overlay={<Tooltip id="button-tooltip" >Price Per Recipe: ${((recipe.servings) * (recipe.pricePerServing / 100)).toFixed(2)}</Tooltip>}
                     >
-                        <div className='cookbook-basic-info-item'><BsCashStack size={20} className='me-1' /> {((recipe.servings) * (recipe.pricePerServing / 100)).toFixed(2)}</div>
+                        <div className='cookbook-basic-info-item'><BsCashStack size={20} className='me-1' /> ${((recipe.servings) * (recipe.pricePerServing / 100)).toFixed(2)}</div>
 
                     </OverlayTrigger>
-                    <OverlayTrigger
-                        placement='bottom'
-                        delay={{ show: 150, hide: 100 }}
-                        overlay={<Tooltip id="button-tooltip" >{recipe.missedIngredientCount} foods not in your pantry</Tooltip>}
-                    >
-                        <div className='cookbook-basic-info-item ms-auto'>
-                            <IconContext.Provider value={{ color: iconColor() }}>
-                                <AiOutlineShoppingCart size={20} className='me-1' />
-                            </IconContext.Provider>
-                            {recipe.missedIngredientCount}
-                        </div>
-                    </OverlayTrigger>
+                    
                 </div>
             </div>
 

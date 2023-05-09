@@ -53,7 +53,7 @@ function RecipeTab({ tabData }: Props) {
     const iconColor = () => {
         if (missedIngredients.length > 7) {
             return "red"
-        } else if (missedIngredients.length > 3) {
+        } else if (missedIngredients.length > 4) {
             return "#fcba03"
         } else {
             return "green"
@@ -86,7 +86,7 @@ function RecipeTab({ tabData }: Props) {
                     >
                         <span>
                             <IconContext.Provider value={{ color:iconColor()}}>
-                                {missedIngredients.length} <AiOutlineShoppingCart size={iconSize} />
+                                <AiOutlineShoppingCart size={iconSize} />
                             </IconContext.Provider>
                         </span>
 
