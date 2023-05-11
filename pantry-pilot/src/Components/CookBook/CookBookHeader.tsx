@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 //Component Imports
 import SearchBar from '../Structural/SearchBar';
+import Collapser from '../Structural/Collapser';
 import CookBookHeaderTags from './CookBookHeaderTags';
 import MultiRangeSlider from '../Structural/MultiRangeSlider';
 
@@ -9,13 +10,14 @@ import MultiRangeSlider from '../Structural/MultiRangeSlider';
 import { Events, eventEmitter } from '../Structural/Emitter';
 
 //Icon Imports
-import { AiOutlineHistory } from 'react-icons/ai'
+import { AiOutlineHistory, AiOutlineUp, AiOutlineDown } from 'react-icons/ai'
 
 //Bootstrap Imports
 import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import { Link } from 'react-router-dom';
+import Collapse from 'react-bootstrap/Collapse';
 
 type Props = {
   search: string,
@@ -28,12 +30,12 @@ type Props = {
 }
 
 function CookBookHeader({ search, setSearch, setSort, filters, setFilters, setSliderFilterVals, sliderRanges }: Props) {
-  console.log(sliderRanges)
+  // console.log(sliderRanges)
 
   return (
-    <div className='cookbook-header-container'>
+    <div className='cookbook-header-container sticky-top'>
       <div className='cookbook-header-header'>
-        <Link to='/cookbook/recipes' className='no-link-style'>
+        <Link to='/recipes' className='no-link-style'>
           <div className='cookbook-btn'>
 
             <span> View Last Search</span>
@@ -67,16 +69,21 @@ function CookBookHeader({ search, setSearch, setSort, filters, setFilters, setSl
 
           {
             sliderRanges?.healthScore && (
-               <>
-                <MultiRangeSlider name={"Health Score"} setValue={setSliderFilterVals} Min={sliderRanges['healthScore'][0]} Max={sliderRanges['healthScore'][1]} />
-                <MultiRangeSlider name={"Cost Per Recipe"} setValue={setSliderFilterVals} Min={(sliderRanges['pricePerServing'][0])} Max={sliderRanges['pricePerServing'][1]} />
-                <MultiRangeSlider name={"Time To Make"} setValue={setSliderFilterVals} Min={sliderRanges['readyInMinutes'][0]} Max={sliderRanges['readyInMinutes'][1]} />
-                <MultiRangeSlider name={"Calories"} setValue={setSliderFilterVals} Min={sliderRanges['calories'][0]} Max={sliderRanges['calories'][1]} />
-                <MultiRangeSlider name={"Carbs"} setValue={setSliderFilterVals} Min={sliderRanges['carbs'][0]} Max={sliderRanges['carbs'][1]} />
-                <MultiRangeSlider name={"Fat"} setValue={setSliderFilterVals} Min={sliderRanges['fat'][0]} Max={sliderRanges['fat'][1]} />
-                <MultiRangeSlider name={"Protein"} setValue={setSliderFilterVals} Min={sliderRanges['protein'][0]} Max={sliderRanges['protein'][1]} />
+              <>
+                <Collapser label={"Recipe Filter Sliders"} >
+                  <MultiRangeSlider name={"Health Score"} setValue={setSliderFilterVals} Min={sliderRanges['healthScore'][0]} Max={sliderRanges['healthScore'][1]} />
+                  <MultiRangeSlider name={"Cost Per Recipe"} setValue={setSliderFilterVals} Min={(sliderRanges['pricePerServing'][0])} Max={sliderRanges['pricePerServing'][1]} />
+                  <MultiRangeSlider name={"Time To Make"} setValue={setSliderFilterVals} Min={sliderRanges['readyInMinutes'][0]} Max={sliderRanges['readyInMinutes'][1]} />
+                </Collapser>
+                <Collapser label={"Nutrition Filter Sliders"}>
+                  <MultiRangeSlider name={"Calories"} setValue={setSliderFilterVals} Min={sliderRanges['calories'][0]} Max={sliderRanges['calories'][1]} />
+                  <MultiRangeSlider name={"Carbs"} setValue={setSliderFilterVals} Min={sliderRanges['carbs'][0]} Max={sliderRanges['carbs'][1]} />
+                  <MultiRangeSlider name={"Fat"} setValue={setSliderFilterVals} Min={sliderRanges['fat'][0]} Max={sliderRanges['fat'][1]} />
+                  <MultiRangeSlider name={"Protein"} setValue={setSliderFilterVals} Min={sliderRanges['protein'][0]} Max={sliderRanges['protein'][1]} />
+                </Collapser>
+
               </>)
-              
+
           }
 
         </div>
@@ -85,6 +92,7 @@ function CookBookHeader({ search, setSearch, setSort, filters, setFilters, setSl
     </div>
   )
 }
+
 
 
 

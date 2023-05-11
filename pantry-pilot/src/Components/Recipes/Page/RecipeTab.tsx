@@ -51,9 +51,9 @@ function RecipeTab({ tabData }: Props) {
     }
 
     const iconColor = () => {
-        if (missedIngredients.length > 7) {
+        if (missedIngredients?.length > 7) {
             return "red"
-        } else if (missedIngredients.length > 4) {
+        } else if (missedIngredients?.length > 4) {
             return "#fcba03"
         } else {
             return "green"
@@ -82,7 +82,7 @@ function RecipeTab({ tabData }: Props) {
                     <OverlayTrigger
                         placement='right'
                         delay={{ show: 150, hide: 100 }}
-                        overlay={<Tooltip id="button-tooltip" >{missedIngredients.length} foods not in your pantry </Tooltip>}
+                        overlay={<Tooltip id="button-tooltip" >{missedIngredients?.length} foods not in your pantry </Tooltip>}
                     >
                         <span>
                             <IconContext.Provider value={{ color:iconColor()}}>

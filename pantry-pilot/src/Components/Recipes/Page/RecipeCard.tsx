@@ -32,13 +32,13 @@ function RecipeCard({ recipeData, tagData, selectedIngredients, inCookbook, pant
     const [equipmentUsed, setEquipmentUsed] = useState<any>([])
 
     // const equipmentTileRef = useRef<any>(null)
-    console.log("recipeData", recipeData)
+  
 
     useEffect(() => {
         let equipment: any = []
 
         const uniqueEquipment: any = {}; // or new Map();
-        recipeData.analyzedInstructions[0].steps.forEach((step: any) => {
+        recipeData?.analyzedInstructions[0]?.steps.forEach((step: any) => {
             step.equipment.forEach((item: any) => {
                 if (uniqueEquipment[item.name]) {
                     return;

@@ -100,7 +100,7 @@ function RecipePot({ pantry, selectedIngredients, setSelectedIngredients, setNew
           {selectedIngredients?.map((ingredient: any, index: number) => {
             if (ingredient._id === undefined && selectedIngredients.length === 1) {
               return (
-                <div className='recipe-pot-subheader text-center'>
+                <div className='recipe-pot-subheader text-center' key={index}>
                   Drag ingredients here to get recipes
                 </div>
               )

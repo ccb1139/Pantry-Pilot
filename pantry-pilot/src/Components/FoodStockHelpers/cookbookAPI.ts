@@ -30,16 +30,16 @@ export function addRecipe(newRecipie: any): string {
     return _id;
 }
 
-export function removeRecipe(_id: any){
+export function removeRecipe(_id: any) {
     console.log(_id);
     axios.delete("http://localhost:4000/cookbook/delete-cookbook/" + _id)
-    .then((res) => {
-        if (res.status === 200) {
-            console.log("Food successfully deleted");
-        } else Promise.reject();
-    }
-    )
-    .catch((err) => alert("Something went wrong"));
+        .then((res) => {
+            if (res.status === 200) {
+                console.log("Food successfully deleted");
+            } else Promise.reject();
+        }
+        )
+        .catch((err) => alert("Something went wrong"));
 }
 
 
@@ -61,10 +61,61 @@ export async function getRecipe(spoonId: any): Promise<any> {
 export function getCookbook(setCookbook: any): any {
     axios.get('http://localhost:4000/cookbook').then(({ data }) => {
         setCookbook(data);
-        console.log(data);
+        // console.log(data);
         // console.log(data);
     })
         .catch((error) => {
             console.log(error);
         });
+}
+
+export function createLastSearch(newSearch: any) {
+    axios
+        .post("http://localhost:4000/lastSearch/create-last-search", newSearch)
+        .then((res) => {
+            if (res.status === 200) {
+                console.log("Last search successfully added");
+            } else Promise.reject();
+        })
+        .catch((err) => alert("Something went wrong"));
+}
+
+export function getLastSearch(setLastSearch: any) {
+    axios.get('http://localhost:4000/lastSearch').then(({ data }) => {
+        setLastSearch(data);
+        // console.log(data);
+    })
+        .catch((error) => {
+            console.log(error);
+        });
+}
+
+export function clearAllLastSearches() {
+    axios.delete("http://localhost:4000/lastSearch/delete-all-last-searches")
+        .then((res) => {
+            if (res.status === 200) {
+                console.log("All last searches successfully deleted");
+            } else Promise.reject();
+        }
+        )
+        .catch((err) => alert("Something went wrong"));
+}
+
+export function clearAndFillLastSearches(newSearch: any) {
+    axios.delete("http://localhost:4000/lastSearch/delete-all-last-searches")
+        .then((res) => {
+            if (res.status === 200) {
+                console.log("All last searches successfully deleted");
+                axios
+                    .post("http://localhost:4000/lastSearch/create-last-search", newSearch)
+                    .then((res) => {
+                        if (res.status === 200) {
+                            console.log("Last search successfully added");
+                        } else Promise.reject();
+                    })
+                    .catch((err) => alert("Something went wrong"));
+            } else Promise.reject();
+        }
+        )
+        .catch((err) => alert("Something went wrong"));
 }

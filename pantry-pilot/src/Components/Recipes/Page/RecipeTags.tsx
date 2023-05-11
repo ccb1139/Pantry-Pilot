@@ -32,7 +32,7 @@ function RecipeTags({ recipeData, tagData, inCookbook }: Props) {
     useEffect(() => {
         setSaved(inCookbook)
     }, [inCookbook])
-    console.log(recipeData)
+
 
 
     const dietIcons: any = {

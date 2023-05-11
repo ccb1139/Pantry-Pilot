@@ -7,12 +7,13 @@ let dbConfig = require('./database/db');
 // Express Route
 const foodStockRoute = require('../backend/routes/foodStock.route')
 const cookbookRoute = require('../backend/routes/cookbook.route')
+const lastSearchRoute = require('../backend/routes/lastSearch.route')
 
 // Configure mongoDB Database
 // mongoose.set('useNewUrlParser', true);
 // mongoose.set('useFindAndModify', false);
 // mongoose.set('useCreateIndex', true);
-// mongoose.set('useUnifiedTopology', true);
+// mongoose.set('useUnifiedTopology', true); 
 
 // Connecting MongoDB Database
 mongoose.Promise = global.Promise;
@@ -25,13 +26,14 @@ mongoose.connect(dbConfig.db).then(() => {
 )
 
 const app = express();
-app.use(bodyParser.json());
+app.use(bodyParser.json({limit: '50mb' }));
 app.use(bodyParser.urlencoded({
 	extended: true
 }));
 app.use(cors());
 app.use('/foodStock', foodStockRoute)
 app.use('/cookbook', cookbookRoute)
+app.use('/lastSearch', lastSearchRoute)
 
 // PORT
 const port = process.env.PORT || 4000;

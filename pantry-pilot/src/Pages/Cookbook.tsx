@@ -34,7 +34,7 @@ function Cookbook({cookbook, setCookbook}: Props) {
 
 
   return (
-    <div className='container'>
+    <div className='container outer'>
       <CookbookContainer cookbook={cookbook} />
     </div>
   )

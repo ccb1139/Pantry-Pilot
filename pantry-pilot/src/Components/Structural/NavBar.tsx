@@ -30,9 +30,9 @@ function NavBar() {
           <NavItem>
             <Link to="/pantry" className="nav-link">My Pantry</Link>
           </NavItem>
-          <NavItem>
+          {/* <NavItem>
             <Link to="/recipes" className="nav-link ms-auto">Recipes</Link>
-          </NavItem>
+          </NavItem> */}
           <NavItem>
             <Link to="/cookbook" className="nav-link ms-auto">My Cookbook</Link>
           </NavItem>

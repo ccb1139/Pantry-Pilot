@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef, useMemo } from 'react'
 import { getRecipeTagsBulk } from '../../Structural/RecipeHelpers'
 
 // Helper Functions
-import {findUsedIng} from './UserIngredientsTS/FindUsedIng'
+import { findUsedIng } from './UserIngredientsTS/FindUsedIng'
 import { getCategoryEmojiByName } from '../../../Components/FoodStockHelpers/pantryAPI'
 
 //Bootstrap Imports
@@ -18,6 +18,7 @@ import Tabs from 'react-bootstrap/Tabs';
 import RecipeCard from './RecipeCard'
 import RecipieTab from './RecipeTab'
 import RecipeUtility from './RecipeUtility';
+import PageBackButton from '../../Structural/PageBackButton';
 import { Button } from 'react-bootstrap';
 
 type Props = {
@@ -51,66 +52,60 @@ function NewRecipes({ newRecipes, selectedIngredients, cookbook, pantry }: Props
 
     }, [cookbook])
 
-    useEffect(() => {
-        // const {usedIngredients, unusedIngredients, missingIngredients} = findUsedIng(recipeData, selectedIngredients, pantry);
-        // // console.log('usedIngredients', usedIngredients)
-        // setUsedIngredientsList(usedIngredients);
-        // setUnusedIngredientsList(unusedIngredients);
-        // setMissedIngredientsList(missingIngredients);
 
-        // console.log(unusedIngredients, usedIngredients, missingIngredients)
-    }, [pantry, cookbook])
-
-
+    console.log(selectedIngredients)
     return (
-        <div className='container'>
-            <Tab.Container id="list-group-tabs-example" defaultActiveKey="#link1">
-                <Row>
-                    <Col sm={3} className='sticky-top new-recipies-side-nav'>
-                        <div className='col-12 d-flex recipe-side-pane-header'>
-                            <TabBtn btnText='Recipes' btnType='recipes' activeTab={activeTab} setActiveTab={setActiveTab} />
-                            <TabBtn btnText='Tools' btnType='tools' activeTab={activeTab} setActiveTab={setActiveTab} />
-                        </div>
-                        <div className='recipe-side-pane-content'>
-                            <RecipeTabGroup visable={activeTab === 'recipes'} recipeTabs={recipeTabs} />
-                            <RecipeUtility visable={activeTab === 'tools'} />
-                        </div>
+        <div className='d-flex position-relative'>
+            <PageBackButton show={true} path={(selectedIngredients.length !== 0) ? "/pantry" : "/cookbook"}/>
+            <div className='container'>
+                
+                <Tab.Container id="list-group-tabs-example" defaultActiveKey="#link1">
+                    <Row>
+                        <Col sm={3} className='sticky-top new-recipies-side-nav'>
+                            <div className='col-12 d-flex recipe-side-pane-header'>
+                                <TabBtn btnText='Recipes' btnType='recipes' activeTab={activeTab} setActiveTab={setActiveTab} />
+                                <TabBtn btnText='Tools' btnType='tools' activeTab={activeTab} setActiveTab={setActiveTab} />
+                            </div>
+                            <div className='recipe-side-pane-content'>
+                                <RecipeTabGroup visable={activeTab === 'recipes'} recipeTabs={recipeTabs} />
+                                <RecipeUtility visable={activeTab === 'tools'} />
+                            </div>
 
-                    </Col>
+                        </Col>
 
-                    <Col sm={9}>
-                        <Tab.Content>
-                            {recipeTabs?.map((tab: any, index: number) => {
-                                let hrefString = "#link" + index
-                                // console.log(tab, " tab")
-                                let inCookbook = false
-                                let recipeData = newRecipes[index]
-                                if (inCookbookIds[tab.id]){
-                                    inCookbook = true
-                                    recipeData._id = inCookbookIds[tab.id]
+                        <Col sm={9}>
+                            <Tab.Content>
+                                {recipeTabs?.map((tab: any, index: number) => {
+                                    let hrefString = "#link" + (index)
+                                    // console.log(tab, " tab")
+                                    let inCookbook = false
+                                    let recipeData = newRecipes[index]
+                                    if (inCookbookIds[tab.id]) {
+                                        inCookbook = true
+                                        recipeData._id = inCookbookIds[tab.id]
+                                    }
+
+                                    // console.log(tab.title, inCookbook, " inCookbook")
+                                    return (
+                                        <Tab.Pane eventKey={hrefString} key={index}>
+                                            <RecipeCard
+                                                recipeData={recipeData}
+                                                tagData={tab}
+                                                selectedIngredients={selectedIngredients}
+                                                inCookbook={inCookbook}
+                                                pantry={pantry}
+                                            />
+                                        </Tab.Pane>
+                                    )
+                                })
                                 }
-                                
-                                // console.log(tab.title, inCookbook, " inCookbook")
-                                return (
-                                    <Tab.Pane eventKey={hrefString} key={index}>
-                                        <RecipeCard
-                                            recipeData={recipeData}
-                                            tagData={tab}
-                                            selectedIngredients={selectedIngredients}
-                                            inCookbook={inCookbook}
-                                            pantry={pantry}
-                                        />
-                                    </Tab.Pane>
-                                )
-                            })
-                            }
 
 
-                        </Tab.Content>
-                    </Col>
-                </Row>
-            </Tab.Container>
-            {/* {newRecipes?.map((recipe: any) => {
+                            </Tab.Content>
+                        </Col>
+                    </Row>
+                </Tab.Container>
+                {/* {newRecipes?.map((recipe: any) => {
                 return (
                     <RecipeCard
                         recipeData={recipe}
@@ -118,6 +113,7 @@ function NewRecipes({ newRecipes, selectedIngredients, cookbook, pantry }: Props
                 )
             })} */}
 
+            </div>
         </div>
     )
 }

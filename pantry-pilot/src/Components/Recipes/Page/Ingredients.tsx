@@ -157,10 +157,19 @@ function Ingredients({ recipeData }: Props) {
                         {sortedIngredients?.map((ingredient: any, index: number) => {
                             const { nameClean, measures } = ingredient
                             let unitCorrection = measures[unit].unitShort;
+                            let unitFullString;
                             if (unitCorrection === '') {
                                 unitCorrection = 'servings'
                             }
-                            const unitFullString = Math.round(measures[unit].amount * scaledServings) + " " + unitCorrection
+                            console.log(measures[unit].amount)
+                            if((measures[unit].amount * scaledServings) <= 1){
+                                unitFullString = decimalToFraction(measures[unit].amount) + " " + unitCorrection
+                            } else {
+                                unitFullString = ((measures[unit].amount * scaledServings) + " " + unitCorrection)
+                                unitFullString = (Math.round(((measures[unit].amount * scaledServings) + Number.EPSILON) * 100) / 100) + " " + unitCorrection
+                            }
+
+                            
 
                             // console.log({measures.unit.amount}, {measures[unit].unitShort})
                             return (

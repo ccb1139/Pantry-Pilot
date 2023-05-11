@@ -3,12 +3,12 @@ import { useLocation } from 'react-router-dom'
 import axios from 'axios';
 
 // API imports
-import { getCookbook, getRecipe } from '../Components/FoodStockHelpers/cookbookAPI'
+import { getCookbook, clearAndFillLastSearches, getLastSearch } from '../Components/FoodStockHelpers/cookbookAPI'
 import { findUsedIng } from '../Components/Recipes/Page/UserIngredientsTS/FindUsedIng'
 import { getCategoryEmojiByName } from '../Components/FoodStockHelpers/pantryAPI'
 
 // Recipe Imports
-import { dummyRecipieData1, dummyRecipeData2, dummyRecipeData2Info } from '../Components/Debug/DummyRecipeData'
+import { dummyRecipieData1, dummyRecipeData2, dummyRecipeData2Info, testingDummyData } from '../Components/Debug/DummyRecipeData'
 import RecipesContainer from '../Components/Recipes/Page/RecipesContainer';
 
 //css imports
@@ -22,8 +22,8 @@ type Props = {
 function Recipes({ pantry, setPantry }: Props) {
   const [fullRecipeData, setFullRecipeData] = useState<any>([])
   const [cookBook, setCookbook] = useState<any>([]);
-
-  console.log("test")
+  const [recipeData, setRecipeData] = useState<any>([]);
+  const [recipeInfo, setRecipeInfo] = useState<any>([]);
 
   const location = useLocation()
   const selectedIngredients = location.state?.selectedIngredients || []
@@ -56,39 +56,68 @@ function Recipes({ pantry, setPantry }: Props) {
     }
   ]
 
+
   useEffect(() => {
     // console.log("selectedIngredients", selectedIngredients)
     // console.log("dummyRecipieData", dummyRecipeData2)
 
     getCookbook(setCookbook);
-
     if (selectedIngredients.length > 0) {
-      let query = "";
-      selectedIngredientsToQuery(selectedIngredients).then((query_str) => {
-        query = query_str;
-        getRecipies(query)
+      getandCompileRecipeData();
+    } else {
+      // Get last recipe search from server
+      getLastSearch(setFullRecipeData)
+    }
+  }, [])
 
-        getRecipeIds(dummyRecipeData2).then((recipeIds) => {
-          getRecipeInfo(recipeIds)
-        })
-      })
+  async function getandCompileRecipeData() {
+    try {
+      const query_str = await selectedIngredientsToQuery(selectedIngredients);
+      console.log("query_str", query_str)
+      let recipeData = await getRecipes(query_str);
+      console.log(recipeData)
+      const recipeIds = await getRecipeIds(recipeData);
+      console.log("recipeIds", recipeIds)
+      let recipeInfo = await getRecipeInfo(recipeIds);
+
+      let joinedData = await joinDataById(recipeData, recipeInfo);
+
+      console.log("joinedData", joinedData)
+      let fullRecipeData = await addUsedIngredientsToJoinedData(joinedData, selectedIngredients, pantry);
+      console.log("fullRecipeData", fullRecipeData)
+      setFullRecipeData(fullRecipeData)
+      clearAndFillLastSearches(fullRecipeData)
+    } catch (err) {
+      console.error(err);
     }
-    let joinedData = dummyRecipeData2.map((recipe: any) => ({
-      ...recipe,
-      ...dummyRecipeData2Info.find((recipeInfo: any) => recipeInfo.id === recipe.id)
-    }))
-    console.log("joinedData", joinedData)
+
+  }
+
+  async function addUsedIngredientsToJoinedData(_joinedData: any, selectedIngredients: any, pantry: any) {
+    let joinedData = [..._joinedData]
     for (let i = 0; i < joinedData.length; i++) {
-      // console.log("unusedIngredients", joinedData[i].unusedIngredients)
-      findUsedIng(joinedData[i], dummySelectedIngredients, pantry).then((tmp) => {
-        joinedData[i].usedIngredientsList = tmp.usedIngredients;
-        joinedData[i].unusedIngredientsList = tmp.unusedIngredients;
-        // console.log(tmp.unusedIngredients, tmp.usedIngredients, tmp.missingIngredients)
-        joinedData[i].missedIngredientsList = tmp.missingIngredients;
-      })
+      try {
+        const {usedIngredients, unusedIngredients, missingIngredients} = await findUsedIng(joinedData[i], selectedIngredients, pantry);
+        joinedData[i].usedIngredientsList = usedIngredients;
+        joinedData[i].unusedIngredientsList = unusedIngredients;
+        joinedData[i].missedIngredientsList = missingIngredients;
+
+      } catch (err) {
+        console.error(err);
+      }
     }
-    setFullRecipeData(joinedData)
-  }, [pantry])
+    return joinedData;
+  }
+
+  async function joinDataById(recipeData: any, recipeInfo: any) {
+    let joinedData = recipeData.map((recipe: any) => ({
+      ...recipe,
+      ...recipeInfo.find((recipeInfo: any) => recipeInfo.id === recipe.id)
+    }))
+    return joinedData;
+  }
+
+
 
   useEffect(() => {
     console.log(cookBook)
@@ -106,16 +135,16 @@ function Recipes({ pantry, setPantry }: Props) {
     return query
   }
 
-  function getRecipies(IngredientsQuery: string) {
-    // console.log("https://api.spoonacular.com/recipes/findByIngredients?apiKey=" + (process.env.REACT_APP_API_KEY)?.trim() + "&ingredients=" + IngredientsQuery)
-    // console.log("https://api.spoonacular.com/recipes/findByIngredients?ingredients=apples,+flour,+sugar&number=2")
-    // axios.get("https://api.spoonacular.com/recipes/findByIngredients?apiKey=" + (process.env.REACT_APP_API_KEY)?.trim() + "&ingredients=" + IngredientsQuery).then(response => {
-    //   console.log(response.data);
+  async function getRecipes(IngredientsQuery: string) {
+    try {
+      const response = await axios.get("https://api.spoonacular.com/recipes/findByIngredients?apiKey=" + (process.env.REACT_APP_API_KEY)?.trim() + "&ingredients=" + IngredientsQuery);
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
 
-    // })
-    // .catch(error => {
-    //   console.log(error);
-    // });
   }
 
   async function getRecipeIds(recipes: any): Promise<string> {
@@ -127,21 +156,21 @@ function Recipes({ pantry, setPantry }: Props) {
     return recipeIds;
   }
 
-  function getRecipeInfo(recipeIds: string) {
-    // console.log("https://api.spoonacular.com/recipes/informationBulk?apiKey=" + (process.env.REACT_APP_API_KEY)?.trim() + "&ids=" + recipeIds + "&inc " )
-    // axios.get("https://api.spoonacular.com/recipes/informationBulk?apiKey=" + (process.env.REACT_APP_API_KEY)?.trim() + "&ids=" + recipeIds + "&includeNutrition=true").then(response => {
-    //   console.log(response.data);
-    // })
-    // .catch(error => {
-    //   console.log(error);
-    // });
+  async function getRecipeInfo(recipeIds: string) {
+    console.log("https://api.spoonacular.com/recipes/informationBulk?apiKey=" + (process.env.REACT_APP_API_KEY)?.trim() + "&ids=" + recipeIds + "&inc ")
+    try {
+      const response = await axios.get("https://api.spoonacular.com/recipes/informationBulk?apiKey=" + (process.env.REACT_APP_API_KEY)?.trim() + "&ids=" + recipeIds + "&includeNutrition=true");
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
   }
-
 
 
   return (
     <div className='app-font'>
-      <RecipesContainer newRecipes={fullRecipeData} selectedIngredients={dummySelectedIngredients} cookbook={cookBook} pantry={pantry} />
+      <RecipesContainer newRecipes={fullRecipeData} selectedIngredients={selectedIngredients} cookbook={cookBook} pantry={pantry} />
     </div>
   )
 }
